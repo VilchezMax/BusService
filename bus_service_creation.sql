@@ -19,11 +19,11 @@ CREATE TABLE city (
 DROP TABLE IF EXISTS bus_stop;
 CREATE TABLE bus_stop (
 	id INT NOT NULL AUTO_INCREMENT,
+    longitude  DECIMAL(10,8),
+    latitude DECIMAL(10,8),
     city_id INT NOT NULL,
-    FOREIGN KEY (city_id) REFERENCES city (id) ON UPDATE CASCADE,
-    longitude  FLOAT(10,6),
-    latitude FLOAT(10,6),
-	PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (city_id) REFERENCES city (id) ON UPDATE CASCADE
 );
 
 
@@ -32,9 +32,9 @@ CREATE TABLE route (
 	id INT NOT NULL AUTO_INCREMENT,
 	stop_id INT NOT NULL,
     bus_id INT NOT NULL,
+    PRIMARY KEY (id),
 	FOREIGN KEY (stop_id) REFERENCES bus_stop (id) ON UPDATE CASCADE,
-    FOREIGN KEY (bus_id) REFERENCES bus (id) ON UPDATE CASCADE,
-	PRIMARY KEY (id)
+    FOREIGN KEY (bus_id) REFERENCES bus (id) ON UPDATE CASCADE
 );
 
 
