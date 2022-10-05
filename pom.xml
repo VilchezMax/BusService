@@ -6,7 +6,11 @@
 
   <groupId>busservice</groupId>
   <artifactId>block3</artifactId>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
+  <modules>
+    <module>sql</module>
+  </modules>
 
   <name>block3</name>
   <url>https://github.com/VilchezMax/BusService</url>
