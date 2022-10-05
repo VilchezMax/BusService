@@ -18,6 +18,8 @@
                 <property name="url" value="${url}"/>
                 <property name="username" value="${user}"/>
                 <property name="password" value="${pass}"/>
+                <property name="poolTimeToWait" value="${poolTimeToWait}"/>
+                <property name="poolMaximumActiveConnections" value="${poolMaximumActiveConnections}"/>
             </dataSource>
         </environment>
     </environments>

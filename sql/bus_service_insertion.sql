@@ -7,7 +7,7 @@ INSERT INTO bus (id)
  INSERT INTO city(name)
  VALUES("Buenos Aires"),("London");
  
- INSERT INTO bus_stop(id,longitude, latitude,stop_name,city_id, isTerminal)
+ INSERT INTO bus_stop(id,longitude,latitude,stop_name,city_id,isTerminal)
  VALUES(1, 1, 1, "Brandsen 805", 1, false),
  (2, 2, 10,"Hospitales",1, false),
  (3,3,4,"Las Heras",1, false),
