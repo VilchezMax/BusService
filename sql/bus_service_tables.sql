@@ -21,11 +21,11 @@ CREATE TABLE city (
 DROP TABLE IF EXISTS bus_stop;
 CREATE TABLE bus_stop (
 	id INT NOT NULL AUTO_INCREMENT,
-    coordinates DECIMAL(4,2),
-    longitude  DECIMAL(10,8),
-    latitude DECIMAL(10,8),
-    stop_name VARCHAR(50),
-    isTerminal BOOLEAN,
+    coordinates DECIMAL(4,2) NOT NULL,
+    longitude  DECIMAL(4,2) NOT NULL,
+    latitude DECIMAL(4,2) NOT NULL,
+    stop_name VARCHAR(50) NOT NULL,
+    isTerminal BOOLEAN NOT NULL,
     city_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (city_id) REFERENCES city (id) ON UPDATE CASCADE
