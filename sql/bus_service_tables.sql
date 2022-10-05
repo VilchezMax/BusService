@@ -21,7 +21,6 @@ CREATE TABLE city (
 DROP TABLE IF EXISTS bus_stop;
 CREATE TABLE bus_stop (
 	id INT NOT NULL AUTO_INCREMENT,
-    coordinates DECIMAL(4,2) NOT NULL,
     longitude  DECIMAL(4,2) NOT NULL,
     latitude DECIMAL(4,2) NOT NULL,
     stop_name VARCHAR(50) NOT NULL,
