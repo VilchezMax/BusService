@@ -7,13 +7,12 @@ import org.apache.logging.log4j.Logger;
  * Hello world!
  *
  */
-public class App {
-    static final Logger LOGGER = LogManager.getLogger(App.class);
+public class App 
+{
     public static void main( String[] args ) {
-        LOGGER.info( "Started" );
 
+        System.out.println("Hello World!");
 
-
-
+        System.out.println(DijkstraTest.getShortestPath("Knightsbridge", "St. Paul's"));
     }
 }

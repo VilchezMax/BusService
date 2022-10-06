@@ -1,0 +1,19 @@
+name: Telegram notification
+
+on:
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+
+  notifyTelegram:
+    runs-on: ubuntu-latest
+    steps:
+    - name: send custom message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+          There is a ${{ github.event_name }} waiting to be reviewed.
+          Go to https://github.com/VilchezMax/BusService/pulls
