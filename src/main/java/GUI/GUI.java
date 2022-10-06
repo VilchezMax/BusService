@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GUI {
+    //TODO:
+    // THIS CLASS WILL BE USED TO CREATE USER INTERFACE FOR BUS_STOP SELECTION
+    // BUTTONS WILL BE GENERATED FROM AN ARRAY OF STATIONS, YET TO BE IMPLEMENTEDgit
+    // THIS IS JUST AN EXAMPLE OF HOW IT SHOULD LOOK LIKE
+
 
     public GUI(){
         JPanel panel = new JPanel();
