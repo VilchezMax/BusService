@@ -21,8 +21,8 @@ CREATE TABLE city (
 DROP TABLE IF EXISTS bus_stop;
 CREATE TABLE bus_stop (
 	id INT NOT NULL AUTO_INCREMENT,
-    longitude  DECIMAL(4,2) NOT NULL,
-    latitude DECIMAL(4,2) NOT NULL,
+    longitude  INT NOT NULL,
+    latitude INT NOT NULL,
     stop_name VARCHAR(50) NOT NULL,
     isTerminal BOOLEAN NOT NULL,
     city_id INT NOT NULL,
