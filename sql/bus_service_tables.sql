@@ -24,7 +24,7 @@ CREATE TABLE bus_stop (
     longitude  INT NOT NULL,
     latitude INT NOT NULL,
     stop_name VARCHAR(50) NOT NULL,
-    isTerminal BOOLEAN NOT NULL,
+    isTerminal TINYINT NOT NULL,
     city_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (city_id) REFERENCES city (id) ON UPDATE CASCADE
