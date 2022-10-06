@@ -18,13 +18,15 @@
                 <property name="url" value="${url}"/>
                 <property name="username" value="${user}"/>
                 <property name="password" value="${pass}"/>
+                <property name="poolTimeToWait" value="${poolTimeToWait}"/>
+                <property name="poolMaximumActiveConnections" value="${poolMaximumActiveConnections}"/>
             </dataSource>
         </environment>
     </environments>
     <mappers>
-        <mapper resource="myBaties/mappers/busMapper.xml"/>
-        <mapper resource="myBaties/mappers/routeMapper.xml"/>
-        <mapper resource="myBaties/mappers/busStopMapper.xml"/>
-        <mapper resource="myBaties/mappers/cityMapper.xml"/>
+        <mapper resource="myBatis/mappers/busMapper.xml"/>
+        <mapper resource="myBatis/mappers/routeMapper.xml"/>
+        <mapper resource="myBatis/mappers/busStopMapper.xml"/>
+        <mapper resource="myBatis/mappers/cityMapper.xml"/>
     </mappers>
 </configuration>
