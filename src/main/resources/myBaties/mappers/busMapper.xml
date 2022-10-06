@@ -1,0 +1,5 @@
+<mapper namespace="com.solvd.course.db" xmlns="http://mybatis.org/schema/mybatis-mapper">
+    <select id="getById" resultMap="carsResultMap">
+        SELECT * FROM buses b WHERE id = 1;
+    </select>
+</mapper>
