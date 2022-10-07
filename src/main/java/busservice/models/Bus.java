@@ -21,4 +21,11 @@ public class Bus {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Bus{" +
+                "id=" + id +
+                ", route=" + route +
+                '}';
+    }
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="busservice.dao.IBusStopDAO">
+    <resultMap id="BusStopMap" type="BusStop">
+        <id property="id" column="id"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="name" column="stop_name"/>
+        <result property="isTerminal" column="isTerminal"/>
+        <result property="city.id" column="city_id"/>
+        <result property="city.name" column="name"/>
+
+        <collection property="buses" ofType="Bus">
+            <id property="route.bus_id" column="bus_id"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="getByIdBusStop" parameterType="int" resultMap="BusStopMap">
+        SELECT *
+        FROM bus_stop
+        INNER JOIN city
+        ON bus_stop.city_id = city.id
+        INNER JOIN route
+        ON route.stop_id = bus_stop.id
+        WHERE bus_stop.id =#{id};
+    </select>
+
+    <select id="getAllBusStops" resultMap="BusStopMap">
+        SELECT *
+        FROM bus_stop
+        INNER JOIN city
+        ON bus_stop.city_id = city.id
+        INNER JOIN route
+        ON route.stop_id = bus_stop.id
+        ORDER BY bus_stop.id;
+    </select>
+
+    <insert id="insertBusStop" parameterType="BusStop">
+        INSERT INTO bus_stop
+        (Longitude, Latitude, stop_name, isTerminal, city_id)
+        VALUES (#{longitude}, #{latitude}, #{name}, #{isTerminal}, #{city.id});
+    </insert>
+
+    <update id="updateBusStop" parameterType="map">
+        UPDATE bus_stop SET
+        Longitude = #{object.longitude},
+        Latitude = #{object.latitude},
+        stop_name = #{object.name},
+        isTerminal = #{object.isTerminal},
+        city_id = #{object.city.id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByIdBusStop" parameterType="int">
+        DELETE FROM bus_stop
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
