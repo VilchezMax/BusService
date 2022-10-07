@@ -25,6 +25,7 @@ public class MainMyBatis {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession session = sqlSessionFactory.openSession();
 
+
         session.commit();
         session.close();
     } catch (Exception e) {

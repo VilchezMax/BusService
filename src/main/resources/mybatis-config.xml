@@ -31,7 +31,6 @@
         <mapper resource="mappers/busMapper.xml"/>
         <mapper resource="mappers/busStopMapper.xml"/>
         <!--
-        <mapper resource="myBatis/mappers/routeMapper.xml"/>
         <mapper resource="myBatis/mappers/busMapper.xml"/> -->
     </mappers>
 </configuration>

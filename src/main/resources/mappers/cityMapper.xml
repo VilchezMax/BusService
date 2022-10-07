@@ -8,30 +8,30 @@
         <result property="name" column="name"/>
     </resultMap>
 
-    <select id="getByIdCity" parameterType="int" resultMap="CityMap">
+    <select id="getById" parameterType="int" resultMap="CityMap">
         SELECT *
         FROM city
         WHERE id =#{id};
     </select>
 
-    <select id="getAllCities" resultMap="CityMap">
+    <select id="getAll" resultMap="CityMap">
         SELECT *
         FROM city
     </select>
 
-    <insert id="insertCity" parameterType="City">
+    <insert id="insert" parameterType="City">
         INSERT INTO city
         (name)
         VALUES (#{name})
     </insert>
 
-    <update id="updateCity" parameterType="map">
+    <update id="update" parameterType="map">
         UPDATE city SET
         name = #{object.name}
-        WHERE id = #{id}
+        WHERE id = #{object.id}
     </update>
 
-    <delete id="deleteByIdCity" parameterType="int">
+    <delete id="deleteById" parameterType="int">
         DELETE FROM city
         WHERE id = #{id}
     </delete>

@@ -7,10 +7,10 @@ import org.apache.ibatis.annotations.Param;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface IBusStopDAO {
-    void insertBusStop (BusStop object) throws SQLException;
-    void updateBusStop (@Param("id") int id, @Param("object") BusStop object) throws SQLException;
-    List<BusStop> getAllBusStops () throws SQLException;
-    BusStop getByIdBusStop (int id) throws SQLException;
-    void deleteByIdBusStop(int id) throws SQLException;
+public interface IBusStopDAO extends IDAO<BusStop> {
+    void insert (BusStop object) throws SQLException;
+    void update (@Param("object") BusStop object) throws SQLException;
+    List<BusStop> getAll () throws SQLException;
+    BusStop getById (int id) throws SQLException;
+    void deleteById(int id) throws SQLException;
 }

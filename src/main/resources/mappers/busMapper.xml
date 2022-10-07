@@ -7,30 +7,30 @@
         <id property="id" column="id"/>
     </resultMap>
 
-    <select id="getByIdBus" resultMap="BusMap">
+    <select id="getById" resultMap="BusMap">
         SELECT id
         FROM bus
         WHERE id = #{id}
     </select>
 
-    <select id="getAllBuses" resultMap="BusMap">
+    <select id="getAll" resultMap="BusMap">
         SELECT *
         FROM bus
     </select>
 
-    <insert id="insertBus" parameterType="Bus">
+    <insert id="insert" parameterType="Bus">
         INSERT INTO bus
         (id)
         VALUES (#{id})
     </insert>
 
-    <update id="updateBus" parameterType="map">
+    <update id="update" parameterType="map">
         UPDATE bus SET
         id = #{object.id}
-        WHERE id = #{id}
+        WHERE id = #{object.id}
     </update>
 
-    <delete id="deleteByIdBus" parameterType="int">
+    <delete id="deleteById" parameterType="int">
         DELETE FROM bus
         WHERE id = #{id}
     </delete>
