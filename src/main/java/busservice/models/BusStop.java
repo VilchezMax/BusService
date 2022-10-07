@@ -61,4 +61,17 @@ public class BusStop {
     public void setCity(City city) {
         this.city = city;
     }
+
+    @Override
+    public String toString() {
+        return "\nBusStop{" +
+                "id=" + id +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", name='" + name + '\'' +
+                ", isTerminal=" + isTerminal +
+                ", city=" + city +
+                ", buses=" + buses +
+                '}';
+    }
 }

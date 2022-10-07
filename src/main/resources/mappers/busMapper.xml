@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="busservice.dao.IBusDAO">
+    <resultMap id="BusMap" type="Bus">
+        <id property="id" column="id"/>
+    </resultMap>
+
+    <select id="getByIdBus" resultMap="BusMap">
+        SELECT id
+        FROM bus
+        WHERE id = #{id}
+    </select>
+
+    <select id="getAllBuses" resultMap="BusMap">
+        SELECT *
+        FROM bus
+    </select>
+
+    <insert id="insertBus" parameterType="Bus">
+        INSERT INTO bus
+        (id)
+        VALUES (#{id})
+    </insert>
+
+    <update id="updateBus" parameterType="map">
+        UPDATE bus SET
+        id = #{object.id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByIdBus" parameterType="int">
+        DELETE FROM bus
+        WHERE id = #{id}
+    </delete>
+</mapper>
