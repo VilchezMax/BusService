@@ -1,4 +1,7 @@
-package busservice;
+package algorithm;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,8 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DijkstraTest {
+    final Logger LOGGER = LogManager.getLogger(DijkstraTest.class);
 
-    public static String getShortestPath( String from, String to ) {
+    public static String getShortestPath(String from, String to) {
         {
 
             String start = from;
@@ -33,17 +37,17 @@ public class DijkstraTest {
 
             HashMap<String, Integer[]> distances = new HashMap<>() {
                 {
-                    put("Knightsbridge", new Integer[]{39,13});
-                    put("Covent Garden", new Integer[]{36,14});
-                    put("Gloucester Road",  new Integer[]{39,16});
-                    put("Leicester Square", new Integer[]{35,17});
-                    put("Hyde Park Corner",  new Integer[]{38,20});
-                    put("Piccadilly Circus",  new Integer[]{35,23});
-                    put("Tower Hill", new Integer[]{31,16} );
-                    put("Blackfriars", new Integer[]{29,19} );
-                    put("St. Paul's",  new Integer[]{29,22});
-                    put("Waterloo",  new Integer[]{32,20} );
-                    put("Liverpool Street", new Integer[]{34,25} );
+                    put("Knightsbridge", new Integer[]{39, 13});
+                    put("Covent Garden", new Integer[]{36, 14});
+                    put("Gloucester Road", new Integer[]{39, 16});
+                    put("Leicester Square", new Integer[]{35, 17});
+                    put("Hyde Park Corner", new Integer[]{38, 20});
+                    put("Piccadilly Circus", new Integer[]{35, 23});
+                    put("Tower Hill", new Integer[]{31, 16});
+                    put("Blackfriars", new Integer[]{29, 19});
+                    put("St. Paul's", new Integer[]{29, 22});
+                    put("Waterloo", new Integer[]{32, 20});
+                    put("Liverpool Street", new Integer[]{34, 25});
                 }
             };
 
@@ -65,7 +69,7 @@ public class DijkstraTest {
             //double currShortest = Double.POSITIVE_INFINITY;
             //String closestVertex = null;
 
-            while (lookForInfinity(shortestTable) || unvisited.size()>0) {
+            while (lookForInfinity(shortestTable) || unvisited.size() > 0) {
                 double currShortest = Double.POSITIVE_INFINITY;
                 String closestVertex = null;
                 for (VertexTable row : shortestTable) {
@@ -87,7 +91,7 @@ public class DijkstraTest {
                         //System.out.println("visited: " + Arrays.toString(visited.toArray())+  " unvisited: " + Arrays.toString(unvisited.toArray())) ;
 
                         for (String toVisit : set.getValue()) {
-                            if(visited.contains(toVisit)){
+                            if (visited.contains(toVisit)) {
                                 continue;
                             }
                             Integer[] coordinatesClosest = distances.get(closestVertex);
@@ -105,23 +109,23 @@ public class DijkstraTest {
                             for (VertexTable update : shortestTable) {
 
 
-                                if (update.getVertex() == toVisit && update.getShortestFromStart() >distance ) {
+                                if (update.getVertex() == toVisit && update.getShortestFromStart() > distance) {
 
 
                                     boolean flagD = false;
-                                    for(VertexTable dist : shortestTable){
-                                        if(dist.getVertex() == closestVertex){
+                                    for (VertexTable dist : shortestTable) {
+                                        if (dist.getVertex() == closestVertex) {
                                             //System.out.println("distance between " + toVisit + " and " + closestVertex + " is " + distance);
                                             //System.out.println("will sum : " +dist.getShortestFromStart());
                                             distance += dist.getShortestFromStart();
                                             //System.out.println("distance is : "+  distance + " sum of " + toVisit + " and " + closestVertex);
                                             flagD = true;
                                         }
-                                        if(flagD) break;
+                                        if (flagD) break;
                                     }
 
 
-                                    if( update.getShortestFromStart() <distance ){
+                                    if (update.getShortestFromStart() < distance) {
                                         continue;
                                     }
 
@@ -131,19 +135,19 @@ public class DijkstraTest {
                                     double newShortest = distance;
 
 
-                                    for(VertexTable sumThis : shortestTable){
+                                    for (VertexTable sumThis : shortestTable) {
 
 
-                                        if(update.getShortestFromStart()< sumThis.getShortestFromStart()+distance){
-                                            newShortest+= sumThis.getShortestFromStart();
+                                        if (update.getShortestFromStart() < sumThis.getShortestFromStart() + distance) {
+                                            newShortest += sumThis.getShortestFromStart();
                                             //System.out.println("setting : " + newShortest + " to " + update.getVertex());
                                             //System.out.println("sum of: " +sumThis.getShortestFromStart() +" and " + distance);
                                             update.setShortestFromStart(newShortest);
                                             update.setPrevVertex(closestVertex);
                                             break;
                                         }
-                                        if(sumThis.getVertex() == update.getPrevVertex()){
-                                            newShortest+= sumThis.getShortestFromStart();
+                                        if (sumThis.getVertex() == update.getPrevVertex()) {
+                                            newShortest += sumThis.getShortestFromStart();
                                             // System.out.println("setting : " + newShortest + " to " + update.getVertex());
                                             // System.out.println("sum of: " +sumThis.getShortestFromStart() +" and " + distance);
                                             break;
@@ -167,36 +171,35 @@ public class DijkstraTest {
             }
 
 
-
             ArrayList<String> result = new ArrayList<>();
             //String result ="";
 
             boolean prevIsNull = false;
 
-            while(!prevIsNull ){
-            for (VertexTable show : shortestTable) {
-                //result += show.toString() + "\n";
-                //System.out.println(show);
+            while (!prevIsNull) {
+                for (VertexTable show : shortestTable) {
+                    //result += show.toString() + "\n";
+                    //System.out.println(show);
 
-                if (show.getVertex() == to) {
+                    if (show.getVertex() == to) {
 
-                    result.add(show.getVertex() + " ->");
-                    if(show.getPrevVertex()== null){
+                        result.add(show.getVertex() + " ->");
+                        if (show.getPrevVertex() == null) {
 
-                        prevIsNull = true;
+                            prevIsNull = true;
 
-                        break;
+                            break;
+                        }
+
+
+                        //result += show.getPrevVertex() + "-> ";
+
+                        //result.add(show.getPrevVertex() + " ->");
+
+                        to = show.getPrevVertex();
                     }
 
-
-                    //result += show.getPrevVertex() + "-> ";
-
-                    //result.add(show.getPrevVertex() + " ->");
-
-                    to= show.getPrevVertex();
                 }
-
-            }
 
             }
 
@@ -206,10 +209,10 @@ public class DijkstraTest {
 
     }
 
-    public static boolean lookForInfinity(ArrayList<VertexTable> testTable){
+    public static boolean lookForInfinity(ArrayList<VertexTable> testTable) {
         boolean flag = false;
-        for(VertexTable infinite : testTable){
-            if(infinite.getShortestFromStart() == Double.POSITIVE_INFINITY){
+        for (VertexTable infinite : testTable) {
+            if (infinite.getShortestFromStart() == Double.POSITIVE_INFINITY) {
                 flag = true;
             }
         }

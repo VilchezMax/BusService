@@ -1,18 +1,20 @@
 package busservice;
 
+import algorithm.DijkstraTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * Hello world!
- *
  */
-public class App 
-{
-    public static void main( String[] args ) {
+public class App {
+    final static Logger LOGGER = LogManager.getLogger(App.class);
 
-        System.out.println("Hello World!");
-
-        System.out.println(DijkstraTest.getShortestPath("Knightsbridge", "St. Paul's"));
+    public static void main(String[] args) {
+        try {
+            LOGGER.info(DijkstraTest.getShortestPath("Knightsbridge", "St. Paul's").replace(",", " "));
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+        }
     }
 }

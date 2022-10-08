@@ -1,9 +1,12 @@
-package busservice;
+package algorithm;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.DecimalFormat;
 
-public class VertexTable{
-
+public class VertexTable {
+    private final Logger LOGGER = LogManager.getLogger(VertexTable.class);
     private String vertex;
     private double shortestFromStart;
     private String prevVertex;
@@ -41,7 +44,6 @@ public class VertexTable{
     public void setPrevVertex(String prevVertex) {
         this.prevVertex = prevVertex;
     }
-
 
 
 }

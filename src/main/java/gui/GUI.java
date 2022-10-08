@@ -1,16 +1,20 @@
 package gui;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class GUI {
+    final Logger LOGGER = LogManager.getLogger(GUI.class);
     //TODO:
     // THIS CLASS WILL BE USED TO CREATE USER INTERFACE FOR BUS_STOP SELECTION
     // BUTTONS WILL BE GENERATED FROM AN ARRAY OF STATIONS, YET TO BE IMPLEMENTED
     // THIS IS JUST AN EXAMPLE OF HOW IT SHOULD LOOK LIKE
 
 
-    public GUI(){
+    public GUI() {
         JPanel panel = new JPanel();
         JButton buttonRetiro = new JButton("Retiro");
         JButton buttonCallao = new JButton("Callao");
@@ -42,6 +46,7 @@ public class GUI {
         frame.setVisible(true);
 
     }
+
     public static void main(String[] args) {
         new GUI();
     }
