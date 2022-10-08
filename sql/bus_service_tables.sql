@@ -41,10 +41,5 @@ CREATE TABLE route (
     FOREIGN KEY (bus_id) REFERENCES bus (id) ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS stops_closeby;
-CREATE TABLE stops_closeby(
-id INT NOT NULL auto_increment PRIMARY KEY,
-stopId INT NOT NULL,
-closeStopId INT NOT NULL,
-FOREIGN KEY (closeStopId) REFERENCES bus_stop(id) ON UPDATE CASCADE ON DELETE NO ACTION
-);
+
+
