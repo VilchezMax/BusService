@@ -2,7 +2,6 @@ package busservice.models;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Bus {
     private int id;
@@ -19,6 +18,14 @@ public class Bus {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public HashMap<BusStop, List<BusStop>> getRoute() {
+        return route;
+    }
+
+    public void setRoute(HashMap<BusStop, List<BusStop>> route) {
+        this.route = route;
     }
 
 }

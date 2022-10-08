@@ -61,4 +61,12 @@ public class BusStop {
     public void setCity(City city) {
         this.city = city;
     }
+
+    public List<Bus> getBuses() {
+        return buses;
+    }
+
+    public void setBuses(List<Bus> buses) {
+        this.buses = buses;
+    }
 }
