@@ -1,6 +1,5 @@
 package busservice;
 
-import algorithm.DijkstraTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,10 +10,10 @@ public class App {
     final static Logger LOGGER = LogManager.getLogger(App.class);
 
     public static void main(String[] args) {
-        try {
-            LOGGER.info(DijkstraTest.getShortestPath("Knightsbridge", "St. Paul's").replace(",", " "));
-        } catch (Exception e) {
-            LOGGER.warn(e.getMessage());
-        }
+        //CONNECT DATABASE
+        //LOAD DATA STRUCTURES FROM DB
+        //SHOW CLIENT GUI
+        //PROCESS REQUESTS - IDEALLY SHOW IN REAL TIME WHAT CLIENT IS CHOOSING WITH DRAWINGS(NAHUEL VIDEO)
+        //SHOW RESULT - IDEALLY SHOW FINAL ROUTE WITH DRAWINGS(NAHUEL VIDEO)
     }
 }
