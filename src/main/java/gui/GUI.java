@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ public class GUI {
         JButton buttonWaterloo = new JButton("Waterloo");
         JLabel labelCity1 = new JLabel("Choose bus stop from city 1");
         JLabel labelCity2 = new JLabel("Choose bus stop from city 2");
-        JFrame frame = new JFrame("My First GUI");
+        JFrame frame = new JFrame("My First gui");
 
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         panel.setLayout(new GridLayout(2, 2, 10, 10));
