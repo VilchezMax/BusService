@@ -18,7 +18,7 @@
     </resultMap>
 
 
-    <select id="getByIdBusStop" parameterType="int" resultMap="BusStopMap">
+    <select id="getById" parameterType="int" resultMap="BusStopMap">
         SELECT *
         FROM bus_stop
         INNER JOIN city
@@ -28,7 +28,7 @@
         WHERE bus_stop.id =#{id};
     </select>
 
-    <select id="getAllBusStops" resultMap="BusStopMap">
+    <select id="getAll" resultMap="BusStopMap">
         SELECT *
         FROM bus_stop
         INNER JOIN city
@@ -38,23 +38,23 @@
         ORDER BY bus_stop.id;
     </select>
 
-    <insert id="insertBusStop" parameterType="BusStop">
+    <insert id="insert" parameterType="BusStop">
         INSERT INTO bus_stop
         (Longitude, Latitude, stop_name, isTerminal, city_id)
         VALUES (#{longitude}, #{latitude}, #{name}, #{isTerminal}, #{city.id});
     </insert>
 
-    <update id="updateBusStop" parameterType="map">
+    <update id="update" parameterType="map">
         UPDATE bus_stop SET
         Longitude = #{object.longitude},
         Latitude = #{object.latitude},
         stop_name = #{object.name},
         isTerminal = #{object.isTerminal},
         city_id = #{object.city.id}
-        WHERE id = #{id}
+        WHERE id = #{object.id};
     </update>
 
-    <delete id="deleteByIdBusStop" parameterType="int">
+    <delete id="deleteById" parameterType="int">
         DELETE FROM bus_stop
         WHERE id = #{id}
     </delete>
