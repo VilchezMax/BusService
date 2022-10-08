@@ -6,7 +6,7 @@ import java.awt.*;
 public class GUI {
     //TODO:
     // THIS CLASS WILL BE USED TO CREATE USER INTERFACE FOR BUS_STOP SELECTION
-    // BUTTONS WILL BE GENERATED FROM AN ARRAY OF STATIONS, YET TO BE IMPLEMENTEDgit
+    // BUTTONS WILL BE GENERATED FROM AN ARRAY OF STATIONS, YET TO BE IMPLEMENTED
     // THIS IS JUST AN EXAMPLE OF HOW IT SHOULD LOOK LIKE
 
 
@@ -31,6 +31,7 @@ public class GUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Bus stops");
         frame.pack();
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
 
     }
