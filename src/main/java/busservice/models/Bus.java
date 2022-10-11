@@ -5,6 +5,14 @@ import java.util.ArrayList;
 public class Bus {
     private int id;
 
+    public ArrayList<BusStop> getRoute() {
+        return route;
+    }
+
+    public void setRoute(ArrayList<BusStop> route) {
+        this.route = route;
+    }
+
     private ArrayList<BusStop> route;
 
     public Bus() {
