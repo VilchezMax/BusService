@@ -45,7 +45,7 @@ INSERT INTO bus (id)
  (34, 32,20,"Waterloo",2, true)
  ;
  
- INSERT INTO route(bus_id, stop_id)
+ INSERT INTO route(busId, stopId)
  VALUES(1,1),
  (1,2),
  (1,7),
