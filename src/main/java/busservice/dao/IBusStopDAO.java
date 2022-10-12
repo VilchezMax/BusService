@@ -1,6 +1,6 @@
 package busservice.dao;
 
-import busservice.models.Bus;
+
 import busservice.models.BusStop;
 import org.apache.ibatis.annotations.Param;
 
@@ -8,9 +8,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IBusStopDAO extends IDAO<BusStop> {
-    void insert (BusStop object) throws SQLException;
-    void update (@Param("object") BusStop object) throws SQLException;
-    List<BusStop> getAll () throws SQLException;
-    BusStop getById (int id) throws SQLException;
-    void deleteById(int id) throws SQLException;
+    BusStop getById(Integer id) throws SQLException;
+
+    List<BusStop> getAll() throws SQLException;
+
+    void insert(@Param("busStop") BusStop object) throws SQLException;
+
+    void update(@Param("busStop") BusStop object) throws SQLException;
+
+    void deleteById(Integer id) throws SQLException;
 }
