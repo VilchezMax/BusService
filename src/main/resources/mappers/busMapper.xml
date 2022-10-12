@@ -18,27 +18,27 @@
     <select id="getById" resultMap="BusMap">
         SELECT *
         FROM bus
-            JOIN route ON bus.id = route.bus_id
-            JOIN bus_stop ON route.stop_id = bus_stop.id
-            JOIN city ON bus_stop.city_id = city.id
+                 JOIN route ON bus.id = route.bus_id
+                 JOIN bus_stop ON route.stop_id = bus_stop.id
+                 JOIN city ON bus_stop.city_id = city.id
         WHERE bus.id = #{id}
     </select>
 
     <select id="getAll" resultMap="BusMap">
         SELECT *
         FROM bus
-            JOIN route ON bus.id = route.bus_id
-            JOIN bus_stop ON route.stop_id = bus_stop.id
-            JOIN city ON bus_stop.city_id = city.id
+                 JOIN route ON bus.id = route.bus_id
+                 JOIN bus_stop ON route.stop_id = bus_stop.id
+                 JOIN city ON bus_stop.city_id = city.id
         ORDER BY route.id
     </select>
 
     <select id="getRouteByBusId" resultMap="busservice.dao.IBusStopDAO.BusStopMap">
         SELECT *
         FROM route r
-            JOIN bus ON bus.id = r.bus_id
-            JOIN bus_stop ON r.stop_id = bus_stop.id
-            JOIN city ON bus_stop.city_id = city.id
+                 JOIN bus ON bus.id = r.bus_id
+                 JOIN bus_stop ON r.stop_id = bus_stop.id
+                 JOIN city ON bus_stop.city_id = city.id
         WHERE bus.id = #{id}
         ORDER BY r.id
     </select>
@@ -49,9 +49,8 @@
     </insert>
 
     <update id="update" parameterType="Bus">
-#     Primary key cant be changed though...
         UPDATE bus
-        SET id = #{bus.id}
+        SET line = #{bus.line}
         WHERE id = #{bus.id}
     </update>
 

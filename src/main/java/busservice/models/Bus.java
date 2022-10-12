@@ -5,9 +5,11 @@ import java.util.ArrayList;
 public class Bus {
     private Integer id;
 
+    private Integer line;
+
     private ArrayList<BusStop> route;
 
-    public Bus(){
+    public Bus() {
 
     }
 
@@ -31,6 +33,7 @@ public class Bus {
     public String toString() {
         return "Bus{" +
                 "id=" + id +
+                ", line=" + line +
                 ", route=" + route +
                 '}';
     }
