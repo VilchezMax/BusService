@@ -15,10 +15,15 @@ jobs:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
-          PUSHED TO DEV:
+          github.event.commits[0].author.name PUSHED TO DEV
+          
           FROM COMMIT:
-          ${{ github.event.commits[0].message }}
+           - ${{ github.event.commits[0].message }}
           TO COMMIT:
-          ${{ github.event.head_commit.message }}
-
-          DON'T FORGET TO "git pull origin dev" !!!!
+           - ${{ github.event.head_commit.message }}
+          -------------------
+          git pull origin dev
+          git pull origin dev
+          git pull origin dev
+          -------------------
+          
