@@ -1,0 +1,33 @@
+name: Telegram notification
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+
+  notifyTelegram:
+    runs-on: ubuntu-latest
+    steps:
+    - name: send custom message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+          ${{ github.actor }} PUSHED TO DEV
+          
+          FROM COMMIT:
+           - ${{ github.event.commits[0].message }}
+           
+          TO COMMIT:
+           - ${{ github.event.head_commit.message }}
+           
+           
+           
+          - - - - - - - - - -
+          git pull origin dev
+          git pull origin dev
+          git pull origin dev
+          - - - - - - - - - -
+          

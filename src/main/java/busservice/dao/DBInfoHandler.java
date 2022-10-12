@@ -6,6 +6,8 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +20,9 @@ public class DBInfoHandler {
     IBusDAO busMapper;
     IBusStopDAO busStopMapper;
 
+    private static final Logger logger = LogManager.getLogger(MainMyBatis.class);
+
+
     public DBInfoHandler() {
         try {
             InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
@@ -26,16 +31,24 @@ public class DBInfoHandler {
             busMapper = session.getMapper(IBusDAO.class);
             busStopMapper = session.getMapper(IBusStopDAO.class);
         } catch (IOException e) {
-            System.out.println("Error getting mybatis config");
-            System.out.println(e.getMessage());
+            logger.error("Error getting mybatis config");
+            logger.error(e.getMessage());
         }
     }
 
-    public List<Bus> getBuses() throws SQLException {
-        return busMapper.getAll();
+    public List<Bus> getBuses() {
+        List<Bus> buses = new ArrayList<>();
+        try {
+            buses = busMapper.getAll();
+
+        } catch (SQLException e) {
+            logger.error("Error getting all buses");
+            logger.error(e.getMessage());
+        }
+        return buses;
     }
 
-    public HashMap<String, ArrayList<String>> getAdjacentStops() throws SQLException {
+    public HashMap<String, ArrayList<String>> getAdjacentStops() {
         HashMap<String, ArrayList<String>> stops = new HashMap<>();
         String prevStop = null;
         for (Bus bus : getBuses()) {
