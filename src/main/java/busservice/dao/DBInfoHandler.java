@@ -20,7 +20,7 @@ public class DBInfoHandler {
     IBusDAO busMapper;
     IBusStopDAO busStopMapper;
 
-    private static final Logger logger = LogManager.getLogger(MainMyBatis.class);
+    private static final Logger logger = LogManager.getLogger(DBInfoHandler.class);
 
 
     public DBInfoHandler() {
