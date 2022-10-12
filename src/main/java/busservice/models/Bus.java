@@ -1,5 +1,6 @@
 package busservice.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,15 @@ import java.util.Map;
 public class Bus {
     private int id;
 
-    private HashMap<BusStop, List<BusStop>> route;
+    public ArrayList<BusStop> getRoute() {
+        return route;
+    }
+
+    public void setRoute(ArrayList<BusStop> route) {
+        this.route = route;
+    }
+
+    private ArrayList<BusStop> route;
 
     public Bus() {
 
