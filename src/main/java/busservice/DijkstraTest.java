@@ -47,10 +47,10 @@ public class DijkstraTest {
                 }
             };
 
-            ArrayList<VertexTable> shortestTable = new ArrayList<>();
+            ArrayList<VertexTableRow> shortestTable = new ArrayList<>();
 
             for (Map.Entry<String, String[]> set : vertices.entrySet()) {
-                VertexTable row = new VertexTable();
+                VertexTableRow row = new VertexTableRow();
                 row.setVertex(set.getKey());
                 unvisited.add(set.getKey());
                 if (set.getKey() == start) {
@@ -68,7 +68,7 @@ public class DijkstraTest {
             while (lookForInfinity(shortestTable) || unvisited.size()>0) {
                 double currShortest = Double.POSITIVE_INFINITY;
                 String closestVertex = null;
-                for (VertexTable row : shortestTable) {
+                for (VertexTableRow row : shortestTable) {
                     //System.out.println(row);
 
                     if (row.getShortestFromStart() < currShortest && !visited.contains(row.getVertex())) {
@@ -102,14 +102,14 @@ public class DijkstraTest {
 
                             double distance = Math.sqrt(Math.pow(toVisitY - closestY, 2) + Math.pow(toVisitX - closestX, 2));
 
-                            for (VertexTable update : shortestTable) {
+                            for (VertexTableRow update : shortestTable) {
 
 
                                 if (update.getVertex() == toVisit && update.getShortestFromStart() >distance ) {
 
 
                                     boolean flagD = false;
-                                    for(VertexTable dist : shortestTable){
+                                    for(VertexTableRow dist : shortestTable){
                                         if(dist.getVertex() == closestVertex){
                                             //System.out.println("distance between " + toVisit + " and " + closestVertex + " is " + distance);
                                             //System.out.println("will sum : " +dist.getShortestFromStart());
@@ -131,7 +131,7 @@ public class DijkstraTest {
                                     double newShortest = distance;
 
 
-                                    for(VertexTable sumThis : shortestTable){
+                                    for(VertexTableRow sumThis : shortestTable){
 
 
                                         if(update.getShortestFromStart()< sumThis.getShortestFromStart()+distance){
@@ -174,7 +174,7 @@ public class DijkstraTest {
             boolean prevIsNull = false;
 
             while(!prevIsNull ){
-            for (VertexTable show : shortestTable) {
+            for (VertexTableRow show : shortestTable) {
                 //result += show.toString() + "\n";
                 //System.out.println(show);
 
@@ -206,9 +206,9 @@ public class DijkstraTest {
 
     }
 
-    public static boolean lookForInfinity(ArrayList<VertexTable> testTable){
+    public static boolean lookForInfinity(ArrayList<VertexTableRow> testTable){
         boolean flag = false;
-        for(VertexTable infinite : testTable){
+        for(VertexTableRow infinite : testTable){
             if(infinite.getShortestFromStart() == Double.POSITIVE_INFINITY){
                 flag = true;
             }

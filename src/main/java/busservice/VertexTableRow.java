@@ -2,13 +2,13 @@ package busservice;
 
 import java.text.DecimalFormat;
 
-public class VertexTable{
+public class VertexTableRow {
 
     private String vertex;
     private double shortestFromStart;
     private String prevVertex;
 
-    public VertexTable() {
+    public VertexTableRow() {
         this.shortestFromStart = Double.POSITIVE_INFINITY;
     }
 
