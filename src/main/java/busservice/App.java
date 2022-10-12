@@ -10,9 +10,6 @@ import org.apache.logging.log4j.Logger;
 public class App 
 {
     public static void main( String[] args ) {
-
-        System.out.println("Hello World!");
-
-        System.out.println(DijkstraTest.getShortestPath("Knightsbridge", "St. Paul's"));
+        System.out.println(DijkstraTest.getShortestPath("Knightsbridge", "Waterloo"));
     }
 }

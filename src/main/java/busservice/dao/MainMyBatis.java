@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class MainMyBatis {
     private static final Logger logger = LogManager.getLogger(MainMyBatis.class);
@@ -25,8 +25,8 @@ public class MainMyBatis {
 
             IBusDAO busMapper = session.getMapper(IBusDAO.class);
 
-            DBinfoHandler info = new DBinfoHandler();
-            ArrayList<Bus> lines = info.getBuses();
+            DBInfoHandler info = new DBInfoHandler();
+            List<Bus> lines = info.getBuses();
             Bus test = busMapper.getById(1);
 
             //HashMap<String, ArrayList<String>> adjacent = info.getAdjacentStops();

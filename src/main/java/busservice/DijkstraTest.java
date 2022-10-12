@@ -6,215 +6,141 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DijkstraTest {
-
-    public static String getShortestPath( String from, String to ) {
+    public static String getShortestPath(String start, String destination) {
         {
+            ArrayList<String> visitedVertexes = new ArrayList<>();
+            ArrayList<String> unvisitedVertexes = new ArrayList<>();
+            ArrayList<VertexTableRow> vertexTableRows = new ArrayList<>();
+            ArrayList<String> result = new ArrayList<>();
+            HashMap<String, String[]> vertices = loadVertices(new HashMap<>());
+            HashMap<String, int[]> distances = loadDistances(new HashMap<>());
 
-            String start = from;
-
-            ArrayList<String> visited = new ArrayList<>();
-            ArrayList<String> unvisited = new ArrayList<>();
-
-            HashMap<String, String[]> vertices = new HashMap<>() {
-                {
-                    put("Knightsbridge", new String[]{"Covent Garden", "Gloucester Road"});
-                    put("Covent Garden", new String[]{"Leicester Square", "Knightsbridge"});
-                    put("Gloucester Road", new String[]{"Hyde Park Corner", "Knightsbridge"});
-                    put("Leicester Square", new String[]{"Covent Garden", "Tower Hill", "Hyde Park Corner"});
-                    put("Hyde Park Corner", new String[]{"Gloucester Road", "Piccadilly Circus", "Leicester Square"});
-                    put("Piccadilly Circus", new String[]{"Hyde Park Corner", "Liverpool Street", "Waterloo"});
-                    put("Tower Hill", new String[]{"Leicester Square", "Blackfriars"});
-                    put("Blackfriars", new String[]{"Tower Hill", "St. Paul's"});
-                    put("St. Paul's", new String[]{"Blackfriars", "Waterloo"});
-                    put("Waterloo", new String[]{"Piccadilly Circus", "St. Paul's"});
-                    put("Liverpool Street", new String[]{"Piccadilly Circus"});
-                }
-            };
-
-            HashMap<String, Integer[]> distances = new HashMap<>() {
-                {
-                    put("Knightsbridge", new Integer[]{39,13});
-                    put("Covent Garden", new Integer[]{36,14});
-                    put("Gloucester Road",  new Integer[]{39,16});
-                    put("Leicester Square", new Integer[]{35,17});
-                    put("Hyde Park Corner",  new Integer[]{38,20});
-                    put("Piccadilly Circus",  new Integer[]{35,23});
-                    put("Tower Hill", new Integer[]{31,16} );
-                    put("Blackfriars", new Integer[]{29,19} );
-                    put("St. Paul's",  new Integer[]{29,22});
-                    put("Waterloo",  new Integer[]{32,20} );
-                    put("Liverpool Street", new Integer[]{34,25} );
-                }
-            };
-
-            ArrayList<VertexTable> shortestTable = new ArrayList<>();
-
-            for (Map.Entry<String, String[]> set : vertices.entrySet()) {
-                VertexTable row = new VertexTable();
-                row.setVertex(set.getKey());
-                unvisited.add(set.getKey());
-                if (set.getKey() == start) {
+            for (Map.Entry<String, String[]> entry : vertices.entrySet()) {
+                VertexTableRow row = new VertexTableRow();
+                row.setVertex(entry.getKey());
+                unvisitedVertexes.add(entry.getKey());
+                if (entry.getKey() == start) {
                     row.setShortestFromStart(0);
                 }
-
-                shortestTable.add(row);
-
-                //System.out.println(set.getKey() + " " + Arrays.toString(set.getValue()));
+                vertexTableRows.add(row);
             }
 
             //double currShortest = Double.POSITIVE_INFINITY;
             //String closestVertex = null;
-
-            while (lookForInfinity(shortestTable) || unvisited.size()>0) {
-                double currShortest = Double.POSITIVE_INFINITY;
+            // || unvisitedVertexes.size()>0
+            while (allVisited(vertexTableRows)) {
+                double currentShortestVertex = Double.POSITIVE_INFINITY;
                 String closestVertex = null;
-                for (VertexTable row : shortestTable) {
-                    //System.out.println(row);
-
-                    if (row.getShortestFromStart() < currShortest && !visited.contains(row.getVertex())) {
-
-                        //System.out.println((row.getShortestFromStart() < currShortest)  + "&&" + !visited.contains(row.getVertex()));
-                        currShortest = row.getShortestFromStart();
+                for (VertexTableRow row : vertexTableRows) {
+                    if (row.getShortestFromStart() < currentShortestVertex && !visitedVertexes.contains(row.getVertex())) {
+                        currentShortestVertex = row.getShortestFromStart();
                         closestVertex = row.getVertex();
                     }
                 }
-
-
-                //System.out.println("Continue with: " + closestVertex);
-                for (Map.Entry<String, String[]> set : vertices.entrySet()) {
-                    if (set.getKey() == closestVertex) {
-                        //System.out.println("Try:" + Arrays.toString(set.getValue()));
-                        //System.out.println("visited: " + Arrays.toString(visited.toArray())+  " unvisited: " + Arrays.toString(unvisited.toArray())) ;
-
-                        for (String toVisit : set.getValue()) {
-                            if(visited.contains(toVisit)){
+                for (Map.Entry<String, String[]> entry : vertices.entrySet()) {
+                    if (entry.getKey() == closestVertex) {
+                        for (String toVisit : entry.getValue()) {
+                            if (visitedVertexes.contains(toVisit)) {
                                 continue;
                             }
-                            Integer[] coordinatesClosest = distances.get(closestVertex);
-                            Integer[] coordinatesToVisit = distances.get(toVisit);
-
-                            //System.out.println("closes coord : " + Arrays.toString(coordinatesClosest));
-                            //System.out.println("visit coord: " + Arrays.toString(coordinatesToVisit));
+                            int[] coordinatesClosest = distances.get(closestVertex);
+                            int[] coordinatesToVisit = distances.get(toVisit);
                             int closestX = coordinatesClosest[0];
                             int closestY = coordinatesClosest[1];
                             int toVisitX = coordinatesToVisit[0];
                             int toVisitY = coordinatesToVisit[1];
-
                             double distance = Math.sqrt(Math.pow(toVisitY - closestY, 2) + Math.pow(toVisitX - closestX, 2));
-
-                            for (VertexTable update : shortestTable) {
-
-
-                                if (update.getVertex() == toVisit && update.getShortestFromStart() >distance ) {
-
-
-                                    boolean flagD = false;
-                                    for(VertexTable dist : shortestTable){
-                                        if(dist.getVertex() == closestVertex){
-                                            //System.out.println("distance between " + toVisit + " and " + closestVertex + " is " + distance);
-                                            //System.out.println("will sum : " +dist.getShortestFromStart());
+                            for (VertexTableRow row : vertexTableRows) {
+                                if (row.getVertex() == toVisit && row.getShortestFromStart() > distance) {
+                                    for (VertexTableRow dist : vertexTableRows) {
+                                        if (dist.getVertex() == closestVertex) {
                                             distance += dist.getShortestFromStart();
-                                            //System.out.println("distance is : "+  distance + " sum of " + toVisit + " and " + closestVertex);
-                                            flagD = true;
-                                        }
-                                        if(flagD) break;
-                                    }
-
-
-                                    if( update.getShortestFromStart() <distance ){
-                                        continue;
-                                    }
-
-                                    //System.out.println("update is " + update.getVertex());
-                                    //System.out.println("update distance is smaller than: " +distance  +" < " + update.getShortestFromStart()  );
-                                    //System.out.println("distance is sum of distances from : " + toVisit + " and " + closestVertex);
-                                    double newShortest = distance;
-
-
-                                    for(VertexTable sumThis : shortestTable){
-
-
-                                        if(update.getShortestFromStart()< sumThis.getShortestFromStart()+distance){
-                                            newShortest+= sumThis.getShortestFromStart();
-                                            //System.out.println("setting : " + newShortest + " to " + update.getVertex());
-                                            //System.out.println("sum of: " +sumThis.getShortestFromStart() +" and " + distance);
-                                            update.setShortestFromStart(newShortest);
-                                            update.setPrevVertex(closestVertex);
                                             break;
                                         }
-                                        if(sumThis.getVertex() == update.getPrevVertex()){
-                                            newShortest+= sumThis.getShortestFromStart();
-                                            // System.out.println("setting : " + newShortest + " to " + update.getVertex());
-                                            // System.out.println("sum of: " +sumThis.getShortestFromStart() +" and " + distance);
-                                            break;
-                                        }
-
-
                                     }
-
-                                    update.setShortestFromStart(newShortest);
-                                    update.setPrevVertex(closestVertex);
+                                    if (row.getShortestFromStart() >= distance) {
+                                        double newShortestVertex = distance;
+                                        for (VertexTableRow previousRow : vertexTableRows) {
+                                            double distanceTotal = previousRow.getShortestFromStart() + distance;
+                                            if (distanceTotal > row.getShortestFromStart()) {
+                                                newShortestVertex += previousRow.getShortestFromStart();
+                                                row.setShortestFromStart(newShortestVertex);
+                                                row.setPrevVertex(closestVertex);
+                                                break;
+                                            }
+                                            if (previousRow.getVertex() == row.getPrevVertex()) {
+                                                newShortestVertex += previousRow.getShortestFromStart();
+                                                break;
+                                            }
+                                        }
+                                        row.setShortestFromStart(newShortestVertex);
+                                        row.setPrevVertex(closestVertex);
+                                    }
                                 }
                             }
                         }
-
                     }
                 }
-
-                visited.add(closestVertex);
-                unvisited.remove(closestVertex);
-
+                visitedVertexes.add(closestVertex);
+                unvisitedVertexes.remove(closestVertex);
             }
-
-
-
-            ArrayList<String> result = new ArrayList<>();
-            //String result ="";
 
             boolean prevIsNull = false;
-
-            while(!prevIsNull ){
-            for (VertexTable show : shortestTable) {
-                //result += show.toString() + "\n";
-                //System.out.println(show);
-
-                if (show.getVertex() == to) {
-
-                    result.add(show.getVertex() + " ->");
-                    if(show.getPrevVertex()== null){
-
-                        prevIsNull = true;
-
-                        break;
+            while (!prevIsNull) {
+                for (VertexTableRow row : vertexTableRows) {
+                    if (row.getVertex() == destination) {
+                        result.add(row.getVertex());
+                        if (row.getPrevVertex() == null) {
+                            prevIsNull = true;
+                            break;
+                        }
+                        destination = row.getPrevVertex();
                     }
-
-
-                    //result += show.getPrevVertex() + "-> ";
-
-                    //result.add(show.getPrevVertex() + " ->");
-
-                    to= show.getPrevVertex();
                 }
-
             }
-
-            }
-
             Collections.reverse(result);
             return result.toString();
         }
-
     }
 
-    public static boolean lookForInfinity(ArrayList<VertexTable> testTable){
-        boolean flag = false;
-        for(VertexTable infinite : testTable){
-            if(infinite.getShortestFromStart() == Double.POSITIVE_INFINITY){
-                flag = true;
+    public static boolean allVisited(ArrayList<VertexTableRow> testTable) {
+        boolean anyInfinity = false;
+        for (VertexTableRow row : testTable) {
+            if (row.getShortestFromStart() == Double.POSITIVE_INFINITY) {
+                anyInfinity = true;
+                break;
             }
         }
-
-        return flag;
+        return anyInfinity;
     }
 
+    public static HashMap<String, String[]> loadVertices(HashMap<String, String[]> vertices) {
+        vertices.put("Knightsbridge", new String[]{"Covent Garden", "Gloucester Road"});
+        vertices.put("Covent Garden", new String[]{"Leicester Square", "Knightsbridge"});
+        vertices.put("Gloucester Road", new String[]{"Hyde Park Corner", "Knightsbridge"});
+        vertices.put("Leicester Square", new String[]{"Covent Garden", "Tower Hill", "Hyde Park Corner"});
+        vertices.put("Hyde Park Corner", new String[]{"Gloucester Road", "Piccadilly Circus", "Leicester Square"});
+        vertices.put("Piccadilly Circus", new String[]{"Hyde Park Corner", "Liverpool Street", "Waterloo"});
+        vertices.put("Tower Hill", new String[]{"Leicester Square", "Blackfriars"});
+        vertices.put("Blackfriars", new String[]{"Tower Hill", "St. Paul's"});
+        vertices.put("St. Paul's", new String[]{"Blackfriars", "Waterloo"});
+        vertices.put("Waterloo", new String[]{"Piccadilly Circus", "St. Paul's"});
+        vertices.put("Liverpool Street", new String[]{"Piccadilly Circus"});
+        return vertices;
+    }
+
+    public static HashMap<String, int[]> loadDistances(HashMap<String, int[]> distances) {
+        distances.put("Knightsbridge", new int[]{39, 13});
+        distances.put("Covent Garden", new int[]{36, 14});
+        distances.put("Gloucester Road", new int[]{39, 16});
+        distances.put("Leicester Square", new int[]{35, 17});
+        distances.put("Hyde Park Corner", new int[]{38, 20});
+        distances.put("Piccadilly Circus", new int[]{35, 23});
+        distances.put("Tower Hill", new int[]{31, 16});
+        distances.put("Blackfriars", new int[]{29, 19});
+        distances.put("St. Paul's", new int[]{29, 22});
+        distances.put("Waterloo", new int[]{32, 20});
+        distances.put("Liverpool Street", new int[]{34, 25});
+        return distances;
+    }
 }
