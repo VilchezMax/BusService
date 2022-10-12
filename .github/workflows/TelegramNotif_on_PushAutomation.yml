@@ -15,7 +15,10 @@ jobs:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
-          COMMIT:
-          ${{ github.commits[][message] }}
-          MERGED INTO DEV
+          PUSHED TO DEV:
+          FROM COMMIT:
+          ${{ github.event.commits[0].message }}
+          TO COMMIT:
+          ${{ github.event.head_commit.message }}
+
           DON'T FORGET TO "git pull origin dev" !!!!
