@@ -3,18 +3,18 @@ package busservice.models;
 import java.util.List;
 
 public class BusStop {
-    private int id;
-    private int longitude;
-    private int latitude;
+    private Integer id;
+    private Integer longitude;
+    private Integer latitude;
     private String name;
-    private boolean isTerminal;
+    private Boolean isTerminal;
     private City city;
     private List<Bus> buses;
 
     public BusStop() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -22,19 +22,19 @@ public class BusStop {
         this.id = id;
     }
 
-    public int getLongitude() {
+    public Integer getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(int longitude) {
+    public void setLongitude(Integer longitude) {
         this.longitude = longitude;
     }
 
-    public int getLatitude() {
+    public Integer getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(int latitude) {
+    public void setLatitude(Integer latitude) {
         this.latitude = latitude;
     }
 
@@ -46,7 +46,7 @@ public class BusStop {
         this.name = name;
     }
 
-    public boolean isTerminal() {
+    public Boolean isTerminal() {
         return isTerminal;
     }
 

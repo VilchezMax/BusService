@@ -1,6 +1,7 @@
 package busservice.dao;
 
 import busservice.models.Bus;
+import busservice.models.BusStop;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -22,18 +23,20 @@ public class MainMyBatis {
             SqlSession session = sqlSessionFactory.openSession();
 
             IBusDAO busMapper = session.getMapper(IBusDAO.class);
+            IBusStopDAO busStopMapper = session.getMapper(IBusStopDAO.class);
 
             DBInfoHandler info = new DBInfoHandler();
             List<Bus> lines = info.getBuses();
             Bus test = busMapper.getById(1);
-
+            BusStop busStop = busStopMapper.getById(1);
+            List<BusStop> route = busMapper.getRouteByBusId(1);
             //HashMap<String, ArrayList<String>> adjacent = info.getAdjacentStops();
 
 
             //adjacent.forEach((key, value) -> logger.info(key + " = " + value));
 
-            for (Bus line : lines) {
-                logger.info(line);
+            for (BusStop stops : route) {
+                logger.info(stops);
             }
 
             logger.info(test);

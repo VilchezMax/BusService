@@ -3,61 +3,61 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="busservice.dao.IBusDAO">
-    <resultMap id="BusMap" type="Bus">
+    <resultMap id="BusMap"
+               type="Bus"
+               autoMapping="false">
+
         <id property="id" column="id"/>
-
-        <collection property="route" ofType="BusStop">
-
-            <id property="id" column="stopId"/>
-            <result property="longitude" column="longitude"/>
-            <result property="latitude" column="latitude"/>
-            <result property="name" column="stop_name"/>
-            <result property="isTerminal" column="isTerminal"/>
-
-            <collection property="city" ofType="City">
-
-                <id property="id" column="id"/>
-                <result property="name" column="name"/>
-            </collection>
-        </collection>
+        <collection property="route"
+                    javaType="Arraylist"
+                    ofType="BusStop"
+                    resultMap="busservice.dao.IBusStopDAO.BusStopMap"
+                    columnPrefix="route_"/>
     </resultMap>
 
     <select id="getById" resultMap="BusMap">
-        SELECT * FROM bus
-        JOIN route
-        ON bus.id = route.busId
-        JOIN bus_stop
-        ON route.stopId = bus_stop.id
-
-        JOIN city
-        ON bus_stop.city_id = city.id
+        SELECT *
+        FROM bus
+            JOIN route ON bus.id = route.bus_id
+            JOIN bus_stop ON route.stop_id = bus_stop.id
+            JOIN city ON bus_stop.city_id = city.id
         WHERE bus.id = #{id}
     </select>
 
     <select id="getAll" resultMap="BusMap">
-        SELECT * FROM bus
-        JOIN route
-        ON bus.id = route.busId
-        JOIN bus_stop
-        ON route.stopId = bus_stop.id
-        JOIN city
-        ON bus_stop.city_id = city.id
+        SELECT *
+        FROM bus
+            JOIN route ON bus.id = route.bus_id
+            JOIN bus_stop ON route.stop_id = bus_stop.id
+            JOIN city ON bus_stop.city_id = city.id
+        ORDER BY route.id
+    </select>
+
+    <select id="getRouteByBusId" resultMap="busservice.dao.IBusStopDAO.BusStopMap">
+        SELECT *
+        FROM route r
+            JOIN bus ON bus.id = r.bus_id
+            JOIN bus_stop ON r.stop_id = bus_stop.id
+            JOIN city ON bus_stop.city_id = city.id
+        WHERE bus.id = #{id}
+        ORDER BY r.id
     </select>
 
     <insert id="insert" parameterType="Bus">
-        INSERT INTO bus
-        (id)
-        VALUES (#{id})
+        INSERT INTO bus(id)
+        VALUES (#{bus.id})
     </insert>
 
-    <update id="update" parameterType="map">
-        UPDATE bus SET
-        id = #{object.id}
-        WHERE id = #{object.id}
+    <update id="update" parameterType="Bus">
+#     Primary key cant be changed though...
+        UPDATE bus
+        SET id = #{bus.id}
+        WHERE id = #{bus.id}
     </update>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM bus
+        DELETE
+        FROM bus
         WHERE id = #{id}
     </delete>
 </mapper>

@@ -1,52 +1,57 @@
 USE bus_service;
 
 INSERT INTO bus (id)
- VALUES(1),(2),(3),(4),(5),(6),(7),(8),(9),(10),
+VALUES
+ (1),(2),(3),(4),(5),(6),(7),(8),(9),(10),
  (11),(12),(13),(14),(15),(16),(17),(18),(19),(20);
- 
- INSERT INTO city(name)
- VALUES("Buenos Aires"),("London");
- 
- INSERT INTO bus_stop(id,longitude,latitude,stop_name,city_id,isTerminal)
- VALUES(1, 1, 1, "Brandsen 805", 1, false),
- (2, 2, 10,"Hospitales",1, false),
- (3,3,4,"Las Heras",1, false),
- (4, 5,2,"Congreso",1, false),
- (5, 5,8,"Peru",1, false),
- (6,8,3,"Plaza de Mayo",1, false),
- (7,8,11,"Venezuela",1, false),
- (8,10,7,"Once",1, false),
- (9,11,10,"Facultad de Derecho",1, false),
- (10,13,2,"Callao",1, false),
- (11,14,4,"Piedras",1, false),
- (12,14,10,"Santa Fe",1, false),
- (13,16,7,"Scalabrini Ortiz",1, false),
- (14,16,12,"Constitución",1, false),
- (15,17,4,"Florida",1, false),
- (16,9,6,"Retiro",1, true),
- 
- (17, 23,12,"Westminster",2, false),
- (18, 24,19,"St. James' Park",2, false),
- (19, 24,24,"South Kensington",2, false),
- (20, 25,16,"Oxford Circus",2, false),
- (21, 28,25,"Tottenham Court Road",2, false),
- (22, 29,13,"Chancery Lane",2, false),
- (23, 29,19,"Blackfriars",2, false),
- (24, 29,22,"St. Paul's",2, false),
- (25, 31,16,"Tower Hill",2, false),
- (26, 34,25,"Liverpool Street",2, false),
- (27, 35,23,"Piccadilly Circus",2, false),
- (28, 35,17,"Leicester Square",2, false),
- (29, 36,14,"Covent Garden",2, false),
- (30, 38,20,"Hyde Park Corner",2, false),
- (31, 39,13,"Knightsbridge",2, false),
- (32, 39,16,"Gloucester Road",2, false),
- (33, 39,25,"Stockwell",2, false),
- (34, 32,20,"Waterloo",2, true)
- ;
- 
- INSERT INTO route(busId, stopId)
- VALUES(1,1),
+
+INSERT INTO city(name)
+VALUES
+    ('Buenos Aires'),
+    ('London');
+
+INSERT INTO bus_stop(id,longitude,latitude,stop_name,city_id,is_terminal)
+VALUES
+ (1, 1, 1, 'Brandsen 805', 1, false),
+ (2, 2, 10,'Hospitales',1, false),
+ (3,3,4,'Las Heras',1, false),
+ (4, 5,2,'Congreso',1, false),
+ (5, 5,8,'Peru',1, false),
+ (6,8,3,'Plaza de Mayo',1, false),
+ (7,8,11,'Venezuela',1, false),
+ (8,10,7,'Once',1, false),
+ (9,11,10,'Facultad de Derecho',1, false),
+ (10,13,2,'Callao',1, false),
+ (11,14,4,'Piedras',1, false),
+ (12,14,10,'Santa Fe',1, false),
+ (13,16,7,'Scalabrini Ortiz',1, false),
+ (14,16,12,'Constitución',1, false),
+ (15,17,4,'Florida',1, false),
+ (16,9,6,'Retiro',1, true),
+
+ (17, 23,12,'Westminster',2, false),
+ (18, 24,19,'St. James Park''s',2, false),
+ (19, 24,24,'South Kensington',2, false),
+ (20, 25,16,'Oxford Circus',2, false),
+ (21, 28,25,'Tottenham Court Road',2, false),
+ (22, 29,13,'Chancery Lane',2, false),
+ (23, 29,19,'Blackfriars',2, false),
+ (24, 29,22,'St. Paul''s',2, false),
+ (25, 31,16,'Tower Hill',2, false),
+ (26, 34,25,'Liverpool Street',2, false),
+ (27, 35,23,'Piccadilly Circus',2, false),
+ (28, 35,17,'Leicester Square',2, false),
+ (29, 36,14,'Covent Garden',2, false),
+ (30, 38,20,'Hyde Park Corner',2, false),
+ (31, 39,13,'Knightsbridge',2, false),
+ (32, 39,16,'Gloucester Road',2, false),
+ (33, 39,25,'Stockwell',2, false),
+ (34, 32,20,'Waterloo',2, true);
+
+
+INSERT INTO route(bus_id, stop_id)
+VALUES
+ (1,1),
  (1,2),
  (1,7),
  (1,14),
@@ -100,5 +105,4 @@ INSERT INTO bus (id)
  (13,18),
  (13,20),
  (13,22),
- (13,25)
- ;
+ (13,25);
