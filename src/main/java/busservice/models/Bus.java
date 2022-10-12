@@ -3,7 +3,13 @@ package busservice.models;
 import java.util.ArrayList;
 
 public class Bus {
-    private int id;
+    private Integer id;
+
+    private ArrayList<BusStop> route;
+
+    public Bus(){
+
+    }
 
     public ArrayList<BusStop> getRoute() {
         return route;
@@ -13,17 +19,11 @@ public class Bus {
         this.route = route;
     }
 
-    private ArrayList<BusStop> route;
-
-    public Bus() {
-
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
