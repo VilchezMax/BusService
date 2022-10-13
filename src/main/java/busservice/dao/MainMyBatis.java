@@ -10,6 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainMyBatis {
@@ -30,10 +32,13 @@ public class MainMyBatis {
             Bus test = busMapper.getById(1);
             BusStop busStop = busStopMapper.getById(1);
             List<BusStop> route = busMapper.getRouteByBusId(1);
-            //HashMap<String, ArrayList<String>> adjacent = info.getAdjacentStops();
+            HashMap<String, ArrayList<String>> adjacent = info.getAdjacentStops();
 
 
-            //adjacent.forEach((key, value) -> logger.info(key + " = " + value));
+            for (Bus bus : lines) {
+                logger.info(bus);
+            }
+            adjacent.forEach((key, value) -> logger.info(key + " = " + value));
 
             for (BusStop stops : route) {
                 logger.info(stops);

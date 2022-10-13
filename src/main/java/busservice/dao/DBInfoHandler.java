@@ -55,14 +55,38 @@ public class DBInfoHandler {
             for (BusStop stop : bus.getRoute()) {
                 if (!stops.containsKey(stop.getName())) {
                     stops.put(stop.getName(), new ArrayList<String>());
-                } else {
+                    if (prevStop != null) {
+                        stops.get(stop.getName()).add(prevStop);
+                    }
+                }
+                if (prevStop != null) {
+                    stops.get(prevStop).add(stop.getName());
                     stops.get(stop.getName()).add(prevStop);
                 }
-                stops.get(prevStop).add(stop.getName());
-                stops.get(stop.getName()).add(prevStop);
                 prevStop = stop.getName();
             }
         }
         return stops;
     }
+
+
+
+    /*
+
+    hash stop adj[]
+
+    for buses
+        for stops
+
+           if  hash !has stop
+               hash.key.add stop
+               if prevstop
+                hash.key.add prevstop
+           else
+               if hash.key !has stop
+                    hash.add stop
+
+           prevStop = stop
+
+     */
 }
