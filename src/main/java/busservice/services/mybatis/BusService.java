@@ -12,7 +12,7 @@ import java.util.List;
 public class BusService implements IBusService {
     final Logger LOGGER = LogManager.getLogger(BusService.class);
 
-    BusDAO busDAO;
+    BusDAO busDAO = new BusDAO();
 
     @Override
     public Bus getById(Integer id) {
@@ -67,11 +67,15 @@ public class BusService implements IBusService {
     @Override
     public List<BusStop> getRouteByBusId(Integer id) {
         List<BusStop> route = null;
+        LOGGER.info(1);
         try {
+            LOGGER.info(2);
             route = busDAO.getRouteByBusId(id);
+
         } catch (Exception e) {
             LOGGER.warn(e.getMessage());
         }
+        LOGGER.info(4);
         return route;
     }
 }

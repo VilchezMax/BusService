@@ -12,7 +12,7 @@ public class CityService implements IService<City> {
 
     final Logger LOGGER = LogManager.getLogger(CityService.class);
 
-    CityDAO cityDAO;
+    CityDAO cityDAO = new CityDAO();
 
     @Override
     public City getById(Integer id) {

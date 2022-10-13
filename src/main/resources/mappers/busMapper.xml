@@ -8,8 +8,9 @@
                autoMapping="false">
 
         <id property="id" column="id"/>
+        <result property="line" column="line"/>
         <collection property="route"
-                    javaType="Arraylist"
+                    javaType="ArrayList"
                     ofType="BusStop"
                     resultMap="busservice.dao.IBusStopDAO.BusStopMap"
                     columnPrefix="route_"/>
