@@ -1,7 +1,6 @@
 package busservice.dao;
 
 import busservice.models.Bus;
-import busservice.models.BusStop;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -10,9 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 public class MainMyBatis {
     private static final Logger logger = LogManager.getLogger(MainMyBatis.class);
@@ -25,29 +24,33 @@ public class MainMyBatis {
             SqlSession session = sqlSessionFactory.openSession();
 
             IBusDAO busMapper = session.getMapper(IBusDAO.class);
-            IBusStopDAO busStopMapper = session.getMapper(IBusStopDAO.class);
 
             DBInfoHandler info = new DBInfoHandler();
-            List<Bus> lines = info.getBuses();
+            HashMap<Integer, String[]> lines = info.getLinesStops();
             Bus test = busMapper.getById(1);
-            BusStop busStop = busStopMapper.getById(1);
-            List<BusStop> route = busMapper.getRouteByBusId(1);
-            HashMap<String, ArrayList<String>> adjacent = info.getAdjacentStops();
+            //List<BusStop> route = busMapper.getRouteByBusId(1);
+            HashMap<String, String[]> adjacent = info.getAdjacentStops();
+            //logger.info(test);
 
 
-            for (Bus bus : lines) {
-                logger.info(bus);
-            }
-            adjacent.forEach((key, value) -> logger.info(key + " = " + value));
+            for (Map.Entry<Integer, String[]> set : lines.entrySet()) {
 
-            for (BusStop stops : route) {
-                logger.info(stops);
+                logger.info(set.getKey() + " = " + Arrays.toString(set.getValue()));
+
             }
 
-            logger.info(test);
+            logger.info(Arrays.toString(lines.get(13)).contains("Tower Hill"));
 
-            session.commit();
-            session.close();
+            adjacent.forEach((key, value) -> logger.info(key + " = " + Arrays.toString(value)));
+
+            HashMap<String, int[]> coordinates = info.getStopsCoordinates();
+
+
+            //HashMap<String, ArrayList<String>> adjacent = info.getAdjacentStops();
+            //adjacent.forEach((key, value) -> logger.info(key + " = " + value));
+//            for (BusStop stops : route) {
+//                logger.info(stops);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

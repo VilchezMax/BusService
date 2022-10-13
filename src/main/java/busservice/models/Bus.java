@@ -2,7 +2,6 @@ package busservice.models;
 
 import busservice.dao.DBInfoHandler;
 import busservice.dao.IBusDAO;
-import busservice.dao.IBusStopDAO;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -10,7 +9,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,16 +54,10 @@ public class Bus {
         SqlSession session = sqlSessionFactory.openSession();
 
         IBusDAO busMapper = session.getMapper(IBusDAO.class);
-        IBusStopDAO busStopMapper = session.getMapper(IBusStopDAO.class);
+        //IBusStopDAO busStopMapper = session.getMapper(IBusStopDAO.class);
 
         DBInfoHandler info = new DBInfoHandler();
         List<Bus> lines = info.getBuses();
-        List<BusStop> route = null;
-        try {
-            route = busMapper.getRouteByBusId(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
 
         return "Bus{" +

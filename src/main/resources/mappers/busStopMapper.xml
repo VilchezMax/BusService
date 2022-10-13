@@ -33,8 +33,6 @@
         SELECT *
         FROM bus_stop bs
         INNER JOIN city ON bs.city_id = city.id
-        INNER JOIN route ON route.stop_id = bs.id
-        INNER JOIN bus b ON route.bus_id = b.id
         ORDER BY bs.id;
     </select>
 
