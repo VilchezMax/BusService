@@ -11,7 +11,7 @@ import java.util.List;
 public class BusStopService implements IService<BusStop> {
     final Logger LOGGER = LogManager.getLogger(BusStopService.class);
 
-    BusStopDAO busStopDAO;
+    BusStopDAO busStopDAO = new BusStopDAO();
 
     @Override
     public BusStop getById(Integer id) {

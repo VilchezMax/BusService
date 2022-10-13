@@ -65,4 +65,27 @@ public class DBInfoHandler {
         }
         return stops;
     }
+
+/*    public HashMap<String, ArrayList<String>> getAdjacentStops2() {
+        HashMap<String, ArrayList<String>> stops = new HashMap<>();
+        String prevStop = null;
+        for (Bus bus : getBuses()) {
+            for (BusStop stop : bus.getRoute()) {
+                if (!stops.containsKey(stop.getName())) {
+                    stops.put(stop.getName(), new ArrayList<String>());
+                    if (prevStop != null) {
+                        stops.get(stop.getName()).add(prevStop);}
+                } else {
+                    stops.get(stop.getName()).add(prevStop);
+                }
+                if (prevStop != null) {
+                    stops.get(prevStop).add(stop.getName());
+                    stops.get(stop.getName()).add(prevStop);
+                }
+                prevStop = stop.getName();
+            }
+        }
+        return stops;
+    }*/
+
 }

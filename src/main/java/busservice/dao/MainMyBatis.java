@@ -1,15 +1,11 @@
 package busservice.dao;
 
-import busservice.models.Bus;
 import busservice.models.BusStop;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import busservice.services.mybatis.BusService;
+import busservice.services.mybatis.BusStopService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.InputStream;
 import java.util.List;
 
 public class MainMyBatis {
@@ -17,32 +13,19 @@ public class MainMyBatis {
 
     public static void main(String[] args) {
         try {
-            String resource = "mybatis-config.xml";
-            InputStream inputStream = Resources.getResourceAsStream(resource);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-            SqlSession session = sqlSessionFactory.openSession();
+            BusService busService = new BusService();
+            BusStopService busStopService = new BusStopService();
 
-            IBusDAO busMapper = session.getMapper(IBusDAO.class);
-            IBusStopDAO busStopMapper = session.getMapper(IBusStopDAO.class);
 
-            DBInfoHandler info = new DBInfoHandler();
-            List<Bus> lines = info.getBuses();
-            Bus test = busMapper.getById(1);
-            BusStop busStop = busStopMapper.getById(1);
-            List<BusStop> route = busMapper.getRouteByBusId(1);
+            List<BusStop> route = busService.getRouteByBusId(1);
+            route.forEach(busStop -> logger.info(busStop));
+
+
             //HashMap<String, ArrayList<String>> adjacent = info.getAdjacentStops();
-
-
             //adjacent.forEach((key, value) -> logger.info(key + " = " + value));
-
-            for (BusStop stops : route) {
-                logger.info(stops);
-            }
-
-            logger.info(test);
-
-            session.commit();
-            session.close();
+//            for (BusStop stops : route) {
+//                logger.info(stops);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

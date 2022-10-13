@@ -64,14 +64,14 @@ public class BusStop {
 
     @Override
     public String toString() {
-        return "\nBusStop{" +
-                "id=" + id +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
-                ", name='" + name + '\'' +
-                ", isTerminal=" + isTerminal +
-                ", city=" + city +
-                ", buses=" + buses +
+        return "\nBusStop{" + "\n" +
+                "  id=" + id + "\n" +
+                ", longitude=" + longitude + "\n" +
+                ", latitude=" + latitude + "\n" +
+                ", name='" + name + '\'' + "\n" +
+                ", isTerminal=" + isTerminal + "\n" +
+                ", city=" + city + "\n" +
+                ", buses=" + buses + "\n" +
                 '}';
     }
 }
