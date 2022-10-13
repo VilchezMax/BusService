@@ -27,26 +27,51 @@ public class BusService implements IBusService {
 
     @Override
     public List<Bus> getAll() {
-        return null;
+        List<Bus> buses = null;
+        try {
+            buses = busDAO.getAll();
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+        }
+        return buses;
     }
 
     @Override
     public void insert(Bus object) {
-
+        try {
+            busDAO.insert(object);
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+        }
     }
 
     @Override
     public void update(Bus object) {
+        try {
+            busDAO.update(object);
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+        }
 
     }
 
     @Override
     public void deleteById(Integer id) {
-
+        try {
+            busDAO.deleteById(id);
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+        }
     }
 
     @Override
     public List<BusStop> getRouteByBusId(Integer id) {
-        return null;
+        List<BusStop> route = null;
+        try {
+            route = busDAO.getRouteByBusId(id);
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+        }
+        return route;
     }
 }

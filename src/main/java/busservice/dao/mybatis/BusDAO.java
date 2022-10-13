@@ -24,7 +24,6 @@ public class BusDAO implements IBusDAO {
             session.commit();
         } catch (SQLException e) {
             LOGGER.warn(e.getMessage());
-            session.rollback();
         } finally {
             if (session != null) {
                 session.close();
@@ -34,27 +33,91 @@ public class BusDAO implements IBusDAO {
     }
 
     @Override
-    public List<Bus> getAll() throws SQLException {
-        return null;
+    public List<Bus> getAll() {
+        List<Bus> buses = null;
+        SqlSession session = null;
+        try {
+            session = MySessionFactory.getInstance().getFactory().openSession();
+            IBusDAO busDAO = session.getMapper(IBusDAO.class);
+            buses = busDAO.getAll();
+            session.commit();
+        } catch (SQLException e) {
+            LOGGER.warn(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return buses;
     }
 
     @Override
-    public void insert(Bus object) throws SQLException {
-
+    public void insert(Bus object) {
+        SqlSession session = null;
+        try {
+            session = MySessionFactory.getInstance().getFactory().openSession();
+            IBusDAO busDAO = session.getMapper(IBusDAO.class);
+            busDAO.insert(object);
+            session.commit();
+        } catch (SQLException e) {
+            LOGGER.warn(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
-    public void update(Bus object) throws SQLException {
-
+    public void update(Bus object) {
+        SqlSession session = null;
+        try {
+            session = MySessionFactory.getInstance().getFactory().openSession();
+            IBusDAO busDAO = session.getMapper(IBusDAO.class);
+            busDAO.update(object);
+            session.commit();
+        } catch (SQLException e) {
+            LOGGER.warn(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
-    public void deleteById(Integer id) throws SQLException {
-
+    public void deleteById(Integer id) {
+        SqlSession session = null;
+        try {
+            session = MySessionFactory.getInstance().getFactory().openSession();
+            IBusDAO busDAO = session.getMapper(IBusDAO.class);
+            busDAO.deleteById(id);
+            session.commit();
+        } catch (SQLException e) {
+            LOGGER.warn(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
-    public List<BusStop> getRouteByBusId(Integer id) throws SQLException {
-        return null;
+    public List<BusStop> getRouteByBusId(Integer id) {
+        List<BusStop> route = null;
+        SqlSession session = null;
+        try {
+            session = MySessionFactory.getInstance().getFactory().openSession();
+            IBusDAO busDAO = session.getMapper(IBusDAO.class);
+            route = busDAO.getRouteByBusId(id);
+            session.commit();
+        } catch (SQLException e) {
+            LOGGER.warn(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return route;
     }
 }
