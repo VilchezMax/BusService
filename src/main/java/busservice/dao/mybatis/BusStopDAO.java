@@ -24,7 +24,6 @@ public class BusStopDAO implements IBusStopDAO {
             session.commit();
         } catch (SQLException e) {
             LOGGER.warn(e.getMessage());
-            session.rollback();
         } finally {
             if (session != null) {
                 session.close();
@@ -44,7 +43,6 @@ public class BusStopDAO implements IBusStopDAO {
             session.commit();
         } catch (SQLException e) {
             LOGGER.warn(e.getMessage());
-            session.rollback();
         } finally {
             if (session != null) {
                 session.close();
@@ -63,7 +61,6 @@ public class BusStopDAO implements IBusStopDAO {
             session.commit();
         } catch (SQLException e) {
             LOGGER.warn(e.getMessage());
-            session.rollback();
         } finally {
             if (session != null) {
                 session.close();
@@ -81,7 +78,6 @@ public class BusStopDAO implements IBusStopDAO {
             session.commit();
         } catch (SQLException e) {
             LOGGER.warn(e.getMessage());
-            session.rollback();
         } finally {
             if (session != null) {
                 session.close();
@@ -99,7 +95,6 @@ public class BusStopDAO implements IBusStopDAO {
             session.commit();
         } catch (SQLException e) {
             LOGGER.warn(e.getMessage());
-            session.rollback();
         } finally {
             if (session != null) {
                 session.close();
