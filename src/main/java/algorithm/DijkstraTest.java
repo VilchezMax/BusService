@@ -211,8 +211,8 @@ public class DijkstraTest {
 
             }
 
-            showPathWithBuses(result);
             Collections.reverse(result);
+            showPathWithBuses(result);
             return result.toString();
         }
 
@@ -235,14 +235,47 @@ public class DijkstraTest {
 
         DBInfoHandler info = new DBInfoHandler();
         HashMap<Integer, String[]> lines = info.getLinesStops();
-        //List<BusStop> route = busMapper.getRouteByBusId(1);
-        HashMap<String, String[]> adjacent = info.getAdjacentStops();
-        //logger.info(test);
-        for (Map.Entry<Integer, String[]> set : lines.entrySet()) {
+
+        ArrayList<String> resultArray = new ArrayList<>();
+
+        Integer currentLine = null;
+        for (int i = 0; i < route.size(); i++) {
+
+            for (Map.Entry<Integer, String[]> set : lines.entrySet()) {
 
 
-            System.out.println(set.getKey() + " = " + Arrays.toString(set.getValue()));
+                if (i + 1 == route.size()) {
+                    resultArray.add(route.get(i));
+                    System.out.println("get down at " + route.get(i));
+                    break;
+                }
+
+                if (lineHasBothStops(set.getValue(), route.get(i), route.get(i + 1))) {
+                    if (currentLine != null && currentLine.equals(set.getKey())) continue;
+
+                    resultArray.add(set.getKey().toString());
+                    resultArray.add(route.get(i));
+
+                    System.out.println("take line " + set.getKey() + " at " + route.get(i));
+
+                    currentLine = set.getKey();
+                }
+                //System.out.println(set.getKey() + " = " + Arrays.toString(set.getValue()));
+            }
 
         }
+
+
     }
+
+
+    public static boolean lineHasBothStops(String[] stops, String currStop, String nextStop) {
+
+        if (Arrays.stream(stops).anyMatch(currStop::equals) && Arrays.stream(stops).anyMatch(nextStop::equals)) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
