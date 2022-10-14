@@ -1,7 +1,13 @@
 package gui;
 
+import busservice.models.BusStop;
+import busservice.services.mybatis.BusStopService;
+import busservice.services.mybatis.CityService;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.Comparator;
+import java.util.List;
 
 public class GUI {
     //TODO:
@@ -10,20 +16,35 @@ public class GUI {
     // THIS IS JUST AN EXAMPLE OF HOW IT SHOULD LOOK LIKE
 
 
-    public GUI() {
+    public GUI(List<BusStop> busStops) {
         JPanel panel = new JPanel();
-        JButton buttonRetiro = new JButton("Retiro");
-        JButton buttonWaterloo = new JButton("Waterloo");
-        JLabel labelCity1 = new JLabel("Choose bus stop from city 1");
-        JLabel labelCity2 = new JLabel("Choose bus stop from city 2");
         JFrame frame = new JFrame("My First gui");
 
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-        panel.setLayout(new GridLayout(2, 2, 10, 10));
-        panel.add(labelCity1);
-        panel.add(labelCity2);
-        panel.add(buttonRetiro);
-        panel.add(buttonWaterloo);
+        panel.setLayout(new GridLayout(busStops.size() + 1, 2, 10, 10));
+
+        JLabel city1 = new JLabel("Choose bus stop from city 1");
+        JLabel city2 = new JLabel("Choose bus stop from city 2");
+
+        busStops.sort(Comparator.comparing(o -> o.getCity().getId()));
+
+        CityService cityService = new CityService();
+        cityService.getAll().forEach(System.out::println);
+//        for (BusStop busStop : busStops) {
+//            if (busStop.getCity().getId() == 1) {
+//                JButton button = new JButton(busStop.getName());
+//                panel.add(button);
+//            }
+//        }
+//
+//        for (BusStop busStop : busStops) {
+//            if (busStop.getCity().getId() == 2) {
+//                JButton button = new JButton(busStop.getName());
+//                panel.add(button);
+//            }
+//        }
+/*        JButton buttonRetiro = new JButton("Retiro");
+        JButton buttonWaterloo = new JButton("Waterloo");*/
 
 
         frame.add(panel, BorderLayout.CENTER);
@@ -35,6 +56,7 @@ public class GUI {
     }
 
     public static void main(String[] args) {
-        new GUI();
+        List<BusStop> allBusStops = new BusStopService().getAll();
+        GUI gui = new GUI(allBusStops);
     }
 }

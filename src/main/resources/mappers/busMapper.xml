@@ -7,40 +7,103 @@
                type="Bus"
                autoMapping="false">
 
-        <id property="id" column="id"/>
-        <result property="line" column="line"/>
+        <id property="id" column="bus_id"/>
+        <result property="line" column="bus_line"/>
         <collection property="route"
                     javaType="ArrayList"
-                    ofType="BusStop"
-                    resultMap="busservice.dao.IBusStopDAO.BusStopMap"
-                    columnPrefix="route_"/>
+                    ofType="BusStop">
+            <id property="id" column="bus_stop_id"/>
+            <result property="longitude" column="bus_stop_longitude"/>
+            <result property="latitude" column="bus_stop_latitude"/>
+            <result property="name" column="bus_stop_stop_name"/>
+            <result property="isTerminal" column="bus_stop_is_terminal"/>
+            <association property="city"
+                         column="city_id"
+                         javaType="City">
+                <id property="id" column="city_id"/>
+                <result property="name" column="city_name"/>
+            </association>
+            <association property="buses"
+                         column="bus_id"
+                         javaType="Bus">
+                <id property="id" column="bus_id"/>
+                <result property="line" column="bus_line"/>
+                <collection property="route"
+                            javaType="ArrayList"
+                            ofType="BusStop">
+                    <id property="id" column="bus_stop_id"/>
+                    <result property="longitude" column="bus_stop_longitude"/>
+                    <result property="latitude" column="bus_stop_latitude"/>
+                    <result property="name" column="bus_stop_name"/>
+                    <result property="isTerminal" column="bus_stop_is_terminal"/>
+                    <association property="city"
+                                 column="city_id"
+                                 javaType="City">
+                        <id property="id" column="city_id"/>
+                        <result property="name" column="city_name"/>
+                    </association>
+                    <collection property="buses"
+                                javaType="ArrayList"
+                                ofType="Bus">
+                        <id property="id" column="bus_id"/>
+                        <result property="line" column="bus_line"/>
+                </collection>
+            </association>
+        </collection>
     </resultMap>
+    <sql id="busColumns">
+        b.id as bus_id,
+        b.line as bus_line,
+        bs.id as bus_stop_id,
+        bs.longitude as bus_stop_longitude,
+        bs.latitude as bus_stop_latitude,
+        bs.stop_name as bus_stop_name,
+        bs.is_terminal as bus_stop_is_terminal,
+        r.bus_id as route_bus_id,
+        r.stop_id as route_stop_id,
+        c.id as city_id,
+        c.name as city_name
+    </sql>
 
-    <select id="getById" resultMap="BusMap">
-        SELECT *
-        FROM bus
-                 JOIN route ON bus.id = route.bus_id
-                 JOIN bus_stop ON route.stop_id = bus_stop.id
-                 JOIN city ON bus_stop.city_id = city.id
-        WHERE bus.id = #{id}
+    <select id="getById" resultMap="BusMap" parameterType="int">
+        SELECT
+        <include refid="busColumns"/>
+        FROM bus b
+        JOIN route r ON b.id = r.bus_id
+        JOIN bus_stop bs ON r.stop_id = bs.id
+        JOIN city c ON bs.city_id = c.id
+        WHERE b.id = #{id}
     </select>
 
     <select id="getAll" resultMap="BusMap">
-        SELECT *
-        FROM bus
-                 JOIN route ON bus.id = route.bus_id
-                 JOIN bus_stop ON route.stop_id = bus_stop.id
-                 JOIN city ON bus_stop.city_id = city.id
-        ORDER BY route.id
+        SELECT SELECT
+        <include refid="busColumns"/>
+        FROM bus b
+        JOIN route r ON b.id = r.bus_id
+        JOIN bus_stop bs ON r.stop_id = bs.id
+        JOIN city c ON bs.city_id = c.id
+        ORDER BY r.id
     </select>
 
-    <select id="getRouteByBusId" resultMap="busservice.dao.IBusStopDAO.BusStopMap">
-        SELECT *
+    <select id="getAllRoutes" resultMap="busservice.dao.IBusStopDAO.BusStopMap">
+        SELECT SELECT
+        <include refid="busColumns"/>
         FROM route r
-                 JOIN bus ON bus.id = r.bus_id
-                 JOIN bus_stop ON r.stop_id = bus_stop.id
-                 JOIN city ON bus_stop.city_id = city.id
-        WHERE bus.id = #{id}
+        JOIN bus b ON b.id = r.bus_id
+        JOIN bus_stop bs ON r.stop_id = bs.id
+        JOIN city c ON bs.city_id = c.id
+
+        ORDER BY r.id
+    </select>
+
+    <select id="getRouteByBusId" resultMap="busservice.dao.IBusStopDAO.BusStopMap" parameterType="int">
+        SELECT SELECT
+        <include refid="busColumns"/>
+        FROM route r
+        JOIN bus b ON b.id = r.bus_id
+        JOIN bus_stop bs ON r.stop_id = bs.id
+        JOIN city c ON bs.city_id = c.id
+        WHERE b.id = #{id}
         ORDER BY r.id
     </select>
 
