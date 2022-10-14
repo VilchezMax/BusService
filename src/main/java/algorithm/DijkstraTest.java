@@ -76,8 +76,6 @@ public class DijkstraTest {
             int count = 0;
             while (lookForInfinity(shortestTable) || unvisited.size() > 0) {
 
-                count++;
-                if (count > 20) break;
                 double currShortest = Double.POSITIVE_INFINITY;
                 String closestVertex = null;
                 for (VertexTable row : shortestTable) {
