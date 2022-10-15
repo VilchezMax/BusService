@@ -10,7 +10,24 @@
         <id property="id" column="bus_stop_id"/>
         <result property="longitude" column="bus_stop_longitude"/>
         <result property="latitude" column="bus_stop_latitude"/>
-        <result property="name" column="bus_stop_stop_name"/>
+        <result property="name" column="bus_stop_name"/>
+        <result property="isTerminal" column="bus_stop_is_terminal"/>
+        <association property="city"
+                     column="city_id"
+                     javaType="City"
+                     resultMap="busservice.dao.ICityDAO.CityMap"/>
+        <collection property="buses"
+                    column="bus_id"
+                    javaType="ArrayList"
+                    ofType="Bus"
+                    resultMap="busservice.dao.IBusDAO.NestedBusMap"/>
+    </resultMap>
+
+    <resultMap id="NestedBusStopMap" type="BusStop" autoMapping="false">
+        <id property="id" column="bus_stop_id"/>
+        <result property="longitude" column="bus_stop_longitude"/>
+        <result property="latitude" column="bus_stop_latitude"/>
+        <result property="name" column="bus_stop_name"/>
         <result property="isTerminal" column="bus_stop_is_terminal"/>
         <association property="city"
                      column="city_id"
@@ -18,36 +35,20 @@
             <id property="id" column="city_id"/>
             <result property="name" column="city_name"/>
         </association>
-        <!--  Nested buses collection      -->
         <collection property="buses"
+                    column="bus_id"
                     javaType="ArrayList"
                     ofType="Bus">
             <id property="id" column="bus_id"/>
             <result property="line" column="bus_line"/>
-            <!--    Nested routes of each bus in buses list of busStop        -->
-            <collection property="route"
-                        javaType="ArrayList"
-                        ofType="BusStop">
-                <id property="id" column="bus_stop_id"/>
-                <result property="longitude" column="bus_stop_longitude"/>
-                <result property="latitude" column="bus_stop_latitude"/>
-                <result property="name" column="bus_stop_stop_name"/>
-                <result property="isTerminal" column="bus_stop_is_terminal"/>
-                <association property="city"
-                             column="city_id"
-                             javaType="City">
-                    <id property="id" column="city_id"/>
-                    <result property="name" column="city_name"/>
-                </association>
-
-            </collection> <!--  End of Nested routes of each bus      -->
-        </collection> <!--  End of Nested buses collection      -->
+        </collection>
     </resultMap>
+
     <sql id="busStopColumns">
         bs.id as bus_stop_id,
         bs.longitude as bus_stop_longitude,
         bs.latitude as bus_stop_latitude,
-        bs.stop_name as bus_stop_stop_name,
+        bs.stop_name as bus_stop_name,
         bs.is_terminal as bus_stop_is_terminal,
         r.bus_id as route_bus_id,
         r.stop_id as route_stop_id,
@@ -55,8 +56,6 @@
         c.name as city_name,
         b.id as bus_id,
         b.line as bus_line
-
-
     </sql>
 
     <select id="getById" parameterType="int" resultMap="BusStopMap">

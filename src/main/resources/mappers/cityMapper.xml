@@ -6,35 +6,44 @@
     <resultMap id="CityMap"
                type="City"
                autoMapping="false">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
+        <id property="id" column="city_id"/>
+        <result property="name" column="city_name"/>
     </resultMap>
+    <sql id="cityColumns">
+        c
+        .
+        id
+        as city_id,
+        c.name as city_name
+    </sql>
 
     <select id="getById" parameterType="int" resultMap="CityMap">
-        SELECT *
+        SELECT
+        <include refid="cityColumns"/>
         FROM city
         WHERE id =#{id};
     </select>
 
     <select id="getAll" resultMap="CityMap">
-        SELECT *
+        SELECT
+        <include refid="cityColumns"/>
         FROM city
     </select>
 
     <insert id="insert" parameterType="City">
-        INSERT INTO city
-        (name)
-        VALUES (#{name})
+        INSERT INTO city (name)
+        VALUES (#{city.name})
     </insert>
 
-    <update id="update" parameterType="map">
-        UPDATE city SET
-        name = #{object.name}
-        WHERE id = #{object.id}
+    <update id="update" parameterType="City">
+        UPDATE city
+        SET name = #{city.name}
+        WHERE id = #{city.id}
     </update>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM city
+        DELETE
+        FROM city
         WHERE id = #{id}
     </delete>
 
