@@ -28,8 +28,18 @@ public class BusService implements IBusService {
     @Override
     public List<Bus> getAll() {
         List<Bus> buses = null;
+        List<List<BusStop>> routes = null;
         try {
             buses = busDAO.getAll();
+//            routes = busDAO.getAllRoutes();
+//            for (List<BusStop> route : routes) {
+            for (Bus bus : buses) {
+                bus.setRoute(busDAO.getRouteByBusId(bus.getId()));
+//                    if (bus.getId().equals(route.get(0).getBuses().get(0).getId())) {
+//                        bus.setRoute(route);
+//                    }
+            }
+//            }
         } catch (Exception e) {
             LOGGER.warn(e.getMessage());
         }
@@ -69,13 +79,23 @@ public class BusService implements IBusService {
         List<BusStop> route = null;
         LOGGER.info(1);
         try {
-            LOGGER.info(2);
             route = busDAO.getRouteByBusId(id);
 
         } catch (Exception e) {
             LOGGER.warn(e.getMessage());
         }
-        LOGGER.info(4);
         return route;
+    }
+
+    //NOT SUPPOSED TO BE HERE, WILL BE USED IN GETALL()
+    public List<List<BusStop>> getAllRoutes() {
+        List<List<BusStop>> routes = null;
+        try {
+            routes = busDAO.getAllRoutes();
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+        }
+        return routes;
+
     }
 }

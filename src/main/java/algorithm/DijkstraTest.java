@@ -7,100 +7,98 @@ import java.util.Map;
 
 public class DijkstraTest {
     public static String getShortestPath(String start, String destination) {
-        {
-            ArrayList<String> visitedVertexes = new ArrayList<>();
-            ArrayList<String> unvisitedVertexes = new ArrayList<>();
-            ArrayList<VertexTableRow> vertexTableRows = new ArrayList<>();
-            ArrayList<String> result = new ArrayList<>();
-            HashMap<String, String[]> vertices = loadVertices(new HashMap<>());
-            HashMap<String, int[]> distances = loadDistances(new HashMap<>());
+        ArrayList<String> visitedVertexes = new ArrayList<>();
+        ArrayList<String> unvisitedVertexes = new ArrayList<>();
+        ArrayList<VertexTableRow> vertexTableRows = new ArrayList<>();
+        ArrayList<String> result = new ArrayList<>();
+        HashMap<String, String[]> vertices = loadVertices(new HashMap<>());
+        HashMap<String, int[]> distances = loadDistances(new HashMap<>());
 
-            for (Map.Entry<String, String[]> entry : vertices.entrySet()) {
-                VertexTableRow row = new VertexTableRow();
-                row.setVertex(entry.getKey());
-                unvisitedVertexes.add(entry.getKey());
-                if (entry.getKey() == start) {
-                    row.setShortestFromStart(0);
-                }
-                vertexTableRows.add(row);
+        for (Map.Entry<String, String[]> entry : vertices.entrySet()) {
+            VertexTableRow row = new VertexTableRow();
+            row.setVertex(entry.getKey());
+            unvisitedVertexes.add(entry.getKey());
+            if (entry.getKey() == start) {
+                row.setShortestFromStart(0);
             }
+            vertexTableRows.add(row);
+        }
 
-            //double currShortest = Double.POSITIVE_INFINITY;
-            //String closestVertex = null;
-            // || unvisitedVertexes.size()>0
-            while (allVisited(vertexTableRows)) {
-                double currentShortestVertex = Double.POSITIVE_INFINITY;
-                String closestVertex = null;
-                for (VertexTableRow row : vertexTableRows) {
-                    if (row.getShortestFromStart() < currentShortestVertex && !visitedVertexes.contains(row.getVertex())) {
-                        currentShortestVertex = row.getShortestFromStart();
-                        closestVertex = row.getVertex();
-                    }
+        //double currShortest = Double.POSITIVE_INFINITY;
+        //String closestVertex = null;
+        // || unvisitedVertexes.size()>0
+        while (allVisited(vertexTableRows)) {
+            double currentShortestVertex = Double.POSITIVE_INFINITY;
+            String closestVertex = null;
+            for (VertexTableRow row : vertexTableRows) {
+                if (row.getShortestFromStart() < currentShortestVertex && !visitedVertexes.contains(row.getVertex())) {
+                    currentShortestVertex = row.getShortestFromStart();
+                    closestVertex = row.getVertex();
                 }
-                for (Map.Entry<String, String[]> entry : vertices.entrySet()) {
-                    if (entry.getKey() == closestVertex) {
-                        for (String toVisit : entry.getValue()) {
-                            if (visitedVertexes.contains(toVisit)) {
-                                continue;
-                            }
-                            int[] coordinatesClosest = distances.get(closestVertex);
-                            int[] coordinatesToVisit = distances.get(toVisit);
-                            int closestX = coordinatesClosest[0];
-                            int closestY = coordinatesClosest[1];
-                            int toVisitX = coordinatesToVisit[0];
-                            int toVisitY = coordinatesToVisit[1];
-                            double distance = Math.sqrt(Math.pow(toVisitY - closestY, 2) + Math.pow(toVisitX - closestX, 2));
-                            for (VertexTableRow row : vertexTableRows) {
-                                if (row.getVertex() == toVisit && row.getShortestFromStart() > distance) {
-                                    for (VertexTableRow dist : vertexTableRows) {
-                                        if (dist.getVertex() == closestVertex) {
-                                            distance += dist.getShortestFromStart();
+            }
+            for (Map.Entry<String, String[]> entry : vertices.entrySet()) {
+                if (entry.getKey() == closestVertex) {
+                    for (String toVisit : entry.getValue()) {
+                        if (visitedVertexes.contains(toVisit)) {
+                            continue;
+                        }
+                        int[] coordinatesClosest = distances.get(closestVertex);
+                        int[] coordinatesToVisit = distances.get(toVisit);
+                        int closestX = coordinatesClosest[0];
+                        int closestY = coordinatesClosest[1];
+                        int toVisitX = coordinatesToVisit[0];
+                        int toVisitY = coordinatesToVisit[1];
+                        double distance = Math.sqrt(Math.pow(toVisitY - closestY, 2) + Math.pow(toVisitX - closestX, 2));
+                        for (VertexTableRow row : vertexTableRows) {
+                            if (row.getVertex() == toVisit && row.getShortestFromStart() > distance) {
+                                for (VertexTableRow dist : vertexTableRows) {
+                                    if (dist.getVertex() == closestVertex) {
+                                        distance += dist.getShortestFromStart();
+                                        break;
+                                    }
+                                }
+                                if (row.getShortestFromStart() >= distance) {
+                                    double newShortestVertex = distance;
+                                    for (VertexTableRow previousRow : vertexTableRows) {
+                                        double distanceTotal = previousRow.getShortestFromStart() + distance;
+                                        if (distanceTotal > row.getShortestFromStart()) {
+                                            newShortestVertex += previousRow.getShortestFromStart();
+                                            row.setShortestFromStart(newShortestVertex);
+                                            row.setPrevVertex(closestVertex);
+                                            break;
+                                        }
+                                        if (previousRow.getVertex() == row.getPrevVertex()) {
+                                            newShortestVertex += previousRow.getShortestFromStart();
                                             break;
                                         }
                                     }
-                                    if (row.getShortestFromStart() >= distance) {
-                                        double newShortestVertex = distance;
-                                        for (VertexTableRow previousRow : vertexTableRows) {
-                                            double distanceTotal = previousRow.getShortestFromStart() + distance;
-                                            if (distanceTotal > row.getShortestFromStart()) {
-                                                newShortestVertex += previousRow.getShortestFromStart();
-                                                row.setShortestFromStart(newShortestVertex);
-                                                row.setPrevVertex(closestVertex);
-                                                break;
-                                            }
-                                            if (previousRow.getVertex() == row.getPrevVertex()) {
-                                                newShortestVertex += previousRow.getShortestFromStart();
-                                                break;
-                                            }
-                                        }
-                                        row.setShortestFromStart(newShortestVertex);
-                                        row.setPrevVertex(closestVertex);
-                                    }
+                                    row.setShortestFromStart(newShortestVertex);
+                                    row.setPrevVertex(closestVertex);
                                 }
                             }
                         }
                     }
                 }
-                visitedVertexes.add(closestVertex);
-                unvisitedVertexes.remove(closestVertex);
             }
+            visitedVertexes.add(closestVertex);
+            unvisitedVertexes.remove(closestVertex);
+        }
 
-            boolean prevIsNull = false;
-            while (!prevIsNull) {
-                for (VertexTableRow row : vertexTableRows) {
-                    if (row.getVertex() == destination) {
-                        result.add(row.getVertex());
-                        if (row.getPrevVertex() == null) {
-                            prevIsNull = true;
-                            break;
-                        }
-                        destination = row.getPrevVertex();
+        boolean prevIsNull = false;
+        while (!prevIsNull) {
+            for (VertexTableRow row : vertexTableRows) {
+                if (row.getVertex() == destination) {
+                    result.add(row.getVertex());
+                    if (row.getPrevVertex() == null) {
+                        prevIsNull = true;
+                        break;
                     }
+                    destination = row.getPrevVertex();
                 }
             }
-            Collections.reverse(result);
-            return result.toString();
         }
+        Collections.reverse(result);
+        return result.toString();
     }
 
     public static boolean allVisited(ArrayList<VertexTableRow> testTable) {
