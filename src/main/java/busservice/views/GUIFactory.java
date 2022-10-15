@@ -15,19 +15,11 @@ public class GUIFactory {
     }
 
     private GUI createGUI() {
-        gui = GUIBuilder.buildGUI();
+//        gui = GUIBuilder.buildGUI();
         return gui;
     }
 
-    private GUI setStage(GUI.Stage stage) {
+/*    private GUI setStage(GUI.Stage stage) {
 
-    }
-
-    public GUI createGUI(GUI.Stage stage, Object data) {
-        return new GUIBuilder().setStage(stage).setData(data).buildGUI();
-    }
-
-    public GUI createGUI(GUI.Stage stage, Object data, Object data2) {
-        return new GUIBuilder().setStage(stage).setData(data).setData(data2).buildGUI();
-    }
+    }*/
 }

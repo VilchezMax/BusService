@@ -6,7 +6,6 @@ import busservice.services.mybatis.BusStopService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Comparator;
 import java.util.List;
 
 /* GUI BUILDER
@@ -41,7 +40,7 @@ public class GUI<T> {
         INITIAL_CITY, INITIAL_STOP, FINAL_CITY, FINAL_STOP
     }
 
-    private GUI() {
+    GUI() {
         /*switch(Stage stage) {
             case INITIAL_CITY:
                 new GUI(busStops, Stage.INITIAL_CITY);
@@ -74,7 +73,7 @@ public class GUI<T> {
         panel.add(city2);
 
 
-        busStops.sort(Comparator.comparing(o -> o.getCity().getId()));
+        /*busStops.sort(Comparator.comparing(o -> o.getCity().getId()));
         for (BusStop busStop : busStops) {
             JButton button = new JButton(busStop.getName());
 
@@ -88,7 +87,7 @@ public class GUI<T> {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Bus stops");
         frame.pack();
-        frame.setVisible(true);
+        frame.setVisible(true);*/
 
     }
 
@@ -131,11 +130,11 @@ public class GUI<T> {
         gui.initGUI(allBusStops);
     }
 
-    public static cityGUI(List<City> cities) {
+    public static void cityGUI(List<City> cities) {
 
     }
 
-    public static busStopsGUI(List<BusStop> busStops) {
+    public static void busStopsGUI(List<BusStop> busStops) {
 
     }
 

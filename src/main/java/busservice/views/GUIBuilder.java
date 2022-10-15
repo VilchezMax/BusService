@@ -6,7 +6,7 @@ public class GUIBuilder<T> {
 
     private GUI gui;
 
-    public static GUI buildGUI() {
+    public GUI buildGUI() {
         gui = new GUI();
         return gui;
     }
