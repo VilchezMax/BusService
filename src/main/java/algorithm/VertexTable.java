@@ -2,12 +2,12 @@ package algorithm;
 
 import java.text.DecimalFormat;
 
-public class VertexTableRow {
+public class VertexTable {
     private String vertex;
     private double shortestFromStart;
     private String prevVertex;
 
-    public VertexTableRow() {
+    public VertexTable() {
         this.shortestFromStart = Double.POSITIVE_INFINITY;
     }
 
