@@ -40,7 +40,7 @@ public class MainMyBatis {
 
                 System.out.println(set.getKey() + " " + Arrays.toString(set.getValue()));
             }
-
+/*
         for(BusStop stop : busStops){
             logger.info(stop);
         }
@@ -48,7 +48,7 @@ public class MainMyBatis {
         for(Bus buss: buses){
             logger.info(buss);
         }
-
+*/
         session.commit();
         session.close();
     } catch (Exception e) {

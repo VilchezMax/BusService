@@ -11,6 +11,6 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) throws SQLException {
-        System.out.println(DijkstraTest.getShortestPath("Knightsbridge", "Facultad de Derecho"));
+        System.out.println(DijkstraTest.getShortestPath( "Facultad de Derecho" , "Constitución"));
     }
 }
