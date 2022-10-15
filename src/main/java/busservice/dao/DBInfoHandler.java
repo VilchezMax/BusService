@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DBInfoHandler {
     IBusDAO busMapper;
@@ -50,20 +51,53 @@ public class DBInfoHandler {
 
     public HashMap<String, ArrayList<String>> getAdjacentStops() {
         HashMap<String, ArrayList<String>> stops = new HashMap<>();
-        String prevStop = null;
         for (Bus bus : getBuses()) {
+            String prevStop = null;
             for (BusStop stop : bus.getRoute()) {
                 if (!stops.containsKey(stop.getName())) {
-                    stops.put(stop.getName(), new ArrayList<String>());
+                    stops.put(stop.getName(), new ArrayList<>());
                 } else {
-                    stops.get(stop.getName()).add(prevStop);
+                    if(prevStop != null) stops.get(stop.getName()).add(prevStop);
                 }
-                stops.get(prevStop).add(stop.getName());
-                stops.get(stop.getName()).add(prevStop);
+                if(stops.containsKey(prevStop) && !stops.get(prevStop).contains(stop.getName()) && stop.getName() != null) stops.get(prevStop).add(stop.getName());
+                if(!stops.get(stop.getName()).contains(prevStop) && prevStop != null) stops.get(stop.getName()).add(prevStop);
                 prevStop = stop.getName();
             }
         }
         return stops;
+    }
+
+
+    public HashMap<String, int[]> getStopsCoordinates() throws SQLException {
+        ArrayList<BusStop> stops = (ArrayList<BusStop>) busStopMapper.getAll();
+
+        HashMap<String, int[]> result = new HashMap<>();
+
+        for (BusStop current : stops) {
+            result.put(current.getName(), new int[]{current.getLatitude(), current.getLongitude()});
+        }
+
+        return result;
+    }
+
+    public HashMap<Integer, String[]> getLinesStops() {
+        HashMap<Integer, String[]> lines = new HashMap<>();
+
+
+        for (Bus bus : getBuses()) {
+
+            ArrayList<String> stopsAux = new ArrayList<>();
+
+
+            for (BusStop stop : bus.getRoute()) {
+                stopsAux.add(stop.getName());
+            }
+            String[] stops = stopsAux.toArray(new String[0]);
+
+            lines.put(bus.getId(), stops);
+        }
+
+        return lines;
     }
 
 /*    public HashMap<String, ArrayList<String>> getAdjacentStops2() {

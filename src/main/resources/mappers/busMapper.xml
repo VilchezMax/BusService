@@ -55,6 +55,7 @@
         JOIN bus_stop bs ON r.stop_id = bs.id
         JOIN city c ON bs.city_id = c.id
         WHERE b.id = #{id}
+        ORDER BY route_stop_id
     </select>
 
     <select id="getAll" resultMap="BusMap">
