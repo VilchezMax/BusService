@@ -95,14 +95,14 @@
     </insert>
 
     <update id="update" parameterType="Bus">
-        UPDATE bus
-        SET line = #{bus.line}
-        WHERE id = #{bus.id}
+        UPDATE bus b
+        SET b.line = #{bus.line}
+        WHERE b.id = #{bus.id}
     </update>
 
     <delete id="deleteById" parameterType="int">
         DELETE
-        FROM bus
-        WHERE id = #{id}
+        FROM bus b
+        WHERE b.id = #{id}
     </delete>
 </mapper>

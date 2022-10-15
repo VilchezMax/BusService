@@ -84,19 +84,19 @@
     </insert>
 
     <update id="update" parameterType="BusStop">
-        UPDATE bus_stop
-        SET longitude   = #{busStop.longitude},
-            latitude    = #{busStop.latitude},
-            stop_name   = #{busStop.name},
-            is_terminal = #{busStop.isTerminal},
-            city_id     = #{busStop.city.id}
-        WHERE id = #{busStop.id};
+        UPDATE bus_stop bs
+        SET bs.longitude   = #{busStop.longitude},
+            bs.latitude    = #{busStop.latitude},
+            bs.stop_name   = #{busStop.name},
+            bs.is_terminal = #{busStop.isTerminal},
+            bs.city_id     = #{busStop.city.id}
+        WHERE bs.id = #{busStop.id};
     </update>
 
     <delete id="deleteById" parameterType="int">
         DELETE
-        FROM bus_stop
-        WHERE id = #{id}
+        FROM bus_stop bs
+        WHERE bs.id = #{id};
     </delete>
 
 </mapper>
