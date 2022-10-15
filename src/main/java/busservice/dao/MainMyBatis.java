@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainMyBatis {
     private static final Logger logger = LogManager.getLogger(MainMyBatis.class);
@@ -25,6 +26,19 @@ public class MainMyBatis {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession session = sqlSessionFactory.openSession();
 
+        IBusStopDAO busStopMapper = session.getMapper(IBusStopDAO.class);
+        List<BusStop> busStops = busStopMapper.getAll();
+
+        IBusDAO bus = session.getMapper(IBusDAO.class);
+        List<Bus> buses = bus.getAll();
+
+        for(BusStop stop : busStops){
+            logger.info(stop);
+        }
+
+        for(Bus buss: buses){
+            logger.info(buss);
+        }
 
         session.commit();
         session.close();

@@ -5,6 +5,16 @@
 <mapper namespace="busservice.dao.IBusDAO">
     <resultMap id="BusMap" type="Bus">
         <id property="id" column="id"/>
+        
+        <collection property="stops" ofType="BusStop">
+            <id property="id" column="id"/>
+            <result property="longitude" column="longitude"/>
+            <result property="latitude" column="latitude"/>
+            <result property="name" column="stop_name"/>
+            <result property="isTerminal" column="isTerminal"/>
+            <result property="city.id" column="city_id"/>
+            <result property="city.name" column="name"/>
+        </collection>
     </resultMap>
 
     <select id="getById" resultMap="BusMap">
@@ -14,8 +24,11 @@
     </select>
 
     <select id="getAll" resultMap="BusMap">
-        SELECT *
-        FROM bus
+        SELECT * FROM bus
+        JOIN route
+        ON bus.id = route.bus_id
+        JOIN bus_stop
+        ON route.stop_id = bus_stop.id
     </select>
 
     <insert id="insert" parameterType="Bus">
