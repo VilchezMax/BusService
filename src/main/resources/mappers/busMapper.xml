@@ -15,7 +15,7 @@
             <id property="id" column="bus_stop_id"/>
             <result property="longitude" column="bus_stop_longitude"/>
             <result property="latitude" column="bus_stop_latitude"/>
-            <result property="name" column="bus_stop_stop_name"/>
+            <result property="name" column="bus_stop_name"/>
             <result property="isTerminal" column="bus_stop_is_terminal"/>
             <association property="city"
                          column="city_id"
@@ -31,13 +31,12 @@
                 <collection property="route"
                             javaType="ArrayList"
                             ofType="BusStop">
-                    <id property="id" column="bus_stop_id"/>
+                    <id property="id" column="route_stop_id"/>
                     <result property="longitude" column="bus_stop_longitude"/>
                     <result property="latitude" column="bus_stop_latitude"/>
                     <result property="name" column="bus_stop_name"/>
                     <result property="isTerminal" column="bus_stop_is_terminal"/>
                     <association property="city"
-                                 column="city_id"
                                  javaType="City">
                         <id property="id" column="city_id"/>
                         <result property="name" column="city_name"/>
@@ -45,8 +44,9 @@
                     <collection property="buses"
                                 javaType="ArrayList"
                                 ofType="Bus">
-                        <id property="id" column="bus_id"/>
-                        <result property="line" column="bus_line"/>
+                        <!-- Ignore buses collection here -->
+                    </collection>
+
                 </collection>
             </association>
         </collection>
@@ -76,7 +76,7 @@
     </select>
 
     <select id="getAll" resultMap="BusMap">
-        SELECT SELECT
+        SELECT
         <include refid="busColumns"/>
         FROM bus b
         JOIN route r ON b.id = r.bus_id
@@ -86,7 +86,7 @@
     </select>
 
     <select id="getAllRoutes" resultMap="busservice.dao.IBusStopDAO.BusStopMap">
-        SELECT SELECT
+        SELECT
         <include refid="busColumns"/>
         FROM route r
         JOIN bus b ON b.id = r.bus_id
@@ -97,7 +97,7 @@
     </select>
 
     <select id="getRouteByBusId" resultMap="busservice.dao.IBusStopDAO.BusStopMap" parameterType="int">
-        SELECT SELECT
+        SELECT
         <include refid="busColumns"/>
         FROM route r
         JOIN bus b ON b.id = r.bus_id

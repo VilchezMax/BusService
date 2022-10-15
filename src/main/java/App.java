@@ -1,9 +1,8 @@
-package busservice;
-
-import busservice.models.Bus;
+import busservice.models.BusStop;
 import busservice.services.mybatis.BusService;
 import busservice.services.mybatis.BusStopService;
 import busservice.services.mybatis.CityService;
+import gui.GUI;
 
 import java.util.List;
 
@@ -16,27 +15,9 @@ public class App {
         CityService cityService = new CityService();
 
         /* Test: BusStop.getAll() */
-//        List<BusStop> allBusStops = busStopService.getAll();
-//        allBusStops.forEach(System.out::println);
-//        GUI gui = new GUI(allBusStops);
+        List<BusStop> allBusStops = busStopService.getAll();
+        GUI gui = new GUI(allBusStops);
 
-        /* Test BusStop.getById()*/
-//        BusStop busStop = busStopService.getById(3);
-//        System.out.println(busStop);
-
-        /*Test: Bus.getById*/
-//        Bus bus = busService.getById(1);
-//        System.out.println(bus.getRoute());
-
-        /* Test: Bus.getAll() */
-        List<Bus> allBuses = busService.getAll();
-        System.out.println(allBuses.get(0));
-
-        /*Test Bus.getAllRoutes*/
-//        List<List<BusStop>> allRoutes = busService.getAllRoutes();
-//        System.out.println(allRoutes.get(0));
-//        System.out.println(allRoutes.get(1));
-//        System.out.println(allRoutes.get(2));
 
     }
 }

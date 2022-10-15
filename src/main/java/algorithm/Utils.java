@@ -12,26 +12,18 @@ import java.util.Map;
 public class Utils {
     public static void connections(List<BusStop> finalRoute, List<Bus> buses) {
         Map<Bus, List<BusStop>> busRoutes = null;
-        //take finalRoute list of BusStop and buses list of Bus
-        //Print all the connections between busStops of finalRoute and buses
-        //for example:
-        //BusStop 1 is connected to Bus 1
-        //BusStop 1 is connected to Bus 2
-        //BusStop 2 is connected to Bus 1
-        //BusStop 2 is connected to Bus 3
-        //BusStop 3 is connected to Bus 3
-        //BusStop 3 is connected to Bus 4
-        //BusStop 4 is connected to Bus 4
-        //BusStop 4 is connected to Bus 5
-        //Start:
-        //for each BusStop in finalRoute
-        //for each Bus in buses
-        //for each BusStop in Bus.getRoute()
-        //if BusStop in Bus.getRoute() equals BusStop in finalRoute
-        //print BusStop in finalRoute is connected to Bus
-        //end for
-        //end for
-        //end for
+        for (Bus bus : buses) {
+//            busRoutes = bus.getBusRoutes();
+            for (Map.Entry<Bus, List<BusStop>> entry : busRoutes.entrySet()) {
+                List<BusStop> busStops = entry.getValue();
+                for (int i = 0; i < busStops.size() - 1; i++) {
+                    if (finalRoute.contains(busStops.get(i)) && finalRoute.contains(busStops.get(i + 1))) {
+                        finalRoute.add(busStops.get(i));
+                        finalRoute.add(busStops.get(i + 1));
+                    }
+                }
+            }
+        }
         for (BusStop busStop : finalRoute) {
             for (Bus bus : buses) {
                 for (BusStop stop : bus.getRoute()) {
