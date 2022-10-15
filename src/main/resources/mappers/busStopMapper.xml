@@ -6,33 +6,75 @@
     <resultMap id="BusStopMap"
                type="BusStop"
                autoMapping="false">
-        <id property="id" column="id"/>
-        <result property="longitude" column="longitude"/>
-        <result property="latitude" column="latitude"/>
-        <result property="name" column="stop_name"/>
-        <result property="isTerminal" column="is_terminal"/>
+
+        <id property="id" column="bus_stop_id"/>
+        <result property="longitude" column="bus_stop_longitude"/>
+        <result property="latitude" column="bus_stop_latitude"/>
+        <result property="name" column="bus_stop_name"/>
+        <result property="isTerminal" column="bus_stop_is_terminal"/>
         <association property="city"
+                     column="city_id"
                      javaType="City"
                      resultMap="busservice.dao.ICityDAO.CityMap"/>
         <collection property="buses"
+                    column="bus_id"
                     javaType="ArrayList"
                     ofType="Bus"
-                    resultMap="busservice.dao.IBusDAO.BusMap"/>
+                    resultMap="busservice.dao.IBusDAO.NestedBusMap"/>
     </resultMap>
 
+    <resultMap id="NestedBusStopMap" type="BusStop" autoMapping="false">
+        <id property="id" column="bus_stop_id"/>
+        <result property="longitude" column="bus_stop_longitude"/>
+        <result property="latitude" column="bus_stop_latitude"/>
+        <result property="name" column="bus_stop_name"/>
+        <result property="isTerminal" column="bus_stop_is_terminal"/>
+        <association property="city"
+                     column="city_id"
+                     javaType="City">
+            <id property="id" column="city_id"/>
+            <result property="name" column="city_name"/>
+        </association>
+        <collection property="buses"
+                    column="bus_id"
+                    javaType="ArrayList"
+                    ofType="Bus">
+            <id property="id" column="bus_id"/>
+            <result property="line" column="bus_line"/>
+        </collection>
+    </resultMap>
+
+    <sql id="busStopColumns">
+        bs.id as bus_stop_id,
+        bs.longitude as bus_stop_longitude,
+        bs.latitude as bus_stop_latitude,
+        bs.stop_name as bus_stop_name,
+        bs.is_terminal as bus_stop_is_terminal,
+        r.bus_id as route_bus_id,
+        r.stop_id as route_stop_id,
+        c.id as city_id,
+        c.name as city_name,
+        b.id as bus_id,
+        b.line as bus_line
+    </sql>
+
     <select id="getById" parameterType="int" resultMap="BusStopMap">
-        SELECT *
+        SELECT
+        <include refid="busStopColumns"/>
         FROM bus_stop bs
-        INNER JOIN city ON bs.city_id = city.id
-        INNER JOIN route ON route.stop_id = bs.id
-        INNER JOIN bus b ON route.bus_id = b.id
+        INNER JOIN city c ON bs.city_id = c.id
+        INNER JOIN route r ON r.stop_id = bs.id
+        INNER JOIN bus b ON r.bus_id = b.id
         WHERE bs.id = #{id};
     </select>
 
     <select id="getAll" resultMap="BusStopMap">
-        SELECT *
+        SELECT
+        <include refid="busStopColumns"/>
         FROM bus_stop bs
-        INNER JOIN city ON bs.city_id = city.id
+        INNER JOIN city c ON bs.city_id = c.id
+        INNER JOIN route r ON r.stop_id = bs.id
+        INNER JOIN bus b ON r.bus_id = b.id
         ORDER BY bs.id;
     </select>
 
@@ -42,20 +84,19 @@
     </insert>
 
     <update id="update" parameterType="BusStop">
-        UPDATE bus_stop
-        SET
-        longitude = #{busStop.longitude},
-        latitude = #{busStop.latitude},
-        stop_name = #{busStop.name},
-        is_terminal = #{busStop.isTerminal},
-        city_id = #{busStop.city.id}
-        WHERE id = #{busStop.id};
+        UPDATE bus_stop bs
+        SET bs.longitude   = #{busStop.longitude},
+            bs.latitude    = #{busStop.latitude},
+            bs.stop_name   = #{busStop.name},
+            bs.is_terminal = #{busStop.isTerminal},
+            bs.city_id     = #{busStop.city.id}
+        WHERE bs.id = #{busStop.id};
     </update>
 
     <delete id="deleteById" parameterType="int">
         DELETE
-        FROM bus_stop
-        WHERE id = #{id}
+        FROM bus_stop bs
+        WHERE bs.id = #{id};
     </delete>
 
 </mapper>

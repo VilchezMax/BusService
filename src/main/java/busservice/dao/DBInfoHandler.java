@@ -52,7 +52,7 @@ public class DBInfoHandler {
     public HashMap<String, String[]> getAdjacentStops() {
         HashMap<String, ArrayList<String>> stops = new HashMap<>();
         for (Bus bus : getBuses()) {
-            ArrayList<BusStop> aux = bus.getRoute();
+            ArrayList<BusStop> aux = (ArrayList<BusStop>) bus.getRoute();
 
             String prevStop = null;
             /*System.out.println(" !!!!!!!!!!!!!!!!!!!!!  LíneAA  " + bus.getId());

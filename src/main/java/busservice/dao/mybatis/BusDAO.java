@@ -120,4 +120,21 @@ public class BusDAO implements IBusDAO {
         }
         return route;
     }
+
+    @Override
+    public List<List<BusStop>> getAllRoutes() throws SQLException {
+        List<List<BusStop>> routes = null;
+        SqlSession session = null;
+        try {
+            session = MySessionFactory.getInstance().getFactory().openSession();
+            routes = session.getMapper(IBusDAO.class).getAllRoutes();
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return routes;
+    }
 }
