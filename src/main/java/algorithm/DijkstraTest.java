@@ -1,179 +1,144 @@
 package algorithm;
 
-import busservice.dao.DBInfoHandler;
-
-import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DijkstraTest {
+    public static String getShortestPath(String start, String destination) {
+        ArrayList<String> visitedVertexes = new ArrayList<>();
+        ArrayList<String> unvisitedVertexes = new ArrayList<>();
+        ArrayList<VertexTableRow> vertexTableRows = new ArrayList<>();
+        ArrayList<String> result = new ArrayList<>();
+        HashMap<String, String[]> vertices = loadVertices(new HashMap<>());
+        HashMap<String, int[]> distances = loadDistances(new HashMap<>());
 
-    public static String getShortestPath(String from, String to) throws SQLException {
-        try {
-            ArrayList<String> visited = new ArrayList<>();
-            ArrayList<String> unvisited = new ArrayList<>();
-            DBInfoHandler infoHandler = new DBInfoHandler();
-            HashMap<String, String[]> vertices = infoHandler.getAdjacentStops();
-            HashMap<String, int[]> distances = infoHandler.getStopsCoordinates();
-            ArrayList<VertexTable> shortestTable = new ArrayList<>();
-
-            for (Map.Entry<String, String[]> set : vertices.entrySet()) {
-                VertexTable row = new VertexTable();
-                row.setVertex(set.getKey());
-                unvisited.add(set.getKey());
-                if (set.getKey().equals(from)) {
-                    row.setShortestFromStart(0);
-                }
-
-                shortestTable.add(row);
+        for (Map.Entry<String, String[]> entry : vertices.entrySet()) {
+            VertexTableRow row = new VertexTableRow();
+            row.setVertex(entry.getKey());
+            unvisitedVertexes.add(entry.getKey());
+            if (entry.getKey() == start) {
+                row.setShortestFromStart(0);
             }
+            vertexTableRows.add(row);
+        }
 
-            while (lookForInfinity(shortestTable) || unvisited.size() > 0) {
-
-                double currShortest = Double.POSITIVE_INFINITY;
-                String closestVertex = null;
-                for (VertexTable row : shortestTable) {
-
-                    if (  row.getShortestFromStart() < currShortest && !visited.contains(row.getVertex()) ) {
-
-                        currShortest = row.getShortestFromStart();
-                        closestVertex = row.getVertex();
-                    }
+        //double currShortest = Double.POSITIVE_INFINITY;
+        //String closestVertex = null;
+        // || unvisitedVertexes.size()>0
+        while (allVisited(vertexTableRows)) {
+            double currentShortestVertex = Double.POSITIVE_INFINITY;
+            String closestVertex = null;
+            for (VertexTableRow row : vertexTableRows) {
+                if (row.getShortestFromStart() < currentShortestVertex && !visitedVertexes.contains(row.getVertex())) {
+                    currentShortestVertex = row.getShortestFromStart();
+                    closestVertex = row.getVertex();
                 }
-
-
-                for (Map.Entry<String, String[]> set : vertices.entrySet()) {
-                    if (set.getKey().equals(closestVertex)) {
-                        for (String toVisit : set.getValue()) {
-                            if (visited.contains(toVisit)) {
-                                continue;
-                            }
-                            int[] coordinatesClosest = distances.get(closestVertex);
-                            int[] coordinatesToVisit = distances.get(toVisit);
-
-                            int closestX = coordinatesClosest[0];
-                            int closestY = coordinatesClosest[1];
-                            int toVisitX = coordinatesToVisit[0];
-                            int toVisitY = coordinatesToVisit[1];
-
-                            double distance = Math.sqrt(Math.pow(toVisitY - closestY, 2) + Math.pow(toVisitX - closestX, 2));
-
-                            for (VertexTable update : shortestTable) {
-
-
-                                if (update.getVertex().equals(toVisit) && update.getShortestFromStart() > distance) {
-
-                                    for (VertexTable dist : shortestTable) {
-                                        if (dist.getVertex().equals(closestVertex)) {
-                                            distance += dist.getShortestFromStart();
+            }
+            for (Map.Entry<String, String[]> entry : vertices.entrySet()) {
+                if (entry.getKey() == closestVertex) {
+                    for (String toVisit : entry.getValue()) {
+                        if (visitedVertexes.contains(toVisit)) {
+                            continue;
+                        }
+                        int[] coordinatesClosest = distances.get(closestVertex);
+                        int[] coordinatesToVisit = distances.get(toVisit);
+                        int closestX = coordinatesClosest[0];
+                        int closestY = coordinatesClosest[1];
+                        int toVisitX = coordinatesToVisit[0];
+                        int toVisitY = coordinatesToVisit[1];
+                        double distance = Math.sqrt(Math.pow(toVisitY - closestY, 2) + Math.pow(toVisitX - closestX, 2));
+                        for (VertexTableRow row : vertexTableRows) {
+                            if (row.getVertex() == toVisit && row.getShortestFromStart() > distance) {
+                                for (VertexTableRow dist : vertexTableRows) {
+                                    if (dist.getVertex() == closestVertex) {
+                                        distance += dist.getShortestFromStart();
+                                        break;
+                                    }
+                                }
+                                if (row.getShortestFromStart() >= distance) {
+                                    double newShortestVertex = distance;
+                                    for (VertexTableRow previousRow : vertexTableRows) {
+                                        double distanceTotal = previousRow.getShortestFromStart() + distance;
+                                        if (distanceTotal > row.getShortestFromStart()) {
+                                            newShortestVertex += previousRow.getShortestFromStart();
+                                            row.setShortestFromStart(newShortestVertex);
+                                            row.setPrevVertex(closestVertex);
+                                            break;
+                                        }
+                                        if (previousRow.getVertex() == row.getPrevVertex()) {
+                                            newShortestVertex += previousRow.getShortestFromStart();
                                             break;
                                         }
                                     }
-                                    if (update.getShortestFromStart() < distance) {
-                                        continue;
-                                    }
-                                    double newShortest = distance;
-
-                                    for (VertexTable sumThis : shortestTable) {
-                                        if (update.getShortestFromStart() < sumThis.getShortestFromStart() + distance) {
-                                            newShortest += sumThis.getShortestFromStart();update.setShortestFromStart(newShortest);
-                                            update.setPrevVertex(closestVertex);
-                                            break;
-                                        }
-                                        if (sumThis.getVertex().equals(update.getPrevVertex())) {
-                                            newShortest += sumThis.getShortestFromStart();
-                                            break;
-                                        }
-                                    }
-                                    update.setShortestFromStart(newShortest);
-                                    update.setPrevVertex(closestVertex);
+                                    row.setShortestFromStart(newShortestVertex);
+                                    row.setPrevVertex(closestVertex);
                                 }
                             }
                         }
-
-                    }
-                }
-
-                visited.add(closestVertex);
-                unvisited.remove(closestVertex);
-
-            }
-
-
-            ArrayList<String> result = new ArrayList<>();
-
-            boolean prevIsNull = false;
-
-            while (!prevIsNull) {
-                for (VertexTable show : shortestTable) {
-
-                    if (show.getVertex().equals(to)) {
-
-                        result.add(show.getVertex());
-                        if (show.getPrevVertex() == null) {
-
-                            prevIsNull = true;
-                            break;
-                        }
-                        to = show.getPrevVertex();
                     }
                 }
             }
-            Collections.reverse(result);
-            showPathWithBuses(result);
-            return result.toString();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            visitedVertexes.add(closestVertex);
+            unvisitedVertexes.remove(closestVertex);
         }
-    }
 
-    public static boolean lookForInfinity(ArrayList<VertexTable> testTable) {
-        boolean flag = false;
-        for (VertexTable infinite : testTable) {
-            if (infinite.getShortestFromStart() == Double.POSITIVE_INFINITY) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-
-
-    public static void showPathWithBuses(ArrayList<String> route) {
-        DBInfoHandler info = new DBInfoHandler();
-        HashMap<Integer, String[]> lines = info.getLinesStops();
-
-        ArrayList<String> resultArray = new ArrayList<>();
-
-        Integer currentLine = null;
-        for (int i = 0; i < route.size(); i++) {
-
-            for (Map.Entry<Integer, String[]> set : lines.entrySet()) {
-                if (i + 1 == route.size()) {
-                    resultArray.add(route.get(i));
-                    System.out.println("get off at " + route.get(i));
-                    break;
-                }
-
-                if (lineHasBothStops(set.getValue(), route.get(i), route.get(i + 1))) {
-                    if (currentLine != null && currentLine.equals(set.getKey())) continue;
-
-                    resultArray.add(set.getKey().toString());
-                    resultArray.add(route.get(i));
-
-                    System.out.println("take line " + set.getKey() + " at " + route.get(i));
-
-                    currentLine = set.getKey();
+        boolean prevIsNull = false;
+        while (!prevIsNull) {
+            for (VertexTableRow row : vertexTableRows) {
+                if (row.getVertex() == destination) {
+                    result.add(row.getVertex());
+                    if (row.getPrevVertex() == null) {
+                        prevIsNull = true;
+                        break;
+                    }
+                    destination = row.getPrevVertex();
                 }
             }
         }
+        Collections.reverse(result);
+        return result.toString();
     }
 
-
-    public static boolean lineHasBothStops(String[] stops, String currStop, String nextStop) {
-
-        if (Arrays.stream(stops).anyMatch(currStop::equals) && Arrays.stream(stops).anyMatch(nextStop::equals)) {
-            return true;
+    public static boolean allVisited(ArrayList<VertexTableRow> testTable) {
+        boolean anyInfinity = false;
+        for (VertexTableRow row : testTable) {
+            if (row.getShortestFromStart() == Double.POSITIVE_INFINITY) {
+                anyInfinity = true;
+                break;
+            }
         }
-        return false;
+        return anyInfinity;
+    }
+
+    public static HashMap<String, String[]> loadVertices(HashMap<String, String[]> vertices) {
+        vertices.put("Knightsbridge", new String[]{"Covent Garden", "Gloucester Road"});
+        vertices.put("Covent Garden", new String[]{"Leicester Square", "Knightsbridge"});
+        vertices.put("Gloucester Road", new String[]{"Hyde Park Corner", "Knightsbridge"});
+        vertices.put("Leicester Square", new String[]{"Covent Garden", "Tower Hill", "Hyde Park Corner"});
+        vertices.put("Hyde Park Corner", new String[]{"Gloucester Road", "Piccadilly Circus", "Leicester Square"});
+        vertices.put("Piccadilly Circus", new String[]{"Hyde Park Corner", "Liverpool Street", "Waterloo"});
+        vertices.put("Tower Hill", new String[]{"Leicester Square", "Blackfriars"});
+        vertices.put("Blackfriars", new String[]{"Tower Hill", "St. Paul's"});
+        vertices.put("St. Paul's", new String[]{"Blackfriars", "Waterloo"});
+        vertices.put("Waterloo", new String[]{"Piccadilly Circus", "St. Paul's"});
+        vertices.put("Liverpool Street", new String[]{"Piccadilly Circus"});
+        return vertices;
+    }
+
+    public static HashMap<String, int[]> loadDistances(HashMap<String, int[]> distances) {
+        distances.put("Knightsbridge", new int[]{39, 13});
+        distances.put("Covent Garden", new int[]{36, 14});
+        distances.put("Gloucester Road", new int[]{39, 16});
+        distances.put("Leicester Square", new int[]{35, 17});
+        distances.put("Hyde Park Corner", new int[]{38, 20});
+        distances.put("Piccadilly Circus", new int[]{35, 23});
+        distances.put("Tower Hill", new int[]{31, 16});
+        distances.put("Blackfriars", new int[]{29, 19});
+        distances.put("St. Paul's", new int[]{29, 22});
+        distances.put("Waterloo", new int[]{32, 20});
+        distances.put("Liverpool Street", new int[]{34, 25});
+        return distances;
     }
 }

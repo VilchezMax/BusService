@@ -26,6 +26,5 @@
         <mapper resource="mappers/cityMapper.xml"/>
         <mapper resource="mappers/busMapper.xml"/>
         <mapper resource="mappers/busStopMapper.xml"/>
-
     </mappers>
 </configuration>

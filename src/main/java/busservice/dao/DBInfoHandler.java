@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DBInfoHandler {
     IBusDAO busMapper;
@@ -49,78 +48,44 @@ public class DBInfoHandler {
         return buses;
     }
 
-    public HashMap<String, String[]> getAdjacentStops() {
+    public HashMap<String, ArrayList<String>> getAdjacentStops() {
         HashMap<String, ArrayList<String>> stops = new HashMap<>();
+        String prevStop = null;
         for (Bus bus : getBuses()) {
-            ArrayList<BusStop> aux = (ArrayList<BusStop>) bus.getRoute();
-
-            String prevStop = null;
-            /*System.out.println(" !!!!!!!!!!!!!!!!!!!!!  LíneAA  " + bus.getId());
-            System.out.println("---====");
-            for (BusStop aaa : aux) {
-                System.out.print(aaa.getName() + ",");
-            }
-            System.out.println("-----");*/
             for (BusStop stop : bus.getRoute()) {
                 if (!stops.containsKey(stop.getName())) {
                     stops.put(stop.getName(), new ArrayList<String>());
-                    //System.out.println("crea la key " + stop.getName());
-                    if (prevStop != null && !stops.get(stop.getName()).contains(prevStop)) {
-                        stops.get(stop.getName()).add(prevStop);
-                        //System.out.println("agrega " + prevStop + " a " + stop.getName() + "  ^");
-                    }
+                } else {
+                    stops.get(stop.getName()).add(prevStop);
+                }
+                stops.get(prevStop).add(stop.getName());
+                stops.get(stop.getName()).add(prevStop);
+                prevStop = stop.getName();
+            }
+        }
+        return stops;
+    }
+
+/*    public HashMap<String, ArrayList<String>> getAdjacentStops2() {
+        HashMap<String, ArrayList<String>> stops = new HashMap<>();
+        String prevStop = null;
+        for (Bus bus : getBuses()) {
+            for (BusStop stop : bus.getRoute()) {
+                if (!stops.containsKey(stop.getName())) {
+                    stops.put(stop.getName(), new ArrayList<String>());
+                    if (prevStop != null) {
+                        stops.get(stop.getName()).add(prevStop);}
+                } else {
+                    stops.get(stop.getName()).add(prevStop);
                 }
                 if (prevStop != null) {
-                    if (!stops.get(prevStop).contains(stop.getName())) stops.get(prevStop).add(stop.getName());
-                    //System.out.println("agrega " + stop.getName() + " a " + prevStop);
-                    if (!stops.get(stop.getName()).contains(prevStop)) stops.get(stop.getName()).add(prevStop);
+                    stops.get(prevStop).add(stop.getName());
+                    stops.get(stop.getName()).add(prevStop);
                 }
                 prevStop = stop.getName();
             }
         }
-
-        HashMap<String, String[]> newHash = new HashMap<>();
-
-        for (Map.Entry<String, ArrayList<String>> set : stops.entrySet()) {
-
-            newHash.put(set.getKey(), set.getValue().toArray(new String[]{}));
-
-            //System.out.println(set.getKey() + " " + Arrays.toString(set.getValue()));
-        }
-        return newHash;
-    }
-
-
-    public HashMap<String, int[]> getStopsCoordinates() throws SQLException {
-        ArrayList<BusStop> stops = (ArrayList<BusStop>) busStopMapper.getAll();
-
-        HashMap<String, int[]> result = new HashMap<>();
-
-        for (BusStop current : stops) {
-            result.put(current.getName(), new int[]{current.getLatitude(), current.getLongitude()});
-        }
-
-        return result;
-    }
-
-    public HashMap<Integer, String[]> getLinesStops() {
-        HashMap<Integer, String[]> lines = new HashMap<>();
-
-
-        for (Bus bus : getBuses()) {
-
-            ArrayList<String> stopsAux = new ArrayList<>();
-
-
-            for (BusStop stop : bus.getRoute()) {
-                stopsAux.add(stop.getName());
-            }
-            String[] stops = stopsAux.toArray(new String[0]);
-
-            lines.put(bus.getId(), stops);
-        }
-
-        return lines;
-    }
+        return stops;
+    }*/
 
 }
