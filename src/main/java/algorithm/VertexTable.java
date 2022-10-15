@@ -1,9 +1,8 @@
-package busservice;
+package algorithm;
 
 import java.text.DecimalFormat;
 
-public class VertexTable{
-
+public class VertexTable {
     private String vertex;
     private double shortestFromStart;
     private String prevVertex;
@@ -19,7 +18,7 @@ public class VertexTable{
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("#.##");
-        return "VertexTable{" + "vertex='" + vertex + '\'' + ", shortestFromStart=" + df.format(shortestFromStart) + ", prevVertex='" + prevVertex + '\'' + '}';
+        return "VertexTableRow{" + "vertex='" + vertex + '\'' + ", shortestFromStart=" + df.format(shortestFromStart) + ", prevVertex='" + prevVertex + '\'' + '}';
     }
 
     public void setVertex(String vertex) {
@@ -41,7 +40,4 @@ public class VertexTable{
     public void setPrevVertex(String prevVertex) {
         this.prevVertex = prevVertex;
     }
-
-
-
 }

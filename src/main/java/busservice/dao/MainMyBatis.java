@@ -2,8 +2,6 @@ package busservice.dao;
 
 import busservice.models.Bus;
 import busservice.models.BusStop;
-import busservice.models.City;
-
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;

@@ -8,10 +8,6 @@
         <typeAlias alias="City" type="busservice.models.City"/>
         <typeAlias alias="Bus" type="busservice.models.Bus"/>
         <typeAlias alias="BusStop" type="busservice.models.BusStop"/>
-
-        <!--
-        <typeAlias alias="Route" type="jdbc.model.Route"/>
-         -->
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -30,7 +26,6 @@
         <mapper resource="mappers/cityMapper.xml"/>
         <mapper resource="mappers/busMapper.xml"/>
         <mapper resource="mappers/busStopMapper.xml"/>
-        <!--
-        <mapper resource="myBatis/mappers/busMapper.xml"/> -->
+
     </mappers>
 </configuration>

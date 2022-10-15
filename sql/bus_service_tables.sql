@@ -1,5 +1,5 @@
-#DROP DATABASE IF EXISTS bus_service;
-#CREATE DATABASE bus_service;
+DROP DATABASE IF EXISTS bus_service;
+CREATE DATABASE bus_service;
 USE bus_service;
 
 SET foreign_key_checks = 0;
@@ -24,7 +24,7 @@ CREATE TABLE bus_stop (
     longitude  INT NOT NULL,
     latitude INT NOT NULL,
     stop_name VARCHAR(50) NOT NULL,
-    isTerminal TINYINT NOT NULL,
+    is_terminal TINYINT NOT NULL,
     city_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (city_id) REFERENCES city (id) ON UPDATE CASCADE
@@ -41,10 +41,5 @@ CREATE TABLE route (
     FOREIGN KEY (bus_id) REFERENCES bus (id) ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS stops_closeby;
-CREATE TABLE stops_closeby(
-id INT NOT NULL auto_increment PRIMARY KEY,
-stopId INT NOT NULL,
-closeStopId INT NOT NULL,
-FOREIGN KEY (closeStopId) REFERENCES bus_stop(id) ON UPDATE CASCADE ON DELETE NO ACTION
-);
+
+

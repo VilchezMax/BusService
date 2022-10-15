@@ -18,9 +18,15 @@
     </resultMap>
 
     <select id="getById" resultMap="BusMap">
-        SELECT id
-        FROM bus
-        WHERE id = #{id}
+        SELECT * FROM bus
+        JOIN route
+        ON bus.id = route.busId
+        JOIN bus_stop
+        ON route.stopId = bus_stop.id
+
+        JOIN city
+        ON bus_stop.city_id = city.id
+        WHERE bus.id = #{id}
     </select>
 
     <select id="getAll" resultMap="BusMap">
@@ -36,13 +42,11 @@
         (id)
         VALUES (#{id})
     </insert>
-
     <update id="update" parameterType="map">
         UPDATE bus SET
         id = #{object.id}
         WHERE id = #{object.id}
     </update>
-
     <delete id="deleteById" parameterType="int">
         DELETE FROM bus
         WHERE id = #{id}

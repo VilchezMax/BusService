@@ -1,13 +1,13 @@
-package busservice;
+package algorithm;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import busservice.dao.DBInfoHandler;
+
+import java.sql.SQLException;
+import java.util.*;
 
 public class DijkstraTest {
 
-    public static String getShortestPath( String from, String to ) {
+    public static String getShortestPath(String from, String to) throws SQLException {
         {
 
             String start = from;
@@ -15,7 +15,13 @@ public class DijkstraTest {
             ArrayList<String> visited = new ArrayList<>();
             ArrayList<String> unvisited = new ArrayList<>();
 
-            HashMap<String, String[]> vertices = new HashMap<>() {
+            DBInfoHandler infoHandler = new DBInfoHandler();
+
+            HashMap<String, String[]> vertices = infoHandler.getAdjacentStops();
+
+
+
+                    /*new HashMap<>() {
                 {
                     put("Knightsbridge", new String[]{"Covent Garden", "Gloucester Road"});
                     put("Covent Garden", new String[]{"Leicester Square", "Knightsbridge"});
@@ -29,9 +35,11 @@ public class DijkstraTest {
                     put("Waterloo", new String[]{"Piccadilly Circus", "St. Paul's"});
                     put("Liverpool Street", new String[]{"Piccadilly Circus"});
                 }
-            };
+            };*/
 
-            HashMap<String, Integer[]> distances = new HashMap<>() {
+            HashMap<String, int[]> distances = infoHandler.getStopsCoordinates();
+
+                    /*new HashMap<>() {
                 {
                     put("Knightsbridge", new Integer[]{39,13});
                     put("Covent Garden", new Integer[]{36,14});
@@ -45,7 +53,7 @@ public class DijkstraTest {
                     put("Waterloo",  new Integer[]{32,20} );
                     put("Liverpool Street", new Integer[]{34,25} );
                 }
-            };
+            };*/
 
             ArrayList<VertexTable> shortestTable = new ArrayList<>();
 
@@ -53,7 +61,7 @@ public class DijkstraTest {
                 VertexTable row = new VertexTable();
                 row.setVertex(set.getKey());
                 unvisited.add(set.getKey());
-                if (set.getKey() == start) {
+                if (set.getKey().equals(start)) {
                     row.setShortestFromStart(0);
                 }
 
@@ -65,7 +73,9 @@ public class DijkstraTest {
             //double currShortest = Double.POSITIVE_INFINITY;
             //String closestVertex = null;
 
-            while (lookForInfinity(shortestTable) || unvisited.size()>0) {
+            int count = 0;
+            while (lookForInfinity(shortestTable) || unvisited.size() > 0) {
+
                 double currShortest = Double.POSITIVE_INFINITY;
                 String closestVertex = null;
                 for (VertexTable row : shortestTable) {
@@ -82,16 +92,16 @@ public class DijkstraTest {
 
                 //System.out.println("Continue with: " + closestVertex);
                 for (Map.Entry<String, String[]> set : vertices.entrySet()) {
-                    if (set.getKey() == closestVertex) {
+                    if (set.getKey().equals(closestVertex)) {
                         //System.out.println("Try:" + Arrays.toString(set.getValue()));
                         //System.out.println("visited: " + Arrays.toString(visited.toArray())+  " unvisited: " + Arrays.toString(unvisited.toArray())) ;
 
                         for (String toVisit : set.getValue()) {
-                            if(visited.contains(toVisit)){
+                            if (visited.contains(toVisit)) {
                                 continue;
                             }
-                            Integer[] coordinatesClosest = distances.get(closestVertex);
-                            Integer[] coordinatesToVisit = distances.get(toVisit);
+                            int[] coordinatesClosest = distances.get(closestVertex);
+                            int[] coordinatesToVisit = distances.get(toVisit);
 
                             //System.out.println("closes coord : " + Arrays.toString(coordinatesClosest));
                             //System.out.println("visit coord: " + Arrays.toString(coordinatesToVisit));
@@ -105,23 +115,23 @@ public class DijkstraTest {
                             for (VertexTable update : shortestTable) {
 
 
-                                if (update.getVertex() == toVisit && update.getShortestFromStart() >distance ) {
+                                if (update.getVertex().equals(toVisit) && update.getShortestFromStart() > distance) {
 
 
                                     boolean flagD = false;
-                                    for(VertexTable dist : shortestTable){
-                                        if(dist.getVertex() == closestVertex){
+                                    for (VertexTable dist : shortestTable) {
+                                        if (dist.getVertex().equals(closestVertex)) {
                                             //System.out.println("distance between " + toVisit + " and " + closestVertex + " is " + distance);
                                             //System.out.println("will sum : " +dist.getShortestFromStart());
                                             distance += dist.getShortestFromStart();
                                             //System.out.println("distance is : "+  distance + " sum of " + toVisit + " and " + closestVertex);
                                             flagD = true;
                                         }
-                                        if(flagD) break;
+                                        if (flagD) break;
                                     }
 
 
-                                    if( update.getShortestFromStart() <distance ){
+                                    if (update.getShortestFromStart() < distance) {
                                         continue;
                                     }
 
@@ -131,19 +141,19 @@ public class DijkstraTest {
                                     double newShortest = distance;
 
 
-                                    for(VertexTable sumThis : shortestTable){
+                                    for (VertexTable sumThis : shortestTable) {
 
 
-                                        if(update.getShortestFromStart()< sumThis.getShortestFromStart()+distance){
-                                            newShortest+= sumThis.getShortestFromStart();
+                                        if (update.getShortestFromStart() < sumThis.getShortestFromStart() + distance) {
+                                            newShortest += sumThis.getShortestFromStart();
                                             //System.out.println("setting : " + newShortest + " to " + update.getVertex());
                                             //System.out.println("sum of: " +sumThis.getShortestFromStart() +" and " + distance);
                                             update.setShortestFromStart(newShortest);
                                             update.setPrevVertex(closestVertex);
                                             break;
                                         }
-                                        if(sumThis.getVertex() == update.getPrevVertex()){
-                                            newShortest+= sumThis.getShortestFromStart();
+                                        if (sumThis.getVertex().equals(update.getPrevVertex())) {
+                                            newShortest += sumThis.getShortestFromStart();
                                             // System.out.println("setting : " + newShortest + " to " + update.getVertex());
                                             // System.out.println("sum of: " +sumThis.getShortestFromStart() +" and " + distance);
                                             break;
@@ -167,54 +177,103 @@ public class DijkstraTest {
             }
 
 
-
             ArrayList<String> result = new ArrayList<>();
             //String result ="";
 
             boolean prevIsNull = false;
 
-            while(!prevIsNull ){
-            for (VertexTable show : shortestTable) {
-                //result += show.toString() + "\n";
-                //System.out.println(show);
+            while (!prevIsNull) {
+                for (VertexTable show : shortestTable) {
+                    //result += show.toString() + "\n";
+                    //System.out.println(show);
 
-                if (show.getVertex() == to) {
+                    if (show.getVertex().equals(to)) {
 
-                    result.add(show.getVertex() + " ->");
-                    if(show.getPrevVertex()== null){
+                        result.add(show.getVertex());
+                        if (show.getPrevVertex() == null) {
 
-                        prevIsNull = true;
+                            prevIsNull = true;
 
-                        break;
+                            break;
+                        }
+
+
+                        //result += show.getPrevVertex() + "-> ";
+
+                        //result.add(show.getPrevVertex() + " ->");
+
+                        to = show.getPrevVertex();
                     }
 
-
-                    //result += show.getPrevVertex() + "-> ";
-
-                    //result.add(show.getPrevVertex() + " ->");
-
-                    to= show.getPrevVertex();
                 }
 
             }
 
-            }
-
             Collections.reverse(result);
+            showPathWithBuses(result);
             return result.toString();
         }
 
     }
 
-    public static boolean lookForInfinity(ArrayList<VertexTable> testTable){
+    public static boolean lookForInfinity(ArrayList<VertexTable> testTable) {
         boolean flag = false;
-        for(VertexTable infinite : testTable){
-            if(infinite.getShortestFromStart() == Double.POSITIVE_INFINITY){
+        for (VertexTable infinite : testTable) {
+            if (infinite.getShortestFromStart() == Double.POSITIVE_INFINITY) {
                 flag = true;
             }
         }
 
         return flag;
+    }
+
+
+    public static void showPathWithBuses(ArrayList<String> route) {
+
+
+        DBInfoHandler info = new DBInfoHandler();
+        HashMap<Integer, String[]> lines = info.getLinesStops();
+
+        ArrayList<String> resultArray = new ArrayList<>();
+
+        Integer currentLine = null;
+        for (int i = 0; i < route.size(); i++) {
+
+            for (Map.Entry<Integer, String[]> set : lines.entrySet()) {
+
+
+                if (i + 1 == route.size()) {
+                    resultArray.add(route.get(i));
+                    System.out.println("get down at " + route.get(i));
+                    break;
+                }
+
+                if (lineHasBothStops(set.getValue(), route.get(i), route.get(i + 1))) {
+                    if (currentLine != null && currentLine.equals(set.getKey())) continue;
+
+                    resultArray.add(set.getKey().toString());
+                    resultArray.add(route.get(i));
+
+                    System.out.println("take line " + set.getKey() + " at " + route.get(i));
+
+                    currentLine = set.getKey();
+                }
+                //System.out.println(set.getKey() + " = " + Arrays.toString(set.getValue()));
+            }
+
+        }
+
+
+    }
+
+
+    public static boolean lineHasBothStops(String[] stops, String currStop, String nextStop) {
+
+        if (Arrays.stream(stops).anyMatch(currStop::equals) && Arrays.stream(stops).anyMatch(nextStop::equals)) {
+            return true;
+        }
+
+        return false;
     }
 
 }

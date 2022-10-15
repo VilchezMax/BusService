@@ -3,12 +3,13 @@ package busservice.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Bus {
-    private int id;
+    private Integer id;
 
-    private HashMap<BusStop, List<BusStop>> route;
+    private Integer line;
+
+    private ArrayList<BusStop> route;
 
     public ArrayList<BusStop> getStops() {
         return stops;
@@ -24,11 +25,19 @@ public class Bus {
 
     }
 
-    public int getId() {
+    public ArrayList<BusStop> getRoute() {
+        return route;
+    }
+
+    public void setRoute(ArrayList<BusStop> route) {
+        this.route = route;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
