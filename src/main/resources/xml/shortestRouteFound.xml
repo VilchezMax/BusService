@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<busStops>
+    <busStops>
+        <busStop>
+            <id>1</id>
+            <longitude>1</longitude>
+            <latitude>1</latitude>
+            <name>Brandsen 805</name>
+            <isTerminal>false</isTerminal>
+            <city>
+                <id>1</id>
+                <name>Buenos Aires</name>
+            </city>
+            <buses>
+                <id>1</id>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>2</id>
+            <longitude>2</longitude>
+            <latitude>10</latitude>
+            <name>Hospitales</name>
+            <isTerminal>false</isTerminal>
+            <city>
+                <id>2</id>
+                <name>Buenos Aires</name>
+            </city>
+            <buses>
+                <id>2</id>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>3</id>
+            <longitude>8</longitude>
+            <latitude>11</latitude>
+            <name>Venezuela</name>
+            <isTerminal>false</isTerminal>
+            <city>
+                <id>3</id>
+                <name>Buenos Aires</name>
+            </city>
+            <buses>
+                <id>3</id>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>4</id>
+            <longitude>16</longitude>
+            <latitude>12</latitude>
+            <name>Constitución</name>
+            <isTerminal>false</isTerminal>
+            <city>
+                <id>4</id>
+                <name>Buenos Aires</name>
+            </city>
+            <buses>
+                <id>4</id>
+            </buses>
+        </busStop>
+    </busStops>
+</busStops>

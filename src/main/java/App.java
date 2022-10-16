@@ -1,9 +1,12 @@
 import algorithm.DijkstraTest;
 import busservice.models.BusStop;
+import busservice.models.BusStops;
+import busservice.parsers.Parser;
 import busservice.services.mybatis.BusService;
 import busservice.services.mybatis.BusStopService;
 import busservice.services.mybatis.CityService;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -28,6 +31,19 @@ public class App {
 
         //GUI finalStopGui = guiFactory.createGUI(allBusStops, GUI.Stage.FINAL_STOP, initialCityGui.getInitialCity());
 
+        // Testing xml and json parser
+
+        /*List<BusStop> busStops1 = busService.getRouteByBusId(1);
+
+        BusStops shortestRoute = new BusStops();
+        shortestRoute.setBusStopList(busStops1);
+
+        File filename = new File("src/main/resources/xml/shortestRouteFound.xml");
+        Parser.writeXml(shortestRoute,filename);
+
+        File filename2 = new File("src/main/resources/json/shortestRouteFound.json");
+        Parser.writeJson(shortestRoute,filename2);
+*/
 
     }
 }

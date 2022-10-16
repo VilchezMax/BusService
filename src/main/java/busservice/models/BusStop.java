@@ -1,13 +1,25 @@
 package busservice.models;
 
+import javax.xml.bind.annotation.*;
 import java.util.List;
 
+
+
+@XmlRootElement(name = "BusStop")
+@XmlAccessorType(XmlAccessType.FIELD)
+
 public class BusStop {
+    @XmlElement(name = "id")
     private Integer id;
+    @XmlElement(name = "longitude")
     private Integer longitude;
+    @XmlElement(name = "latitude")
     private Integer latitude;
+    @XmlElement(name = "name")
     private String name;
+    @XmlElement(name = "isTerminal")
     private Boolean isTerminal;
+    @XmlElement(name = "city")
     private City city;
     private List<Bus> buses;
 
