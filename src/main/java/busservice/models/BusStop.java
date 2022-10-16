@@ -30,7 +30,7 @@ public class BusStop {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -74,6 +74,15 @@ public class BusStop {
         this.city = city;
     }
 
+    public List<Bus> getBuses() {
+        return buses;
+    }
+
+    public void setBuses(List<Bus> buses) {
+        this.buses = buses;
+    }
+
+
     @Override
     public String toString() {
         return "\nBusStop{" + "\n" +
@@ -85,5 +94,20 @@ public class BusStop {
                 ", city=" + city + "\n" +
                 ", buses=" + buses + "\n" +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BusStop)) return false;
+
+        BusStop busStop = (BusStop) o;
+
+        return id.equals(busStop.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }
