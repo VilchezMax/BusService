@@ -1,17 +1,21 @@
 package algorithm;
 
+import busservice.models.Bus;
+import busservice.models.BusStop;
+import busservice.services.mybatis.BusService;
+
 import java.text.DecimalFormat;
 
 public class VertexTableRow {
-    private String vertex;
+    private BusStop vertex;
     private double shortestFromStart;
-    private String prevVertex;
+    private BusStop prevVertex;
 
     public VertexTableRow() {
         this.shortestFromStart = Double.POSITIVE_INFINITY;
     }
 
-    public String getVertex() {
+    public BusStop getVertex() {
         return vertex;
     }
 
@@ -21,7 +25,7 @@ public class VertexTableRow {
         return "VertexTableRow{" + "vertex='" + vertex + '\'' + ", shortestFromStart=" + df.format(shortestFromStart) + ", prevVertex='" + prevVertex + '\'' + '}';
     }
 
-    public void setVertex(String vertex) {
+    public void setVertex(BusStop vertex) {
         this.vertex = vertex;
     }
 
@@ -33,11 +37,11 @@ public class VertexTableRow {
         this.shortestFromStart = shortestFromStart;
     }
 
-    public String getPrevVertex() {
+    public BusStop getPrevVertex() {
         return prevVertex;
     }
 
-    public void setPrevVertex(String prevVertex) {
+    public void setPrevVertex(BusStop prevVertex) {
         this.prevVertex = prevVertex;
     }
 }

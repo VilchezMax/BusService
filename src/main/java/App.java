@@ -1,10 +1,11 @@
 import algorithm.DijkstraTest;
+import busservice.dao.mybatis.BusStopDAO;
 import busservice.models.BusStop;
-import busservice.models.BusStops;
 import busservice.parsers.Parser;
 import busservice.services.mybatis.BusService;
 import busservice.services.mybatis.BusStopService;
 import busservice.services.mybatis.CityService;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -23,7 +24,7 @@ public class App {
         /* Build GUI */
         //GUIFactory guiFactory = GUIFactory.getInstance();
 
-        System.out.println(DijkstraTest.getShortestPath("Knightsbridge", "Florida"));
+        //System.out.println(DijkstraTest.getShortestPath("Knightsbridge", "Florida"));
 
         //GUI initialCityGui = guiFactory.createGUI(allBusStops, GUI.Stage.INITIAL_CITY);
 
@@ -44,6 +45,10 @@ public class App {
         File filename2 = new File("src/main/resources/json/shortestRouteFound.json");
         Parser.writeJson(shortestRoute,filename2);
 */
+
+        BusStopDAO busStopDAO = new BusStopDAO();
+
+        System.out.println(DijkstraTest.getShortestPath(busStopDAO.getById(31), busStopDAO.getById(15)));
 
     }
 }

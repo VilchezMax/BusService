@@ -1,22 +1,28 @@
 package algorithm;
 
 import busservice.dao.DBInfoHandler;
+import busservice.dao.MainMyBatis;
+import busservice.models.Bus;
+import busservice.models.BusStop;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.*;
 
 public class DijkstraTest {
 
-    public static String getShortestPath (String from, String to) throws SQLException {
+    private static final Logger logger = LogManager.getLogger(DijkstraTest.class);
+    public static ArrayList<BusStop> getShortestPath (BusStop from, BusStop to) throws SQLException {
         try {
-            ArrayList<String> visited = new ArrayList<>();
-            ArrayList<String> unvisited = new ArrayList<>();
+            ArrayList<BusStop> visited = new ArrayList<>();
+            ArrayList<BusStop> unvisited = new ArrayList<>();
             DBInfoHandler infoHandler = new DBInfoHandler();
-            HashMap<String, ArrayList<String>> vertices = infoHandler.getAdjacentStops();
-            HashMap<String, int[]> distances = infoHandler.getStopsCoordinates();
+            HashMap<BusStop, ArrayList<BusStop>> vertices = infoHandler.getAdjacentStops();
+            HashMap<BusStop, int[]> distances = infoHandler.getStopsCoordinates();
             ArrayList<VertexTableRow> shortestTable = new ArrayList<>();
 
-            for (Map.Entry<String, ArrayList<String>> set : vertices.entrySet()) {
+            for (Map.Entry<BusStop, ArrayList<BusStop>> set : vertices.entrySet()) {
                 VertexTableRow row = new VertexTableRow();
                 row.setVertex(set.getKey());
                 unvisited.add(set.getKey());
@@ -30,7 +36,7 @@ public class DijkstraTest {
             while (lookForInfinity(shortestTable) && unvisited.size() > 0) {
 
                 double currShortest = Double.POSITIVE_INFINITY;
-                String closestVertex = null;
+                BusStop closestVertex = null;
                 for (VertexTableRow row : shortestTable) {
 
                     if (row.getShortestFromStart() < currShortest && !visited.contains(row.getVertex())) {
@@ -40,10 +46,11 @@ public class DijkstraTest {
                     }
                 }
 
-                for (Map.Entry<String, ArrayList<String>> set : vertices.entrySet()) {
+                for (Map.Entry<BusStop, ArrayList<BusStop>> set : vertices.entrySet()) {
                     if (set.getKey().equals(closestVertex)) {
-                        for (String toVisit : set.getValue()) {
-
+                        logger.info("Entra 2");
+                        for (BusStop toVisit : set.getValue()) {
+                            logger.info("Entra 3");
                             if (visited.contains(toVisit)) {
                                 continue;
                             }
@@ -61,7 +68,6 @@ public class DijkstraTest {
                             for (VertexTableRow update : shortestTable) {
 
                                 if (isEdgeStop(vertices, update.getVertex(), to, from)) {
-
                                     update.setShortestFromStart(1000000);
                                     update.setPrevVertex(toVisit);
                                     visited.add(update.getVertex());
@@ -101,12 +107,13 @@ public class DijkstraTest {
                         }
                     }
                 }
+                logger.info("Sale 1");
 
                 visited.add(closestVertex);
                 unvisited.remove(closestVertex);
             }
 
-            ArrayList<String> result = new ArrayList<>();
+            ArrayList<BusStop> result = new ArrayList<>();
 
             boolean prevIsNull = false;
 
@@ -127,7 +134,7 @@ public class DijkstraTest {
             }
             Collections.reverse(result);
             showPathWithBuses(result);
-            return result.toString();
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -144,16 +151,16 @@ public class DijkstraTest {
         return flag;
     }
 
-    public static void showPathWithBuses (ArrayList<String> route) {
+    public static void showPathWithBuses (ArrayList<BusStop> route) {
         DBInfoHandler info = new DBInfoHandler();
-        HashMap<Integer, String[]> lines = info.getLinesStops();
+        HashMap<Integer, BusStop[]> lines = info.getLinesStops();
 
-        ArrayList<String> resultArray = new ArrayList<>();
+        ArrayList<BusStop> resultArray = new ArrayList<>();
 
         Integer currentLine = null;
         for (int i = 0; i < route.size(); i++) {
 
-            for (Map.Entry<Integer, String[]> set : lines.entrySet()) {
+            for (Map.Entry<Integer, BusStop[]> set : lines.entrySet()) {
                 if (i + 1 == route.size()) {
                     resultArray.add(route.get(i));
                     System.out.println("get off at " + route.get(i));
@@ -163,7 +170,7 @@ public class DijkstraTest {
                 int first = -10;
                 int next = -10;
 
-                String[] auxArray = new String[0];
+                BusStop[] auxArray = new BusStop[0];
                 if (currentLine != null) {
                     auxArray = lines.get(currentLine);
                 }
@@ -189,7 +196,7 @@ public class DijkstraTest {
                     } else {
                         System.out.println("take line " + set.getKey() + " at " + route.get(i));
                     }
-                    resultArray.add(set.getKey().toString());
+                    //resultArray.add(set.getKey().toString());
                     resultArray.add(route.get(i));
 
                     currentLine = set.getKey();
@@ -198,7 +205,7 @@ public class DijkstraTest {
         }
     }
 
-    public static boolean lineHasBothStops (String[] stops, String currStop, String nextStop) {
+    public static boolean lineHasBothStops (BusStop[] stops, BusStop currStop, BusStop nextStop) {
 
         if (Arrays.stream(stops).anyMatch(currStop::equals) && Arrays.stream(stops).anyMatch(nextStop::equals)) {
             return true;
@@ -206,7 +213,7 @@ public class DijkstraTest {
         return false;
     }
 
-    public static boolean isEdgeStop (HashMap<String, ArrayList<String>> stopsList, String stop, String destination, String start) {
+    public static boolean isEdgeStop (HashMap<BusStop, ArrayList<BusStop>> stopsList, BusStop stop, BusStop destination, BusStop start) {
 
         if (stopsList.get(stop).size() == 1 && !stopsList.get(stop).get(0).equals(destination) && !stop.equals(destination) && !stop.equals(start)) {
             return true;
