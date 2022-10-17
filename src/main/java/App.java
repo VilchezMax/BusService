@@ -5,8 +5,8 @@ import busservice.services.mybatis.CityService;
 import busservice.views.gui.GUI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.io.FileNotFoundException;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -39,9 +39,12 @@ public class App {
          * 2 results are returned, later to be used by Dijkstra's algorithm.
          */
 
+        System.out.println(DijkstraTest.getShortestPath("Florida", "Liverpool Street"));
+
         CompletableFuture<List<BusStop>> future = null;
         try {
             future = CompletableFuture.supplyAsync(() -> gui.election(allBusStops));
+
 
             while (!future.isDone()) {
                 logger.info("Waiting for choices");

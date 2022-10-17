@@ -1,126 +1,129 @@
 package algorithm;
 
 import busservice.dao.DBInfoHandler;
+import busservice.dao.MainMyBatis;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.*;
 
 public class DijkstraTest {
+    private static final Logger logger = LogManager.getLogger(MainMyBatis.class);
 
-    public static String getShortestPath(String from, String to) throws SQLException {
+    public static String getShortestPath(String from, String to) {
+
+        ArrayList<String> visited = new ArrayList<>();
+        ArrayList<String> unvisited = new ArrayList<>();
+        DBInfoHandler infoHandler = new DBInfoHandler();
+        ArrayList<VertexTableRow> shortestTable = new ArrayList<>();
+        HashMap<String, ArrayList<String>> vertices = infoHandler.getAdjacentStops();
+        HashMap<String, int[]> distances = new HashMap<>();
         try {
-            ArrayList<String> visited = new ArrayList<>();
-            ArrayList<String> unvisited = new ArrayList<>();
-            DBInfoHandler infoHandler = new DBInfoHandler();
-            HashMap<String, ArrayList<String>> vertices = infoHandler.getAdjacentStops();
-            HashMap<String, int[]> distances = infoHandler.getStopsCoordinates();
-            ArrayList<VertexTableRow> shortestTable = new ArrayList<>();
+            distances = infoHandler.getStopsCoordinates();
+        } catch (SQLException e) {
+            logger.error("Error getting Stops Coordinates");
+            logger.error(e.getMessage());
+        }
 
-            for (Map.Entry<String, ArrayList<String>> set : vertices.entrySet()) {
-                VertexTableRow row = new VertexTableRow();
-                row.setVertex(set.getKey());
-                unvisited.add(set.getKey());
-                if (set.getKey().equals(from)) {
-                    row.setShortestFromStart(0);
-                }
-
-                shortestTable.add(row);
+        for (Map.Entry<String, ArrayList<String>> set : vertices.entrySet()) {
+            VertexTableRow row = new VertexTableRow();
+            row.setVertex(set.getKey());
+            unvisited.add(set.getKey());
+            if (set.getKey().equals(from)) {
+                row.setShortestFromStart(0);
             }
 
-            while (lookForInfinity(shortestTable) && unvisited.size() > 0) {
+            shortestTable.add(row);
+        }
 
-                double currShortest = Double.POSITIVE_INFINITY;
-                String closestVertex = null;
-                for (VertexTableRow row : shortestTable) {
+        while (lookForInfinity(shortestTable) && unvisited.size() > 0) {
 
-                    if (row.getShortestFromStart() < currShortest && !visited.contains(row.getVertex())) {
+            double currShortest = Double.POSITIVE_INFINITY;
+            String closestVertex = null;
+            for (VertexTableRow row : shortestTable) {
 
-                        currShortest = row.getShortestFromStart();
-                        closestVertex = row.getVertex();
-                    }
+                if (row.getShortestFromStart() < currShortest && !visited.contains(row.getVertex())) {
+
+                    currShortest = row.getShortestFromStart();
+                    closestVertex = row.getVertex();
                 }
+            }
 
-                for (Map.Entry<String, ArrayList<String>> set : vertices.entrySet()) {
-                    if (set.getKey().equals(closestVertex)) {
-                        for (String toVisit : set.getValue()) {
-                            if (!visited.contains(toVisit)) {
-                                double distance = calculateDistance(closestVertex, toVisit, distances);
+            for (Map.Entry<String, ArrayList<String>> set : vertices.entrySet()) {
+                if (set.getKey().equals(closestVertex)) {
+                    for (String toVisit : set.getValue()) {
+                        if (!visited.contains(toVisit)) {
+                            double distance = calculateDistance(closestVertex, toVisit, distances);
 
-                                for (VertexTableRow update : shortestTable) {
+                            for (VertexTableRow update : shortestTable) {
 
-                                    if (isEdgeStop(vertices, update.getVertex(), to, from)) {
+                                if (isEdgeStop(vertices, update.getVertex(), to, from)) {
 
-                                        update.setShortestFromStart(1000000);
-                                        update.setPrevVertex(toVisit);
-                                        visited.add(update.getVertex());
-                                        unvisited.remove(update.getVertex());
+                                    update.setShortestFromStart(1000000);
+                                    update.setPrevVertex(toVisit);
+                                    visited.add(update.getVertex());
+                                    unvisited.remove(update.getVertex());
+                                    continue;
+                                }
+
+                                if (update.getVertex().equals(toVisit) && update.getShortestFromStart() > distance) {
+
+                                    for (VertexTableRow dist : shortestTable) {
+                                        if (dist.getVertex().equals(closestVertex)) {
+                                            distance += dist.getShortestFromStart();
+                                            break;
+                                        }
+                                    }
+                                    if (update.getShortestFromStart() < distance) {
                                         continue;
                                     }
+                                    double newShortest = distance;
 
-                                    if (update.getVertex().equals(toVisit) && update.getShortestFromStart() > distance) {
-
-                                        for (VertexTableRow dist : shortestTable) {
-                                            if (dist.getVertex().equals(closestVertex)) {
-                                                distance += dist.getShortestFromStart();
-                                                break;
-                                            }
+                                    for (VertexTableRow sumThis : shortestTable) {
+                                        if (update.getShortestFromStart() < sumThis.getShortestFromStart() + distance) {
+                                            newShortest += sumThis.getShortestFromStart();
+                                            update.setShortestFromStart(newShortest);
+                                            update.setPrevVertex(closestVertex);
+                                            break;
                                         }
-                                        if (update.getShortestFromStart() < distance) {
-                                            continue;
+                                        if (sumThis.getVertex().equals(update.getPrevVertex())) {
+                                            newShortest += sumThis.getShortestFromStart();
+                                            break;
                                         }
-                                        double newShortest = distance;
-
-                                        for (VertexTableRow sumThis : shortestTable) {
-                                            if (update.getShortestFromStart() < sumThis.getShortestFromStart() + distance) {
-                                                newShortest += sumThis.getShortestFromStart();
-                                                update.setShortestFromStart(newShortest);
-                                                update.setPrevVertex(closestVertex);
-                                                break;
-                                            }
-                                            if (sumThis.getVertex().equals(update.getPrevVertex())) {
-                                                newShortest += sumThis.getShortestFromStart();
-                                                break;
-                                            }
-                                        }
-                                        update.setShortestFromStart(newShortest);
-                                        update.setPrevVertex(closestVertex);
                                     }
+                                    update.setShortestFromStart(newShortest);
+                                    update.setPrevVertex(closestVertex);
                                 }
                             }
                         }
                     }
                 }
-
-                visited.add(closestVertex);
-                unvisited.remove(closestVertex);
             }
 
-            ArrayList<String> result = new ArrayList<>();
+            visited.add(closestVertex);
+            unvisited.remove(closestVertex);
+        }
 
-            boolean prevIsNull = false;
+        ArrayList<String> result = new ArrayList<>();
 
-            while (!prevIsNull) {
-                for (VertexTableRow show : shortestTable) {
+        boolean prevIsNull = false;
 
-                    if (show.getVertex().equals(to)) {
-
-                        result.add(show.getVertex());
-                        if (show.getPrevVertex() == null) {
-
-                            prevIsNull = true;
-                            break;
-                        }
+        while (!prevIsNull) {
+            for (VertexTableRow show : shortestTable) {
+                if (show.getVertex().equals(to)) {
+                    result.add(show.getVertex());
+                    if (show.getPrevVertex() != null) {
                         to = show.getPrevVertex();
+                    } else {
+                        prevIsNull = true;
                     }
                 }
             }
-            Collections.reverse(result);
-            showPathWithBuses(result);
-            return result.toString();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
         }
+        Collections.reverse(result);
+        showPathWithBuses(result);
+        return result.toString();
     }
 
     public static boolean lookForInfinity(ArrayList<VertexTableRow> testTable) {
