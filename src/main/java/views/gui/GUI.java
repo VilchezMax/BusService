@@ -1,5 +1,6 @@
-package busservice.views.gui;
+package views.gui;
 
+import busservice.models.Bus;
 import busservice.models.BusStop;
 
 import javax.swing.*;
@@ -151,8 +152,38 @@ public class GUI {
         timer.start();
     }
 
-    public void displayResult(List<BusStop> data) {
-        JFrame resultFrame = new JFrame("BUS SERVICE");
+    public void displayResult(List<BusStop> result) {
+        JFrame frame = new JFrame("ROUTE");
+        JPanel panel = new JPanel();
+
+        for (int i = 0; i < result.size(); i++) {
+            JLabel label = new JLabel();
+            BusStop busStop = result.get(i);
+            BusStop nextBusStop = result.get(i + 1);
+            Bus bus = busStop.getBuses()
+                    .stream()
+                    .filter(bus1 ->
+                            Math.abs(bus1.getRoute().indexOf(busStop) - bus1.getRoute().indexOf(nextBusStop)) == 1)
+                    .findFirst().get();
+
+            if (i == 0) {
+                label.setText("First go to: " + busStop.getName() + " in city " + busStop.getCity().getName() + " and take bus N° " + bus.getLine());
+            } else if (i == result.size() - 1) {
+                label.setText("Get off bus" + bus.getLine() + "at: " + busStop.getName() + " in city " + busStop.getCity().getName());
+            } else {
+                label.setText("Connect with: " + busStop.getName() + " in city " + busStop.getCity().getName() + " and take bus N° " + bus.getLine());
+            }
+
+            label.setBackground(GUI.chooseColor(busStop.getCity().getId()));
+            panel.add(label);
+        }
+        frame.setLayout(new GridLayout(result.size() + 1, 1, 10, 10));
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Bus stops");
+        frame.pack();
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 
     public static Color chooseColor(int n) {

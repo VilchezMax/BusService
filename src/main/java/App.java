@@ -1,12 +1,13 @@
+import algorithm.DijkstraTest;
 import busservice.models.BusStop;
 import busservice.services.mybatis.BusService;
 import busservice.services.mybatis.BusStopService;
 import busservice.services.mybatis.CityService;
-import busservice.views.gui.GUI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.io.FileNotFoundException;
+import views.gui.GUI;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -39,7 +40,6 @@ public class App {
          * 2 results are returned, later to be used by Dijkstra's algorithm.
          */
 
-        System.out.println(DijkstraTest.getShortestPath("Florida", "Liverpool Street"));
 
         CompletableFuture<List<BusStop>> future = null;
         try {
@@ -66,7 +66,9 @@ public class App {
         }
 
         /*Dijkstra does his magic */
+        List<BusStop> result = DijkstraTest.getShortestPath(initialBusStop.getName(), finalBusStop.getName());
 
+        System.out.println(DijkstraTest.getShortestPath("Florida", "Liverpool Street"));
 
 
 
@@ -89,7 +91,7 @@ public class App {
 
         /* Displays results */
         try {
-            //gui.displayResult(List<BusStop> result);
+            gui.displayResult(result);
         } catch (Exception e) {
             logger.warn("Error: " + e.getMessage());
         }
