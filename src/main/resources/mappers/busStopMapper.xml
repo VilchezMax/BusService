@@ -7,10 +7,10 @@
                type="BusStop"
                autoMapping="false">
 
-        <id property="id" column="bus_stop_id"/>
-        <result property="longitude" column="bus_stop_longitude"/>
-        <result property="latitude" column="bus_stop_latitude"/>
-        <result property="name" column="bus_stop_name"/>
+        <id     property="id"         column="bus_stop_id"/>
+        <result property="longitude"  column="bus_stop_longitude"/>
+        <result property="latitude"   column="bus_stop_latitude"/>
+        <result property="name"       column="bus_stop_name"/>
         <result property="isTerminal" column="bus_stop_is_terminal"/>
         <association property="city"
                      column="city_id"
@@ -24,15 +24,15 @@
     </resultMap>
 
     <resultMap id="NestedBusStopMap" type="BusStop" autoMapping="false">
-        <id property="id" column="bus_stop_id"/>
-        <result property="longitude" column="bus_stop_longitude"/>
-        <result property="latitude" column="bus_stop_latitude"/>
-        <result property="name" column="bus_stop_name"/>
+        <id     property="id"         column="bus_stop_id"/>
+        <result property="longitude"  column="bus_stop_longitude"/>
+        <result property="latitude"   column="bus_stop_latitude"/>
+        <result property="name"       column="bus_stop_name"/>
         <result property="isTerminal" column="bus_stop_is_terminal"/>
         <association property="city"
                      column="city_id"
                      javaType="City">
-            <id property="id" column="city_id"/>
+            <id     property="id"   column="city_id"/>
             <result property="name" column="city_name"/>
         </association>
         <collection property="buses"
@@ -50,6 +50,7 @@
         bs.latitude as bus_stop_latitude,
         bs.stop_name as bus_stop_name,
         bs.is_terminal as bus_stop_is_terminal,
+        r.id as route_id,
         r.bus_id as route_bus_id,
         r.stop_id as route_stop_id,
         c.id as city_id,
