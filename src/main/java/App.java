@@ -1,12 +1,9 @@
 import algorithm.DijkstraTest;
 import busservice.models.BusStop;
-import busservice.models.BusStops;
-import busservice.parsers.Parser;
 import busservice.services.mybatis.BusService;
 import busservice.services.mybatis.BusStopService;
 import busservice.services.mybatis.CityService;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class App {
         /* Build GUI */
         //GUIFactory guiFactory = GUIFactory.getInstance();
 
-        System.out.println(DijkstraTest.getShortestPath("Knightsbridge", "Florida"));
+        System.out.println(DijkstraTest.getShortestPath("Florida", "Liverpool Street"));
 
         //GUI initialCityGui = guiFactory.createGUI(allBusStops, GUI.Stage.INITIAL_CITY);
 
