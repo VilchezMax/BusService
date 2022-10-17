@@ -30,6 +30,8 @@ public class DijkstraTest {
                     row.setShortestFromStart(0);
                 }
 
+                logger.info(unvisited.size());
+
                 shortestTable.add(row);
             }
 
@@ -48,9 +50,7 @@ public class DijkstraTest {
 
                 for (Map.Entry<BusStop, ArrayList<BusStop>> set : vertices.entrySet()) {
                     if (set.getKey().equals(closestVertex)) {
-                        logger.info("Entra 2");
                         for (BusStop toVisit : set.getValue()) {
-                            logger.info("Entra 3");
                             if (visited.contains(toVisit)) {
                                 continue;
                             }
@@ -108,6 +108,7 @@ public class DijkstraTest {
                     }
                 }
                 logger.info("Sale 1");
+                logger.info(unvisited.size());
 
                 visited.add(closestVertex);
                 unvisited.remove(closestVertex);
@@ -155,14 +156,14 @@ public class DijkstraTest {
         DBInfoHandler info = new DBInfoHandler();
         HashMap<Integer, BusStop[]> lines = info.getLinesStops();
 
-        ArrayList<BusStop> resultArray = new ArrayList<>();
+        ArrayList<String> resultArray = new ArrayList<>();
 
         Integer currentLine = null;
         for (int i = 0; i < route.size(); i++) {
 
             for (Map.Entry<Integer, BusStop[]> set : lines.entrySet()) {
                 if (i + 1 == route.size()) {
-                    resultArray.add(route.get(i));
+                    resultArray.add(route.get(i).getName());
                     System.out.println("get off at " + route.get(i));
                     break;
                 }
@@ -196,8 +197,8 @@ public class DijkstraTest {
                     } else {
                         System.out.println("take line " + set.getKey() + " at " + route.get(i));
                     }
-                    //resultArray.add(set.getKey().toString());
-                    resultArray.add(route.get(i));
+                    resultArray.add(set.getKey().toString());
+                    resultArray.add(route.get(i).getName());
 
                     currentLine = set.getKey();
                 }
