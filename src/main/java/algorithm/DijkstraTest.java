@@ -7,7 +7,7 @@ import java.util.*;
 
 public class DijkstraTest {
 
-    public static String getShortestPath (String from, String to) throws SQLException {
+    public static String getShortestPath(String from, String to) throws SQLException {
         try {
             ArrayList<String> visited = new ArrayList<>();
             ArrayList<String> unvisited = new ArrayList<>();
@@ -43,59 +43,48 @@ public class DijkstraTest {
                 for (Map.Entry<String, ArrayList<String>> set : vertices.entrySet()) {
                     if (set.getKey().equals(closestVertex)) {
                         for (String toVisit : set.getValue()) {
+                            if (!visited.contains(toVisit)) {
+                                double distance = calculateDistance(closestVertex, toVisit, distances);
 
-                            if (visited.contains(toVisit)) {
-                                continue;
-                            }
+                                for (VertexTableRow update : shortestTable) {
 
-                            int[] coordinatesClosest = distances.get(closestVertex);
-                            int[] coordinatesToVisit = distances.get(toVisit);
+                                    if (isEdgeStop(vertices, update.getVertex(), to, from)) {
 
-                            int closestX = coordinatesClosest[0];
-                            int closestY = coordinatesClosest[1];
-                            int toVisitX = coordinatesToVisit[0];
-                            int toVisitY = coordinatesToVisit[1];
-
-                            double distance = Math.sqrt(Math.pow(toVisitY - closestY, 2) + Math.pow(toVisitX - closestX, 2));
-
-                            for (VertexTableRow update : shortestTable) {
-
-                                if (isEdgeStop(vertices, update.getVertex(), to, from)) {
-
-                                    update.setShortestFromStart(1000000);
-                                    update.setPrevVertex(toVisit);
-                                    visited.add(update.getVertex());
-                                    unvisited.remove(update.getVertex());
-                                    continue;
-                                }
-
-                                if (update.getVertex().equals(toVisit) && update.getShortestFromStart() > distance) {
-
-                                    for (VertexTableRow dist : shortestTable) {
-                                        if (dist.getVertex().equals(closestVertex)) {
-                                            distance += dist.getShortestFromStart();
-                                            break;
-                                        }
-                                    }
-                                    if (update.getShortestFromStart() < distance) {
+                                        update.setShortestFromStart(1000000);
+                                        update.setPrevVertex(toVisit);
+                                        visited.add(update.getVertex());
+                                        unvisited.remove(update.getVertex());
                                         continue;
                                     }
-                                    double newShortest = distance;
 
-                                    for (VertexTableRow sumThis : shortestTable) {
-                                        if (update.getShortestFromStart() < sumThis.getShortestFromStart() + distance) {
-                                            newShortest += sumThis.getShortestFromStart();
-                                            update.setShortestFromStart(newShortest);
-                                            update.setPrevVertex(closestVertex);
-                                            break;
+                                    if (update.getVertex().equals(toVisit) && update.getShortestFromStart() > distance) {
+
+                                        for (VertexTableRow dist : shortestTable) {
+                                            if (dist.getVertex().equals(closestVertex)) {
+                                                distance += dist.getShortestFromStart();
+                                                break;
+                                            }
                                         }
-                                        if (sumThis.getVertex().equals(update.getPrevVertex())) {
-                                            newShortest += sumThis.getShortestFromStart();
-                                            break;
+                                        if (update.getShortestFromStart() < distance) {
+                                            continue;
                                         }
+                                        double newShortest = distance;
+
+                                        for (VertexTableRow sumThis : shortestTable) {
+                                            if (update.getShortestFromStart() < sumThis.getShortestFromStart() + distance) {
+                                                newShortest += sumThis.getShortestFromStart();
+                                                update.setShortestFromStart(newShortest);
+                                                update.setPrevVertex(closestVertex);
+                                                break;
+                                            }
+                                            if (sumThis.getVertex().equals(update.getPrevVertex())) {
+                                                newShortest += sumThis.getShortestFromStart();
+                                                break;
+                                            }
+                                        }
+                                        update.setShortestFromStart(newShortest);
+                                        update.setPrevVertex(closestVertex);
                                     }
-                                    update.setShortestFromStart(newShortest);
-                                    update.setPrevVertex(closestVertex);
                                 }
                             }
                         }
@@ -134,7 +123,7 @@ public class DijkstraTest {
         }
     }
 
-    public static boolean lookForInfinity (ArrayList<VertexTableRow> testTable) {
+    public static boolean lookForInfinity(ArrayList<VertexTableRow> testTable) {
         boolean flag = false;
         for (VertexTableRow infinite : testTable) {
             if (infinite.getShortestFromStart() == Double.POSITIVE_INFINITY) {
@@ -144,7 +133,7 @@ public class DijkstraTest {
         return flag;
     }
 
-    public static void showPathWithBuses (ArrayList<String> route) {
+    public static void showPathWithBuses(ArrayList<String> route) {
         DBInfoHandler info = new DBInfoHandler();
         HashMap<Integer, String[]> lines = info.getLinesStops();
 
@@ -198,7 +187,7 @@ public class DijkstraTest {
         }
     }
 
-    public static boolean lineHasBothStops (String[] stops, String currStop, String nextStop) {
+    public static boolean lineHasBothStops(String[] stops, String currStop, String nextStop) {
 
         if (Arrays.stream(stops).anyMatch(currStop::equals) && Arrays.stream(stops).anyMatch(nextStop::equals)) {
             return true;
@@ -206,12 +195,22 @@ public class DijkstraTest {
         return false;
     }
 
-    public static boolean isEdgeStop (HashMap<String, ArrayList<String>> stopsList, String stop, String destination, String start) {
+    public static boolean isEdgeStop(HashMap<String, ArrayList<String>> stopsList, String stop, String destination, String start) {
 
         if (stopsList.get(stop).size() == 1 && !stopsList.get(stop).get(0).equals(destination) && !stop.equals(destination) && !stop.equals(start)) {
             return true;
         }
 
         return false;
+    }
+
+    public static double calculateDistance(String closestVertex, String toVisit, HashMap<String, int[]> distances) {
+        int[] coordinatesClosest = distances.get(closestVertex);
+        int[] coordinatesToVisit = distances.get(toVisit);
+        int closestX = coordinatesClosest[0];
+        int closestY = coordinatesClosest[1];
+        int toVisitX = coordinatesToVisit[0];
+        int toVisitY = coordinatesToVisit[1];
+        return Math.sqrt(Math.pow(toVisitY - closestY, 2) + Math.pow(toVisitX - closestX, 2));
     }
 }
