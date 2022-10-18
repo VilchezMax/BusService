@@ -1,94 +1,19 @@
 {
   "busStopList" : [ {
-    "id" : 1,
-    "longitude" : 1,
-    "latitude" : 1,
-    "name" : "Brandsen 805",
+    "id" : 24,
+    "longitude" : 29,
+    "latitude" : 22,
+    "name" : "St. Paul's",
     "city" : {
-      "id" : 1,
-      "name" : "Buenos Aires"
-    },
-    "buses" : [ {
-      "id" : 1,
-      "line" : 1,
-      "route" : null
-    } ],
-    "terminal" : false
-  }, {
-    "id" : 5,
-    "longitude" : 5,
-    "latitude" : 8,
-    "name" : "Peru",
-    "city" : {
-      "id" : 1,
-      "name" : "Buenos Aires"
-    },
-    "buses" : [ {
       "id" : 2,
-      "line" : 2,
+      "name" : "London"
+    },
+    "buses" : [ {
+      "id" : 8,
+      "line" : 8,
       "route" : null
     } ],
     "terminal" : false
-  }, {
-    "id" : 7,
-    "longitude" : 8,
-    "latitude" : 11,
-    "name" : "Venezuela",
-    "city" : {
-      "id" : 1,
-      "name" : "Buenos Aires"
-    },
-    "buses" : [ {
-      "id" : 1,
-      "line" : 1,
-      "route" : null
-    } ],
-    "terminal" : false
-  }, {
-    "id" : 9,
-    "longitude" : 11,
-    "latitude" : 10,
-    "name" : "Facultad de Derecho",
-    "city" : {
-      "id" : 1,
-      "name" : "Buenos Aires"
-    },
-    "buses" : [ {
-      "id" : 4,
-      "line" : 4,
-      "route" : null
-    } ],
-    "terminal" : false
-  }, {
-    "id" : 8,
-    "longitude" : 10,
-    "latitude" : 7,
-    "name" : "Once",
-    "city" : {
-      "id" : 1,
-      "name" : "Buenos Aires"
-    },
-    "buses" : [ {
-      "id" : 3,
-      "line" : 3,
-      "route" : null
-    } ],
-    "terminal" : false
-  }, {
-    "id" : 16,
-    "longitude" : 9,
-    "latitude" : 6,
-    "name" : "Retiro",
-    "city" : {
-      "id" : 1,
-      "name" : "Buenos Aires"
-    },
-    "buses" : [ {
-      "id" : 3,
-      "line" : 3,
-      "route" : null
-    } ],
-    "terminal" : true
   }, {
     "id" : 34,
     "longitude" : 32,
@@ -105,47 +30,32 @@
     } ],
     "terminal" : true
   }, {
-    "id" : 27,
-    "longitude" : 35,
-    "latitude" : 23,
-    "name" : "Piccadilly Circus",
+    "id" : 16,
+    "longitude" : 9,
+    "latitude" : 6,
+    "name" : "Retiro",
     "city" : {
-      "id" : 2,
-      "name" : "London"
+      "id" : 1,
+      "name" : "Buenos Aires"
     },
     "buses" : [ {
-      "id" : 11,
-      "line" : 11,
+      "id" : 3,
+      "line" : 3,
       "route" : null
     } ],
-    "terminal" : false
+    "terminal" : true
   }, {
-    "id" : 26,
-    "longitude" : 34,
-    "latitude" : 25,
-    "name" : "Liverpool Street",
+    "id" : 8,
+    "longitude" : 10,
+    "latitude" : 7,
+    "name" : "Once",
     "city" : {
-      "id" : 2,
-      "name" : "London"
+      "id" : 1,
+      "name" : "Buenos Aires"
     },
     "buses" : [ {
-      "id" : 10,
-      "line" : 10,
-      "route" : null
-    } ],
-    "terminal" : false
-  }, {
-    "id" : 33,
-    "longitude" : 39,
-    "latitude" : 25,
-    "name" : "Stockwell",
-    "city" : {
-      "id" : 2,
-      "name" : "London"
-    },
-    "buses" : [ {
-      "id" : 10,
-      "line" : 10,
+      "id" : 3,
+      "line" : 3,
       "route" : null
     } ],
     "terminal" : false

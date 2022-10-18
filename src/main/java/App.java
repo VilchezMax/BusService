@@ -66,8 +66,8 @@ public class App {
             BusStop finalBusStopCopy = finalBusStop;
             /*Dijkstra does his magic */
             futureRoute = CompletableFuture.supplyAsync(() ->
-                    Dijkstra.getShortestPath(allBusStops.get(0), allBusStops.get(32)));
-            /*Dijkstra.getShortestPath(initialBusStopCopy, finalBusStopCopy));*/
+                    /*Dijkstra.getShortestPath(allBusStops.get(0), allBusStops.get(32)));*/
+                    Dijkstra.getShortestPath(initialBusStopCopy, finalBusStopCopy));
 
 
             while (!futureRoute.isDone()) {
