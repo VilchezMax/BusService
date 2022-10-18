@@ -1,13 +1,21 @@
+import algorithm.DijkstraTest;
+import busservice.models.Bus;
 import busservice.models.BusStop;
+import busservice.models.BusStops;
+import busservice.parsers.Parser;
 import busservice.services.mybatis.BusService;
 import busservice.services.mybatis.BusStopService;
 import busservice.services.mybatis.CityService;
 import busservice.views.gui.GUI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 
+import java.sql.Array;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -30,7 +38,7 @@ public class App {
 
         /* Displays Map for User */
 
-        gui.map();
+        // gui.map();
         logger.info("Map displayed. User passes to choosing screen.");
 
         /*
@@ -39,7 +47,7 @@ public class App {
          * 2 results are returned, later to be used by Dijkstra's algorithm.
          */
 
-        System.out.println(DijkstraTest.getShortestPath("Florida", "Liverpool Street"));
+        ArrayList<BusStop> shortestRoute = DijkstraTest.getShortestPath(allBusStops.get(0), allBusStops.get(32));
 
         CompletableFuture<List<BusStop>> future = null;
         try {
@@ -59,11 +67,11 @@ public class App {
         }
 
         /* Loading window - 6.5seconds */
-        try {
+        /*try {
             gui.loading(initialBusStop, finalBusStop);
         } catch (FileNotFoundException e) {
             logger.warn("Error: " + e.getMessage());
-        }
+        }*/
 
         /*Dijkstra does his magic */
 
@@ -74,17 +82,13 @@ public class App {
         /* SAVE TO JSON AND XML */
         // Testing xml and json parser
 
-        /*List<BusStop> busStops1 = busService.getRouteByBusId(1);
 
-        BusStops shortestRoute = new BusStops();
-        shortestRoute.setBusStopList(busStops1);
 
-        File filename = new File("src/main/resources/xml/shortestRouteFound.xml");
+        File filename = new File("src/main/resources/results/xml/shortestRouteFound.xml");
         Parser.writeXml(shortestRoute,filename);
 
-        File filename2 = new File("src/main/resources/json/shortestRouteFound.json");
+        File filename2 = new File("src/main/resources/results/json/shortestRouteFound.json");
         Parser.writeJson(shortestRoute,filename2);
-*/
 
 
         /* Displays results */
