@@ -13,7 +13,7 @@ public class Dijkstra {
 
     private static final Logger logger = LogManager.getLogger(Dijkstra.class);
 
-    public static ArrayList<BusStop> getShortestPath(BusStop from, BusStop to) {
+    public static ArrayList<BusStop> getShortestPath (BusStop from, BusStop to) {
         List<BusStop> visited = new ArrayList<>();
         List<BusStop> unvisited = new BusStopService().getAll();
         List<Bus> buses = new BusService().getAll();
@@ -32,8 +32,9 @@ public class Dijkstra {
 
         while (isMaxValue(shortestTable) && unvisited.size() > 0) {
 
-            if (unvisited.size() == 1 && unvisited.get(0).getName().equals("Scalabrini Ortiz")) break;
-
+            if (unvisited.size() == 1 && visited.size() > vertices.size() + 2) {
+                break;
+            }
             double currShortest = Double.POSITIVE_INFINITY;
             BusStop closestVertex = null;
             for (VertexTableRow row : shortestTable) {
@@ -57,9 +58,7 @@ public class Dijkstra {
                                 if (isEdgeStop(vertices, update.getVertex(), to, from)) {
                                     update.setShortestFromStart(1000000);
                                     update.setPrevVertex(toVisit);
-                                    if (!visited.contains(update.getVertex())) {
-                                        visited.add(update.getVertex());
-                                    }
+                                    visited.add(update.getVertex());
                                     unvisited.remove(update.getVertex());
                                     continue;
                                 }
@@ -96,10 +95,9 @@ public class Dijkstra {
                     }
                 }
             }
-            if (closestVertex != null && !visited.contains(closestVertex)) {
-                visited.add(closestVertex);
-                unvisited.remove(closestVertex);
-            }
+
+            visited.add(closestVertex);
+            unvisited.remove(closestVertex);
         }
 
         ArrayList<BusStop> result = new ArrayList<>();
@@ -126,16 +124,20 @@ public class Dijkstra {
         return result;
     }
 
-    public static boolean isMaxValue(ArrayList<VertexTableRow> testTable) {
-        return testTable.stream().anyMatch(row -> row.getShortestFromStart() == Double.POSITIVE_INFINITY);
+    public static boolean isMaxValue (ArrayList<VertexTableRow> testTable) {
+        for (VertexTableRow row : testTable) {
+            if (row.getShortestFromStart() == Double.POSITIVE_INFINITY) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public static ArrayList<String> showPathWithBuses(ArrayList<BusStop> route, List<Bus> buses) {
+    public static ArrayList<String> showPathWithBuses (ArrayList<BusStop> route, List<Bus> buses) {
 
         HashMap<Integer, BusStop[]> lines = Dijkstra.getLinesStops(buses);
 
         ArrayList<String> resultArray = new ArrayList<>();
-
 
         Integer currentLine = null;
         for (int i = 0; i < route.size(); i++) {
@@ -171,29 +173,23 @@ public class Dijkstra {
                         } else {
                             resultArray.add("Get Bus N° " + line.getKey() + " at " + stop.getName() + " stop  in " + stop.getCity().getName());
                         }
-
                     }
                     currentLine = line.getKey();
-
                 }
             }
         }
         return resultArray;
     }
 
-    public static boolean lineHasBothStops(BusStop[] stops, BusStop currStop, BusStop nextStop) {
-        return Arrays.asList(stops).contains(currStop) &&
-                Arrays.asList(stops).contains(nextStop);
+    public static boolean lineHasBothStops (BusStop[] stops, BusStop currStop, BusStop nextStop) {
+        return Arrays.asList(stops).contains(currStop) && Arrays.asList(stops).contains(nextStop);
     }
 
-    public static boolean isEdgeStop(HashMap<BusStop, ArrayList<BusStop>> stopsList, BusStop stop, BusStop destination, BusStop start) {
-        return stopsList.get(stop).size() == 1 &&
-                !stopsList.get(stop).get(0).equals(destination) &&
-                !stop.equals(destination) &&
-                !stop.equals(start);
+    public static boolean isEdgeStop (HashMap<BusStop, ArrayList<BusStop>> stopsList, BusStop stop, BusStop destination, BusStop start) {
+        return stopsList.get(stop).size() == 1 && !stopsList.get(stop).get(0).equals(destination) && !stop.equals(destination) && !stop.equals(start);
     }
 
-    public static HashMap<BusStop, ArrayList<BusStop>> getAdjacentStops(List<Bus> buses) {
+    public static HashMap<BusStop, ArrayList<BusStop>> getAdjacentStops (List<Bus> buses) {
         HashMap<BusStop, ArrayList<BusStop>> stops = new HashMap<>();
         for (Bus bus : buses) {
             BusStop prevStop = null;
@@ -217,7 +213,7 @@ public class Dijkstra {
         return stops;
     }
 
-    public static HashMap<Integer, BusStop[]> getLinesStops(List<Bus> buses) {
+    public static HashMap<Integer, BusStop[]> getLinesStops (List<Bus> buses) {
         HashMap<Integer, BusStop[]> lines = new HashMap<>();
 
         for (Bus bus : buses) {

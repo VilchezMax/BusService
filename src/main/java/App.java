@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 public class App {
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    public static void main(String[] args) throws SQLException {
+    public static void main (String[] args) throws SQLException {
         GUI gui = GUI.getInstance();
 
         /* Fetch data */
@@ -55,7 +55,6 @@ public class App {
             finalBusStop = futureChoice.get().get(1);
             logger.info("FROM: " + initialBusStop.getName() + ", " + initialBusStop.getCity().getName());
             logger.info("TO: " + finalBusStop.getName() + " , " + finalBusStop.getCity().getName());
-
         } catch (ExecutionException | InterruptedException e) {
             logger.warn("Error: " + e.getMessage());
         }
@@ -65,15 +64,17 @@ public class App {
             BusStop initialBusStopCopy = initialBusStop;
             BusStop finalBusStopCopy = finalBusStop;
             /*Dijkstra does his magic */
+            futureRoute = CompletableFuture.supplyAsync(() -> Dijkstra.getShortestPath(initialBusStopCopy, finalBusStopCopy));
+            /*Dijkstra.getShortestPath(initialBusStopCopy, finalBusStopCopy));*/
+
             futureRoute = CompletableFuture.supplyAsync(() ->
                     /*Dijkstra.getShortestPath(allBusStops.get(0), allBusStops.get(32)));*/
                     Dijkstra.getShortestPath(initialBusStopCopy, finalBusStopCopy));
 
-
             while (!futureRoute.isDone()) {
                 logger.info("Waiting for route");
                 /* 6.5-second loading window ~ while algorithm does the magic✨ */
-                gui.loading(allBusStops.get(0), allBusStops.get(32));
+                gui.loading(initialBusStopCopy, finalBusStopCopy);
                 Thread.sleep(6500);
             }
             shortestRoute = futureRoute.get();
