@@ -93,6 +93,7 @@ public class GUI {
 
             /* Set Color */
             button.setBackground(GUI.chooseColor(busStop.getCity().getId()));
+            button.setForeground(Color.WHITE);
             /* Set Border if terminal */
             if (busStop.isTerminal()) {
                 button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, false));
@@ -152,7 +153,7 @@ public class GUI {
         timer.start();
     }
 
-    public void displayResult(List<BusStop> result) {
+    public void displayResult2(List<BusStop> result) {
         JFrame frame = new JFrame("ROUTE");
         JPanel panel = new JPanel();
 
@@ -175,6 +176,7 @@ public class GUI {
             }
 
             label.setBackground(GUI.chooseColor(busStop.getCity().getId()));
+
             panel.add(label);
         }
         frame.setLayout(new GridLayout(result.size() + 1, 1, 10, 10));
@@ -186,7 +188,7 @@ public class GUI {
         frame.setLocationRelativeTo(null);
     }
 
-    public void displayResult2(List<String> result) {
+    public void displayResult(List<String> result) {
         JFrame frame = new JFrame("ROUTE");
         JPanel panel = new JPanel();
 

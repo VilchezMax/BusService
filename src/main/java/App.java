@@ -94,7 +94,7 @@ public class App {
 
         /* Displays results */
         try {
-            gui.displayResult2(strings);
+            gui.displayResult(strings);
         } catch (Exception e) {
             logger.warn("Error: " + e.getMessage());
         }
