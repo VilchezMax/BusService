@@ -186,14 +186,53 @@ public class GUI {
         frame.setLocationRelativeTo(null);
     }
 
+    public void displayResult2(List<String> result) {
+        JFrame frame = new JFrame("ROUTE");
+        JPanel panel = new JPanel();
+
+        for (int i = 0; i < result.size(); i++) {
+            JLabel label = new JLabel();
+            label.setText(result.get(i));
+            label.setOpaque(true);
+            Color color = chooseColor(result.get(i).contains("London") ? 2 : 1);
+            label.setBorder(BorderFactory.createLineBorder(color, 2, false));
+            label.setBackground(Color.WHITE);
+            label.setForeground(color);
+            panel.add(label);
+            if (i < result.size() - 1) {
+                if (result.get(i).contains("London") && result.get(i + 1).contains("Buenos Aires")) {
+                    addConnectionLabel(panel);
+                } else if (result.get(i).contains("Buenos Aires") && result.get(i + 1).contains("London")) {
+                    addConnectionLabel(panel);
+                }
+            }
+        }
+        panel.setLayout(new GridLayout(result.size() + 2, 1, 10, 10));
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Bus stops");
+        frame.pack();
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+    }
+
     public static Color chooseColor(int n) {
         switch (n) {
             case 1:
-                return Color.CYAN; // Argentina light blue
+                return Color.BLUE; // Argentina light blue
             case 2:
                 return Color.getHSBColor(353, 96, 81); //England red
             default:
                 return Color.BLACK;
         }
+    }
+
+    public void addConnectionLabel(JPanel panel) {
+        JLabel label2 = new JLabel();
+        label2.setText("This route is a connection between cities.");
+        label2.setOpaque(true);
+        label2.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, false));
+        label2.setBackground(Color.WHITE);
+        panel.add(label2);
     }
 }

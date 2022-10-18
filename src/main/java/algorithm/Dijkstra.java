@@ -117,7 +117,7 @@ public class Dijkstra {
             }
         }
         Collections.reverse(result);
-        showPathWithBuses(result, buses);
+        System.out.println(showPathWithBuses(result, buses));
         return result;
     }
 
@@ -142,42 +142,39 @@ public class Dijkstra {
 
             for (Map.Entry<Integer, BusStop[]> line : lines.entrySet()) {
                 if (i + 1 == route.size()) {
-                    resultArray.add("get off at " + route.get(i).getName());
-                    logger.info("get off at " + route.get(i).getName());
+                    resultArray.add("Get off at " + route.get(i).getName() + "in " + route.get(i).getCity().getName());
                     break;
                 }
 
                 int first = -10;
                 int next = -10;
-
                 BusStop[] auxArray = new BusStop[0];
                 if (currentLine != null) {
                     auxArray = lines.get(currentLine);
                 }
 
                 for (int j = 0; j < auxArray.length; j++) {
-
                     if (auxArray[j].equals(route.get(i))) {
                         first = j;
-                    }
-
-                    if (auxArray[j].equals(route.get(i + 1))) {
+                    } else if (auxArray[j].equals(route.get(i + 1))) {
                         next = j;
                     }
                 }
-
                 if (lineHasBothStops(line.getValue(), route.get(i), route.get(i + 1)) && (first == (next + 1) || first == next - 1)) {
                     continue;
                 }
-
                 if (lineHasBothStops(line.getValue(), route.get(i), route.get(i + 1))) {
                     if (!(currentLine != null && currentLine.equals(line.getKey()))) {
-                        resultArray.add("get on line " + line.getKey() + " at " + route.get(i).getName());
-                        logger.info("take line " + line.getKey() + " at " + route.get(i).getName());
+                        BusStop stop = route.get(i);
+                        if (resultArray.isEmpty()) {
+                            resultArray.add("Go to Stop " + stop.getName() + " in " + stop.getCity().getName() + " and get on Bus N° " + line.getKey());
+                        } else {
+                            resultArray.add("Get Bus N° " + line.getKey() + " at " + stop.getName() + " stop  in " + stop.getCity().getName());
+                        }
+
                     }
-                    resultArray.add(line.getKey().toString());
-                    resultArray.add(route.get(i).getName());
                     currentLine = line.getKey();
+
                 }
             }
         }

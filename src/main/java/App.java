@@ -1,4 +1,5 @@
 import algorithm.Dijkstra;
+import busservice.models.Bus;
 import busservice.models.BusStop;
 import busservice.parsers.Parser;
 import busservice.services.mybatis.BusService;
@@ -11,6 +12,7 @@ import views.gui.GUI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -59,7 +61,7 @@ public class App {
             logger.warn("Error: " + e.getMessage());
         }
 */
-        CompletableFuture<List<BusStop>> futureRoute;
+        CompletableFuture<List<BusStop>> futureRoute = null;
         List<BusStop> shortestRoute = null;
         try {
 /*            BusStop initialBusStopCopy = initialBusStop;
@@ -69,23 +71,18 @@ public class App {
                     Dijkstra.getShortestPath(allBusStops.get(0), allBusStops.get(32)));
             /*Dijkstra.getShortestPath(initialBusStopCopy, finalBusStopCopy));*/
 
-            /* 6.5-second loading window ~ while algorithm does the magic✨ */
-            gui.loading(allBusStops.get(0), allBusStops.get(32));
-            /*gui.loading(initialBusStop, finalBusStop);*/
 
             while (!futureRoute.isDone()) {
                 logger.info("Waiting for route");
-                Thread.sleep(1000);
+                /* 6.5-second loading window ~ while algorithm does the magic✨ */
+                gui.loading(allBusStops.get(0), allBusStops.get(32));
+                Thread.sleep(6500);
             }
             shortestRoute = futureRoute.get();
             logger.info("Shortest route: " + shortestRoute);
         } catch (ExecutionException | InterruptedException | FileNotFoundException e) {
             logger.warn("Error: " + e.getMessage());
         }
-
-
-/*        ArrayList<BusStop> shortestRoute = null;
-        shortestRoute = Dijkstra.getShortestPath(initialBusStop, finalBusStop);*/
 
         /* Saves result to JSON & XML */
         File resultXML = new File("src/main/resources/results/xml/shortestRouteFound.xml");
@@ -94,10 +91,12 @@ public class App {
         File resultJSON = new File("src/main/resources/results/json/shortestRouteFound.json");
         Parser.writeJson(shortestRoute, resultJSON);
 
-        /* Displays results */
+        List<Bus> buses = busService.getAll();
+        List<String> strings = Dijkstra.showPathWithBuses((ArrayList<BusStop>) shortestRoute, buses);
 
+        /* Displays results */
         try {
-//            gui.displayResult(shortestRoute);
+            gui.displayResult2(strings);
         } catch (Exception e) {
             logger.warn("Error: " + e.getMessage());
         }
