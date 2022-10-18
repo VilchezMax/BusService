@@ -28,18 +28,8 @@ public class BusService implements IBusService {
     @Override
     public List<Bus> getAll() {
         List<Bus> buses = null;
-        List<List<BusStop>> routes = null;
         try {
             buses = busDAO.getAll();
-//            routes = busDAO.getAllRoutes();
-//            for (List<BusStop> route : routes) {
-            for (Bus bus : buses) {
-                bus.setRoute(busDAO.getRouteByBusId(bus.getId()));
-//                    if (bus.getId().equals(route.get(0).getBuses().get(0).getId())) {
-//                        bus.setRoute(route);
-//                    }
-            }
-//            }
         } catch (Exception e) {
             LOGGER.warn(e.getMessage());
         }
