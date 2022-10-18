@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 public class App {
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    public static void main (String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException {
         GUI gui = GUI.getInstance();
 
         /* Fetch data */
@@ -27,8 +27,8 @@ public class App {
         CityService cityService = new CityService();
         List<BusStop> allBusStops = busStopService.getAll();
 
-        BusStop initialBusStop = null;
-        BusStop finalBusStop = null;
+        BusStop initialBusStop;
+        BusStop finalBusStop;
 
         /* Displays Map for User */
 
@@ -43,7 +43,7 @@ public class App {
 
         //ArrayList<BusStop> shortestRoute = DijkstraTest.getShortestPath(allBusStops.get(0), allBusStops.get(32));
         ArrayList<BusStop> shortestRoute = null;
-        CompletableFuture<List<BusStop>> future = null;
+        CompletableFuture<List<BusStop>> future;
         try {
             future = CompletableFuture.supplyAsync(() -> gui.election(allBusStops));
 
