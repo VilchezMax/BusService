@@ -2,10 +2,10 @@
 <busStops>
     <busStops>
         <busStop>
-            <id>1</id>
-            <longitude>1</longitude>
-            <latitude>1</latitude>
-            <name>Brandsen 805</name>
+            <id>14</id>
+            <longitude>16</longitude>
+            <latitude>12</latitude>
+            <name>Constitución</name>
             <isTerminal>false</isTerminal>
             <city>
                 <id>1</id>
@@ -14,21 +14,6 @@
             <buses>
                 <id>1</id>
                 <line>1</line>
-            </buses>
-        </busStop>
-        <busStop>
-            <id>5</id>
-            <longitude>5</longitude>
-            <latitude>8</latitude>
-            <name>Peru</name>
-            <isTerminal>false</isTerminal>
-            <city>
-                <id>1</id>
-                <name>Buenos Aires</name>
-            </city>
-            <buses>
-                <id>2</id>
-                <line>2</line>
             </buses>
         </busStop>
         <busStop>
@@ -107,48 +92,33 @@
             </buses>
         </busStop>
         <busStop>
-            <id>27</id>
-            <longitude>35</longitude>
-            <latitude>23</latitude>
-            <name>Piccadilly Circus</name>
+            <id>24</id>
+            <longitude>29</longitude>
+            <latitude>22</latitude>
+            <name>St. Paul's</name>
             <isTerminal>false</isTerminal>
             <city>
                 <id>2</id>
                 <name>London</name>
             </city>
             <buses>
-                <id>11</id>
-                <line>11</line>
+                <id>8</id>
+                <line>8</line>
             </buses>
         </busStop>
         <busStop>
-            <id>26</id>
-            <longitude>34</longitude>
-            <latitude>25</latitude>
-            <name>Liverpool Street</name>
+            <id>23</id>
+            <longitude>29</longitude>
+            <latitude>19</latitude>
+            <name>Blackfriars</name>
             <isTerminal>false</isTerminal>
             <city>
                 <id>2</id>
                 <name>London</name>
             </city>
             <buses>
-                <id>10</id>
-                <line>10</line>
-            </buses>
-        </busStop>
-        <busStop>
-            <id>33</id>
-            <longitude>39</longitude>
-            <latitude>25</latitude>
-            <name>Stockwell</name>
-            <isTerminal>false</isTerminal>
-            <city>
-                <id>2</id>
-                <name>London</name>
-            </city>
-            <buses>
-                <id>10</id>
-                <line>10</line>
+                <id>8</id>
+                <line>8</line>
             </buses>
         </busStop>
     </busStops>
