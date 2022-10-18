@@ -4,5 +4,4 @@ logs/
 desktop.ini
 *.iml
 out/
-
-
+src/resources/results/
