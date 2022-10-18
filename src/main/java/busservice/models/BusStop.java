@@ -1,8 +1,10 @@
 package busservice.models;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
-
 
 
 @XmlRootElement(name = "BusStop")
@@ -17,7 +19,7 @@ public class BusStop {
     private Integer latitude;
     @XmlElement(name = "name")
     private String name;
-    @XmlElement(name = "isTerminal")
+    @XmlElement(name = "is_terminal")
     private Boolean isTerminal;
     @XmlElement(name = "city")
     private City city;
@@ -80,6 +82,15 @@ public class BusStop {
 
     public void setBuses(List<Bus> buses) {
         this.buses = buses;
+    }
+
+    public double calculateDistanceTo(BusStop other) {
+        int x1 = this.getLatitude();
+        int y1 = this.getLongitude();
+        int x2 = other.getLatitude();
+        int y2 = other.getLongitude();
+
+        return Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
     }
 
 

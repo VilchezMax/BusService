@@ -1,34 +1,29 @@
 package algorithm;
 
-import busservice.dao.DBInfoHandler;
+import busservice.models.Bus;
 import busservice.models.BusStop;
+import busservice.services.mybatis.BusService;
+import busservice.services.mybatis.BusStopService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
 import java.util.*;
 
-public class DijkstraTest {
+public class Dijkstra {
 
-    private static final Logger logger = LogManager.getLogger(DijkstraTest.class);
+    private static final Logger logger = LogManager.getLogger(Dijkstra.class);
 
     public static ArrayList<BusStop> getShortestPath(BusStop from, BusStop to) {
-        ArrayList<BusStop> visited = new ArrayList<>();
-        ArrayList<BusStop> unvisited = new ArrayList<>();
-        DBInfoHandler infoHandler = new DBInfoHandler();
-        HashMap<BusStop, ArrayList<BusStop>> vertices = infoHandler.getAdjacentStops();
+        List<BusStop> visited = new ArrayList<>();
+        List<BusStop> unvisited = new BusStopService().getAll();
+        List<Bus> buses = new BusService().getAll();
+
+        HashMap<BusStop, ArrayList<BusStop>> vertices = Dijkstra.getAdjacentStops(buses);
         ArrayList<VertexTableRow> shortestTable = new ArrayList<>();
-        HashMap<BusStop, int[]> distances = new HashMap<>();
-        try {
-            distances = infoHandler.getStopsCoordinates();
-        } catch (SQLException e) {
-            logger.error("Error getting Stops Coordinates");
-            logger.error(e.getMessage());
-        }
+
         for (Map.Entry<BusStop, ArrayList<BusStop>> set : vertices.entrySet()) {
             VertexTableRow row = new VertexTableRow();
             row.setVertex(set.getKey());
-            unvisited.add(set.getKey());
             if (set.getKey().equals(from)) {
                 row.setShortestFromStart(0);
             }
@@ -37,7 +32,7 @@ public class DijkstraTest {
 
         while (isMaxValue(shortestTable) && unvisited.size() > 0) {
 
-            double currShortest = Double.MAX_VALUE;
+            double currShortest = Double.POSITIVE_INFINITY;
             BusStop closestVertex = null;
             for (VertexTableRow row : shortestTable) {
 
@@ -53,7 +48,7 @@ public class DijkstraTest {
                     for (BusStop toVisit : set.getValue()) {
                         if (!visited.contains(toVisit)) {
 
-                            double distance = calculateDistance(closestVertex, toVisit, distances);
+                            double distance = closestVertex.calculateDistanceTo(toVisit);
 
                             for (VertexTableRow update : shortestTable) {
 
@@ -122,94 +117,115 @@ public class DijkstraTest {
             }
         }
         Collections.reverse(result);
-        showPathWithBuses(result);
+        System.out.println(showPathWithBuses(result, buses));
         return result;
-    }
-
-    private static double calculateDistance(BusStop closestVertex, BusStop toVisit, HashMap<BusStop, int[]> distances) {
-        int[] coordinatesClosest = distances.get(closestVertex);
-        int[] coordinatesToVisit = distances.get(toVisit);
-        int closestX = coordinatesClosest[0];
-        int closestY = coordinatesClosest[1];
-        int toVisitX = coordinatesToVisit[0];
-        int toVisitY = coordinatesToVisit[1];
-        return Math.sqrt(Math.pow(toVisitY - closestY, 2) + Math.pow(toVisitX - closestX, 2));
     }
 
     public static boolean isMaxValue(ArrayList<VertexTableRow> testTable) {
         for (VertexTableRow row : testTable) {
-            if (row.getShortestFromStart() == Double.MAX_VALUE) {
+            if (row.getShortestFromStart() == Double.POSITIVE_INFINITY) {
                 return true;
             }
         }
         return false;
     }
 
-    public static void showPathWithBuses(ArrayList<BusStop> route) {
-        DBInfoHandler info = new DBInfoHandler();
-        HashMap<Integer, BusStop[]> lines = info.getLinesStops();
+    public static ArrayList<String> showPathWithBuses(ArrayList<BusStop> route, List<Bus> buses) {
+
+        HashMap<Integer, BusStop[]> lines = Dijkstra.getLinesStops(buses);
 
         ArrayList<String> resultArray = new ArrayList<>();
+
 
         Integer currentLine = null;
         for (int i = 0; i < route.size(); i++) {
 
-            for (Map.Entry<Integer, BusStop[]> set : lines.entrySet()) {
+            for (Map.Entry<Integer, BusStop[]> line : lines.entrySet()) {
                 if (i + 1 == route.size()) {
-                    resultArray.add(route.get(i).getName());
-                    logger.info("get off at " + route.get(i).getName());
+                    resultArray.add("Get off at " + route.get(i).getName() + "in " + route.get(i).getCity().getName());
                     break;
                 }
 
                 int first = -10;
                 int next = -10;
-
                 BusStop[] auxArray = new BusStop[0];
                 if (currentLine != null) {
                     auxArray = lines.get(currentLine);
                 }
 
                 for (int j = 0; j < auxArray.length; j++) {
-
                     if (auxArray[j].equals(route.get(i))) {
                         first = j;
-                    }
-
-                    if (auxArray[j].equals(route.get(i + 1))) {
+                    } else if (auxArray[j].equals(route.get(i + 1))) {
                         next = j;
                     }
                 }
-
-                if (lineHasBothStops(set.getValue(), route.get(i), route.get(i + 1)) && (first == (next + 1) || first == next - 1)) {
+                if (lineHasBothStops(line.getValue(), route.get(i), route.get(i + 1)) && (first == (next + 1) || first == next - 1)) {
                     continue;
                 }
+                if (lineHasBothStops(line.getValue(), route.get(i), route.get(i + 1))) {
+                    if (!(currentLine != null && currentLine.equals(line.getKey()))) {
+                        BusStop stop = route.get(i);
+                        if (resultArray.isEmpty()) {
+                            resultArray.add("Go to Stop " + stop.getName() + " in " + stop.getCity().getName() + " and get on Bus N° " + line.getKey());
+                        } else {
+                            resultArray.add("Get Bus N° " + line.getKey() + " at " + stop.getName() + " stop  in " + stop.getCity().getName());
+                        }
 
-                if (lineHasBothStops(set.getValue(), route.get(i), route.get(i + 1))) {
-                    if (!(currentLine != null && currentLine.equals(set.getKey()))) {
-                        logger.info("take line " + set.getKey() + " at " + route.get(i).getName());
                     }
-                    resultArray.add(set.getKey().toString());
-                    resultArray.add(route.get(i).getName());
-                    currentLine = set.getKey();
+                    currentLine = line.getKey();
+
                 }
             }
         }
+        return resultArray;
     }
 
     public static boolean lineHasBothStops(BusStop[] stops, BusStop currStop, BusStop nextStop) {
-
-        if (Arrays.stream(stops).anyMatch(currStop::equals) && Arrays.stream(stops).anyMatch(nextStop::equals)) {
-            return true;
-        }
-        return false;
+        return Arrays.asList(stops).contains(currStop) &&
+                Arrays.asList(stops).contains(nextStop);
     }
 
     public static boolean isEdgeStop(HashMap<BusStop, ArrayList<BusStop>> stopsList, BusStop stop, BusStop destination, BusStop start) {
+        return stopsList.get(stop).size() == 1 &&
+                !stopsList.get(stop).get(0).equals(destination) &&
+                !stop.equals(destination) &&
+                !stop.equals(start);
+    }
 
-        if (stopsList.get(stop).size() == 1 && !stopsList.get(stop).get(0).equals(destination) && !stop.equals(destination) && !stop.equals(start)) {
-            return true;
+    public static HashMap<BusStop, ArrayList<BusStop>> getAdjacentStops(List<Bus> buses) {
+        HashMap<BusStop, ArrayList<BusStop>> stops = new HashMap<>();
+        for (Bus bus : buses) {
+            BusStop prevStop = null;
+            for (BusStop stop : bus.getRoute()) {
+                if (!stops.containsKey(stop)) {
+                    stops.put(stop, new ArrayList<>());
+                } else {
+                    if (prevStop != null) {
+                        stops.get(stop).add(prevStop);
+                    }
+                }
+                if (stops.containsKey(prevStop) && !stops.get(prevStop).contains(stop) && stop != null) {
+                    stops.get(prevStop).add(stop);
+                }
+                if (!stops.get(stop).contains(prevStop) && prevStop != null) {
+                    stops.get(stop).add(prevStop);
+                }
+                prevStop = stop;
+            }
         }
+        return stops;
+    }
 
-        return false;
+    public static HashMap<Integer, BusStop[]> getLinesStops(List<Bus> buses) {
+        HashMap<Integer, BusStop[]> lines = new HashMap<>();
+
+        for (Bus bus : buses) {
+            ArrayList<BusStop> stopsAux = new ArrayList<>(bus.getRoute());
+
+            BusStop[] stops = stopsAux.toArray(new BusStop[0]);
+            lines.put(bus.getId(), stops);
+        }
+        return lines;
     }
 }

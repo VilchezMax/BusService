@@ -1,8 +1,6 @@
 package algorithm;
 
-import busservice.models.Bus;
 import busservice.models.BusStop;
-import busservice.services.mybatis.BusService;
 
 import java.text.DecimalFormat;
 
@@ -17,12 +15,6 @@ public class VertexTableRow {
 
     public BusStop getVertex() {
         return vertex;
-    }
-
-    @Override
-    public String toString() {
-        DecimalFormat df = new DecimalFormat("#.##");
-        return "VertexTableRow{" + "vertex='" + vertex + '\'' + ", shortestFromStart=" + df.format(shortestFromStart) + ", prevVertex='" + prevVertex + '\'' + '}';
     }
 
     public void setVertex(BusStop vertex) {
@@ -43,5 +35,11 @@ public class VertexTableRow {
 
     public void setPrevVertex(BusStop prevVertex) {
         this.prevVertex = prevVertex;
+    }
+
+    @Override
+    public String toString() {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return "VertexTableRow{" + "vertex='" + vertex.getName() + '\'' + ", shortestFromStart=" + df.format(shortestFromStart) + ", prevVertex='" + prevVertex.getName() + '\'' + '}';
     }
 }
