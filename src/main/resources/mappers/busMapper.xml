@@ -21,7 +21,9 @@
         <result property="line" column="bus_line"/>
         <collection property="route"
                     javaType="Arraylist"
-                    ofType="BusStop">
+                    ofType="BusStop"
+                    select="getRouteByBusId"
+                    column="route_bus_id">
             <id property="id" column="bus_stop_id"/>
             <result property="longitude" column="bus_stop_longitude"/>
             <result property="latitude" column="bus_stop_latitude"/>
@@ -32,6 +34,7 @@
                          resultMap="busservice.dao.ICityDAO.CityMap"/>
         </collection>
     </resultMap>
+
     <sql id="busColumns">
         b.id as bus_id,
         b.line as bus_line,
@@ -40,7 +43,7 @@
         bs.latitude as bus_stop_latitude,
         bs.stop_name as bus_stop_name,
         bs.is_terminal as bus_stop_is_terminal,
-        r.id as route_stop_id,
+        r.id as route_id,
         r.bus_id as route_bus_id,
         r.stop_id as route_stop_id,
         c.id as city_id,
@@ -79,7 +82,7 @@
         ORDER BY r.id
     </select>
 
-    <select id="getRouteByBusId" resultMap="busservice.dao.IBusStopDAO.BusStopMap" parameterType="int">
+    <select id="getRouteByBusId" resultMap="busservice.dao.IBusStopDAO.NestedBusStopMap" parameterType="int">
         SELECT
         <include refid="busColumns"/>
         FROM route r
