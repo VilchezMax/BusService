@@ -32,6 +32,8 @@ public class Dijkstra {
 
         while (isMaxValue(shortestTable) && unvisited.size() > 0) {
 
+            if (unvisited.size() == 1 && unvisited.get(0).getName().equals("Scalabrini Ortiz")) break;
+
             double currShortest = Double.POSITIVE_INFINITY;
             BusStop closestVertex = null;
             for (VertexTableRow row : shortestTable) {
@@ -55,7 +57,9 @@ public class Dijkstra {
                                 if (isEdgeStop(vertices, update.getVertex(), to, from)) {
                                     update.setShortestFromStart(1000000);
                                     update.setPrevVertex(toVisit);
-                                    visited.add(update.getVertex());
+                                    if (!visited.contains(update.getVertex())) {
+                                        visited.add(update.getVertex());
+                                    }
                                     unvisited.remove(update.getVertex());
                                     continue;
                                 }
@@ -92,9 +96,10 @@ public class Dijkstra {
                     }
                 }
             }
-
-            visited.add(closestVertex);
-            unvisited.remove(closestVertex);
+            if (closestVertex != null && !visited.contains(closestVertex)) {
+                visited.add(closestVertex);
+                unvisited.remove(closestVertex);
+            }
         }
 
         ArrayList<BusStop> result = new ArrayList<>();
@@ -122,12 +127,7 @@ public class Dijkstra {
     }
 
     public static boolean isMaxValue(ArrayList<VertexTableRow> testTable) {
-        for (VertexTableRow row : testTable) {
-            if (row.getShortestFromStart() == Double.POSITIVE_INFINITY) {
-                return true;
-            }
-        }
-        return false;
+        return testTable.stream().anyMatch(row -> row.getShortestFromStart() == Double.POSITIVE_INFINITY);
     }
 
     public static ArrayList<String> showPathWithBuses(ArrayList<BusStop> route, List<Bus> buses) {
