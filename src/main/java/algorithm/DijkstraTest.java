@@ -30,8 +30,6 @@ public class DijkstraTest {
                     row.setShortestFromStart(0);
                 }
 
-                logger.info(unvisited.size());
-
                 shortestTable.add(row);
             }
 
@@ -107,8 +105,6 @@ public class DijkstraTest {
                         }
                     }
                 }
-                logger.info("Sale 1");
-                logger.info(unvisited.size());
 
                 visited.add(closestVertex);
                 unvisited.remove(closestVertex);
@@ -164,7 +160,7 @@ public class DijkstraTest {
             for (Map.Entry<Integer, BusStop[]> set : lines.entrySet()) {
                 if (i + 1 == route.size()) {
                     resultArray.add(route.get(i).getName());
-                    System.out.println("get off at " + route.get(i));
+                    logger.info("get off at " + route.get(i).getName());
                     break;
                 }
 
@@ -195,7 +191,7 @@ public class DijkstraTest {
                     if (currentLine != null && currentLine.equals(set.getKey())) {
                         continue;
                     } else {
-                        System.out.println("take line " + set.getKey() + " at " + route.get(i));
+                        logger.info("take line " + set.getKey() + " at " + route.get(i).getName());
                     }
                     resultArray.add(set.getKey().toString());
                     resultArray.add(route.get(i).getName());

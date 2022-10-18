@@ -48,7 +48,9 @@ public class App {
 
         BusStopDAO busStopDAO = new BusStopDAO();
 
-        System.out.println(DijkstraTest.getShortestPath(busStopDAO.getById(31), busStopDAO.getById(15)));
-
+        //DijkstraTest.getShortestPath(busStopDAO.getById(1), busStopDAO.getById(33));
+        System.out.println(busStopDAO.getById(31));
+        System.out.println(busStopDAO.getById(15));
+        DijkstraTest.getShortestPath(busStopDAO.getById(31), busStopDAO.getById(15));
     }
 }
