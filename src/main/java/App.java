@@ -67,6 +67,10 @@ public class App {
             futureRoute = CompletableFuture.supplyAsync(() -> Dijkstra.getShortestPath(initialBusStopCopy, finalBusStopCopy));
             /*Dijkstra.getShortestPath(initialBusStopCopy, finalBusStopCopy));*/
 
+            futureRoute = CompletableFuture.supplyAsync(() ->
+                    /*Dijkstra.getShortestPath(allBusStops.get(0), allBusStops.get(32)));*/
+                    Dijkstra.getShortestPath(initialBusStopCopy, finalBusStopCopy));
+
             while (!futureRoute.isDone()) {
                 logger.info("Waiting for route");
                 /* 6.5-second loading window ~ while algorithm does the magic✨ */
