@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import views.gui.GUI;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
