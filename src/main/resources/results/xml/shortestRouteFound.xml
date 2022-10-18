@@ -2,18 +2,18 @@
 <busStops>
     <busStops>
         <busStop>
-            <id>25</id>
-            <longitude>31</longitude>
-            <latitude>16</latitude>
-            <name>Tower Hill</name>
-            <isTerminal>false</isTerminal>
+            <id>34</id>
+            <longitude>32</longitude>
+            <latitude>20</latitude>
+            <name>Waterloo</name>
+            <isTerminal>true</isTerminal>
             <city>
                 <id>2</id>
                 <name>London</name>
             </city>
             <buses>
-                <id>8</id>
-                <line>8</line>
+                <id>7</id>
+                <line>7</line>
             </buses>
         </busStop>
     </busStops>

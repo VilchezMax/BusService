@@ -1,18 +1,18 @@
 {
   "busStopList" : [ {
-    "id" : 25,
-    "longitude" : 31,
-    "latitude" : 16,
-    "name" : "Tower Hill",
+    "id" : 34,
+    "longitude" : 32,
+    "latitude" : 20,
+    "name" : "Waterloo",
     "city" : {
       "id" : 2,
       "name" : "London"
     },
     "buses" : [ {
-      "id" : 8,
-      "line" : 8,
+      "id" : 7,
+      "line" : 7,
       "route" : null
     } ],
-    "terminal" : false
+    "terminal" : true
   } ]
 }
