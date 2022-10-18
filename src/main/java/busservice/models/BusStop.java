@@ -103,7 +103,6 @@ public class BusStop {
                 ", name='" + name + '\'' + "\n" +
                 ", isTerminal=" + isTerminal + "\n" +
                 ", city=" + city + "\n" +
-                ", buses=" + buses + "\n" +
                 '}';
     }
 
