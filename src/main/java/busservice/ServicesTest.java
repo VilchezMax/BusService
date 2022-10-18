@@ -6,6 +6,8 @@ import busservice.services.mybatis.BusService;
 import busservice.services.mybatis.BusStopService;
 import busservice.services.mybatis.CityService;
 
+import java.util.List;
+
 public class ServicesTest {
 
     static BusService busService = new BusService();
@@ -13,8 +15,8 @@ public class ServicesTest {
     static CityService cityService = new CityService();
 
     public static void main(String[] args) {
-//        testBusService();
-        testBusStopService();
+        testBusService();
+//        testBusStopService();
         //testCityService();
     }
 
@@ -22,17 +24,18 @@ public class ServicesTest {
         System.out.println("---- Test: Bus Service------------------------------");
 
         /*get By ID*/
-        System.out.println("---- Bus: get By Id");
+/*        System.out.println("---- Bus: get By Id");
 
         Bus bus = busService.getById(3);
-        System.out.println(bus);
+        System.out.println(bus);*/
 
         /* get All */
-/*        System.out.println("---- Bus: get All");
+        System.out.println("---- Bus: get All");
 
         List<Bus> allBuses = busService.getAll();
+        System.out.println(allBuses.size());
         System.out.println(allBuses.get(0));
-        System.out.println(allBuses.get(allBuses.size() - 1));*/
+        System.out.println(allBuses.get(allBuses.size() - 1));
 
         /*get All Routes*/
 /*        System.out.println("---- Bus: get All Routes");
@@ -40,8 +43,6 @@ public class ServicesTest {
         System.out.println(allRoutes.get(0));
         System.out.println(allRoutes.get(1));
         System.out.println(allRoutes.get(2));*/
-
-
     }
 
     public static void testBusStopService() {

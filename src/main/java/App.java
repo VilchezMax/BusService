@@ -1,14 +1,16 @@
-import algorithm.DijkstraTest;
+import algorithm.Dijkstra;
+import busservice.models.Bus;
 import busservice.models.BusStop;
 import busservice.parsers.Parser;
 import busservice.services.mybatis.BusService;
 import busservice.services.mybatis.BusStopService;
 import busservice.services.mybatis.CityService;
-import busservice.views.gui.GUI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import views.gui.GUI;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +29,12 @@ public class App {
         CityService cityService = new CityService();
         List<BusStop> allBusStops = busStopService.getAll();
 
-        BusStop initialBusStop;
-        BusStop finalBusStop;
+        BusStop initialBusStop = null;
+        BusStop finalBusStop = null;
 
         /* Displays Map for User */
 
-        // gui.map();
+        gui.map();
         logger.info("Map displayed. User passes to choosing screen.");
 
         /*
@@ -41,52 +43,58 @@ public class App {
          * 2 results are returned, later to be used by Dijkstra's algorithm.
          */
 
-        //ArrayList<BusStop> shortestRoute = DijkstraTest.getShortestPath(allBusStops.get(0), allBusStops.get(32));
-        ArrayList<BusStop> shortestRoute = null;
-        CompletableFuture<List<BusStop>> future;
+        CompletableFuture<List<BusStop>> futureChoice;
         try {
-            future = CompletableFuture.supplyAsync(() -> gui.election(allBusStops));
+            futureChoice = CompletableFuture.supplyAsync(() -> gui.election(allBusStops));
 
-            while (!future.isDone()) {
+            while (!futureChoice.isDone()) {
                 logger.info("Waiting for choices");
                 Thread.sleep(1000);
             }
-            initialBusStop = future.get().get(0);
-            finalBusStop = future.get().get(1);
-            logger.info("Initial bus stop: " + initialBusStop);
-            logger.info("Final bus stop: " + finalBusStop);
+            initialBusStop = futureChoice.get().get(0);
+            finalBusStop = futureChoice.get().get(1);
+            logger.info("FROM: " + initialBusStop.getName() + ", " + initialBusStop.getCity().getName());
+            logger.info("TO: " + finalBusStop.getName() + " , " + finalBusStop.getCity().getName());
 
-            shortestRoute = DijkstraTest.getShortestPath(initialBusStop, finalBusStop);
         } catch (ExecutionException | InterruptedException e) {
             logger.warn("Error: " + e.getMessage());
         }
+        CompletableFuture<List<BusStop>> futureRoute = null;
+        List<BusStop> shortestRoute = null;
+        try {
+            BusStop initialBusStopCopy = initialBusStop;
+            BusStop finalBusStopCopy = finalBusStop;
+            /*Dijkstra does his magic */
+            futureRoute = CompletableFuture.supplyAsync(() ->
+                    Dijkstra.getShortestPath(allBusStops.get(0), allBusStops.get(32)));
+            /*Dijkstra.getShortestPath(initialBusStopCopy, finalBusStopCopy));*/
 
-        /* Loading window - 6.5seconds */
-        /*try {
-            gui.loading(initialBusStop, finalBusStop);
-        } catch (FileNotFoundException e) {
+
+            while (!futureRoute.isDone()) {
+                logger.info("Waiting for route");
+                /* 6.5-second loading window ~ while algorithm does the magic✨ */
+                gui.loading(allBusStops.get(0), allBusStops.get(32));
+                Thread.sleep(6500);
+            }
+            shortestRoute = futureRoute.get();
+            logger.info("Shortest route: " + shortestRoute);
+        } catch (ExecutionException | InterruptedException | FileNotFoundException e) {
             logger.warn("Error: " + e.getMessage());
-        }*/
+        }
 
-        /*Dijkstra does his magic */
+        /* Saves result to JSON & XML */
+        File resultXML = new File("src/main/resources/results/xml/shortestRouteFound.xml");
+        Parser.writeXml(shortestRoute, resultXML);
 
+        File resultJSON = new File("src/main/resources/results/json/shortestRouteFound.json");
+        Parser.writeJson(shortestRoute, resultJSON);
 
-
-
-
-        /* SAVE TO JSON AND XML */
-        // Testing xml and json parser
-
-        File filename = new File("src/main/resources/results/xml/shortestRouteFound.xml");
-        Parser.writeXml(shortestRoute, filename);
-
-        File filename2 = new File("src/main/resources/results/json/shortestRouteFound.json");
-        Parser.writeJson(shortestRoute, filename2);
-
+        List<Bus> buses = busService.getAll();
+        List<String> strings = Dijkstra.showPathWithBuses((ArrayList<BusStop>) shortestRoute, buses);
 
         /* Displays results */
         try {
-            //gui.displayResult(List<BusStop> result);
+            gui.displayResult(strings);
         } catch (Exception e) {
             logger.warn("Error: " + e.getMessage());
         }
