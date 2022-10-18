@@ -13,48 +13,142 @@
             </city>
             <buses>
                 <id>1</id>
+                <line>1</line>
             </buses>
         </busStop>
         <busStop>
-            <id>2</id>
-            <longitude>2</longitude>
-            <latitude>10</latitude>
-            <name>Hospitales</name>
+            <id>5</id>
+            <longitude>5</longitude>
+            <latitude>8</latitude>
+            <name>Peru</name>
             <isTerminal>false</isTerminal>
             <city>
-                <id>2</id>
+                <id>1</id>
                 <name>Buenos Aires</name>
             </city>
             <buses>
                 <id>2</id>
+                <line>2</line>
             </buses>
         </busStop>
         <busStop>
-            <id>3</id>
+            <id>7</id>
             <longitude>8</longitude>
             <latitude>11</latitude>
             <name>Venezuela</name>
             <isTerminal>false</isTerminal>
             <city>
-                <id>3</id>
+                <id>1</id>
                 <name>Buenos Aires</name>
             </city>
             <buses>
-                <id>3</id>
+                <id>1</id>
+                <line>1</line>
             </buses>
         </busStop>
         <busStop>
-            <id>4</id>
-            <longitude>16</longitude>
-            <latitude>12</latitude>
-            <name>Constitución</name>
+            <id>9</id>
+            <longitude>11</longitude>
+            <latitude>10</latitude>
+            <name>Facultad de Derecho</name>
             <isTerminal>false</isTerminal>
             <city>
-                <id>4</id>
+                <id>1</id>
                 <name>Buenos Aires</name>
             </city>
             <buses>
                 <id>4</id>
+                <line>4</line>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>8</id>
+            <longitude>10</longitude>
+            <latitude>7</latitude>
+            <name>Once</name>
+            <isTerminal>false</isTerminal>
+            <city>
+                <id>1</id>
+                <name>Buenos Aires</name>
+            </city>
+            <buses>
+                <id>3</id>
+                <line>3</line>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>16</id>
+            <longitude>9</longitude>
+            <latitude>6</latitude>
+            <name>Retiro</name>
+            <isTerminal>true</isTerminal>
+            <city>
+                <id>1</id>
+                <name>Buenos Aires</name>
+            </city>
+            <buses>
+                <id>3</id>
+                <line>3</line>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>34</id>
+            <longitude>32</longitude>
+            <latitude>20</latitude>
+            <name>Waterloo</name>
+            <isTerminal>true</isTerminal>
+            <city>
+                <id>2</id>
+                <name>London</name>
+            </city>
+            <buses>
+                <id>7</id>
+                <line>7</line>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>27</id>
+            <longitude>35</longitude>
+            <latitude>23</latitude>
+            <name>Piccadilly Circus</name>
+            <isTerminal>false</isTerminal>
+            <city>
+                <id>2</id>
+                <name>London</name>
+            </city>
+            <buses>
+                <id>11</id>
+                <line>11</line>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>26</id>
+            <longitude>34</longitude>
+            <latitude>25</latitude>
+            <name>Liverpool Street</name>
+            <isTerminal>false</isTerminal>
+            <city>
+                <id>2</id>
+                <name>London</name>
+            </city>
+            <buses>
+                <id>10</id>
+                <line>10</line>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>33</id>
+            <longitude>39</longitude>
+            <latitude>25</latitude>
+            <name>Stockwell</name>
+            <isTerminal>false</isTerminal>
+            <city>
+                <id>2</id>
+                <name>London</name>
+            </city>
+            <buses>
+                <id>10</id>
+                <line>10</line>
             </buses>
         </busStop>
     </busStops>
