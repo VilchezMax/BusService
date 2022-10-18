@@ -2,10 +2,10 @@
 <busStops>
     <busStops>
         <busStop>
-            <id>1</id>
-            <longitude>1</longitude>
-            <latitude>1</latitude>
-            <name>Brandsen 805</name>
+            <id>14</id>
+            <longitude>16</longitude>
+            <latitude>12</latitude>
+            <name>Constitución</name>
             <is_terminal>false</is_terminal>
             <city>
                 <id>1</id>
@@ -14,21 +14,6 @@
             <buses>
                 <id>1</id>
                 <line>1</line>
-            </buses>
-        </busStop>
-        <busStop>
-            <id>5</id>
-            <longitude>5</longitude>
-            <latitude>8</latitude>
-            <name>Peru</name>
-            <is_terminal>false</is_terminal>
-            <city>
-                <id>1</id>
-                <name>Buenos Aires</name>
-            </city>
-            <buses>
-                <id>2</id>
-                <line>2</line>
             </buses>
         </busStop>
         <busStop>
@@ -137,10 +122,55 @@
             </buses>
         </busStop>
         <busStop>
-            <id>33</id>
-            <longitude>39</longitude>
+            <id>21</id>
+            <longitude>28</longitude>
             <latitude>25</latitude>
-            <name>Stockwell</name>
+            <name>Tottenham Court Road</name>
+            <is_terminal>false</is_terminal>
+            <city>
+                <id>2</id>
+                <name>London</name>
+            </city>
+            <buses>
+                <id>10</id>
+                <line>10</line>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>19</id>
+            <longitude>24</longitude>
+            <latitude>24</latitude>
+            <name>South Kensington</name>
+            <is_terminal>false</is_terminal>
+            <city>
+                <id>2</id>
+                <name>London</name>
+            </city>
+            <buses>
+                <id>10</id>
+                <line>10</line>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>18</id>
+            <longitude>24</longitude>
+            <latitude>19</latitude>
+            <name>St. James Park's</name>
+            <is_terminal>false</is_terminal>
+            <city>
+                <id>2</id>
+                <name>London</name>
+            </city>
+            <buses>
+                <id>10</id>
+                <line>10</line>
+            </buses>
+        </busStop>
+        <busStop>
+            <id>17</id>
+            <longitude>23</longitude>
+            <latitude>12</latitude>
+            <name>Westminster</name>
             <is_terminal>false</is_terminal>
             <city>
                 <id>2</id>
