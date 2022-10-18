@@ -34,15 +34,14 @@ public class App {
 
         /* Displays Map for User */
 
-        /*gui.map();
-        logger.info("Map displayed. User passes to choosing screen.");*/
+        gui.map();
+        logger.info("Map displayed. User passes to choosing screen.");
 
         /*
          * Loads GUI with buttons for each stop
          * User chooses stops from different cities by clicking
          * 2 results are returned, later to be used by Dijkstra's algorithm.
          */
-/*
 
         CompletableFuture<List<BusStop>> futureChoice;
         try {
@@ -60,12 +59,11 @@ public class App {
         } catch (ExecutionException | InterruptedException e) {
             logger.warn("Error: " + e.getMessage());
         }
-*/
         CompletableFuture<List<BusStop>> futureRoute = null;
         List<BusStop> shortestRoute = null;
         try {
-/*            BusStop initialBusStopCopy = initialBusStop;
-            BusStop finalBusStopCopy = finalBusStop;*/
+            BusStop initialBusStopCopy = initialBusStop;
+            BusStop finalBusStopCopy = finalBusStop;
             /*Dijkstra does his magic */
             futureRoute = CompletableFuture.supplyAsync(() ->
                     Dijkstra.getShortestPath(allBusStops.get(0), allBusStops.get(32)));
