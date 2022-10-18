@@ -1,9 +1,9 @@
 {
   "busStopList" : [ {
-    "id" : 1,
-    "longitude" : 1,
-    "latitude" : 1,
-    "name" : "Brandsen 805",
+    "id" : 14,
+    "longitude" : 16,
+    "latitude" : 12,
+    "name" : "Constitución",
     "city" : {
       "id" : 1,
       "name" : "Buenos Aires"
@@ -11,21 +11,6 @@
     "buses" : [ {
       "id" : 1,
       "line" : 1,
-      "route" : null
-    } ],
-    "terminal" : false
-  }, {
-    "id" : 5,
-    "longitude" : 5,
-    "latitude" : 8,
-    "name" : "Peru",
-    "city" : {
-      "id" : 1,
-      "name" : "Buenos Aires"
-    },
-    "buses" : [ {
-      "id" : 2,
-      "line" : 2,
       "route" : null
     } ],
     "terminal" : false
@@ -105,47 +90,32 @@
     } ],
     "terminal" : true
   }, {
-    "id" : 27,
-    "longitude" : 35,
-    "latitude" : 23,
-    "name" : "Piccadilly Circus",
+    "id" : 24,
+    "longitude" : 29,
+    "latitude" : 22,
+    "name" : "St. Paul's",
     "city" : {
       "id" : 2,
       "name" : "London"
     },
     "buses" : [ {
-      "id" : 11,
-      "line" : 11,
+      "id" : 8,
+      "line" : 8,
       "route" : null
     } ],
     "terminal" : false
   }, {
-    "id" : 26,
-    "longitude" : 34,
-    "latitude" : 25,
-    "name" : "Liverpool Street",
+    "id" : 23,
+    "longitude" : 29,
+    "latitude" : 19,
+    "name" : "Blackfriars",
     "city" : {
       "id" : 2,
       "name" : "London"
     },
     "buses" : [ {
-      "id" : 10,
-      "line" : 10,
-      "route" : null
-    } ],
-    "terminal" : false
-  }, {
-    "id" : 33,
-    "longitude" : 39,
-    "latitude" : 25,
-    "name" : "Stockwell",
-    "city" : {
-      "id" : 2,
-      "name" : "London"
-    },
-    "buses" : [ {
-      "id" : 10,
-      "line" : 10,
+      "id" : 8,
+      "line" : 8,
       "route" : null
     } ],
     "terminal" : false

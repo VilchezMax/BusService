@@ -1,7 +1,5 @@
 import algorithm.DijkstraTest;
-import busservice.models.Bus;
 import busservice.models.BusStop;
-import busservice.models.BusStops;
 import busservice.parsers.Parser;
 import busservice.services.mybatis.BusService;
 import busservice.services.mybatis.BusStopService;
@@ -11,20 +9,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-
 public class App {
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    public static void main(String[] args) throws SQLException {
+    public static void main (String[] args) throws SQLException {
         GUI gui = GUI.getInstance();
 
         /* Fetch data */
@@ -47,12 +41,11 @@ public class App {
          * 2 results are returned, later to be used by Dijkstra's algorithm.
          */
 
-        ArrayList<BusStop> shortestRoute = DijkstraTest.getShortestPath(allBusStops.get(0), allBusStops.get(32));
-
+        //ArrayList<BusStop> shortestRoute = DijkstraTest.getShortestPath(allBusStops.get(0), allBusStops.get(32));
+        ArrayList<BusStop> shortestRoute = null;
         CompletableFuture<List<BusStop>> future = null;
         try {
             future = CompletableFuture.supplyAsync(() -> gui.election(allBusStops));
-
 
             while (!future.isDone()) {
                 logger.info("Waiting for choices");
@@ -62,6 +55,8 @@ public class App {
             finalBusStop = future.get().get(1);
             logger.info("Initial bus stop: " + initialBusStop);
             logger.info("Final bus stop: " + finalBusStop);
+
+            shortestRoute = DijkstraTest.getShortestPath(initialBusStop, finalBusStop);
         } catch (ExecutionException | InterruptedException e) {
             logger.warn("Error: " + e.getMessage());
         }
@@ -82,13 +77,11 @@ public class App {
         /* SAVE TO JSON AND XML */
         // Testing xml and json parser
 
-
-
         File filename = new File("src/main/resources/results/xml/shortestRouteFound.xml");
-        Parser.writeXml(shortestRoute,filename);
+        Parser.writeXml(shortestRoute, filename);
 
         File filename2 = new File("src/main/resources/results/json/shortestRouteFound.json");
-        Parser.writeJson(shortestRoute,filename2);
+        Parser.writeJson(shortestRoute, filename2);
 
 
         /* Displays results */
@@ -97,6 +90,5 @@ public class App {
         } catch (Exception e) {
             logger.warn("Error: " + e.getMessage());
         }
-
     }
 }
